@@ -1,0 +1,15 @@
+[submodule "3rd/VideoMaMa"]
+	path = 3rd/VideoMaMa
+	url = git@github.com:cvlab-kaist/VideoMaMa.git
+[submodule "3rd/OmnimatteZero"]
+	path = 3rd/OmnimatteZero
+	url = git@github.com:dvirsamuel/OmnimatteZero.git
+[submodule "3rd/gen-omnimatte-public"]
+	path = 3rd/gen-omnimatte-public
+	url = git@github.com:gen-omnimatte/gen-omnimatte-public.git
+[submodule "3rd/OmnimatteRF"]
+	path = 3rd/OmnimatteRF
+	url = org-16943930@github.com:facebookresearch/OmnimatteRF.git
+[submodule "3rd/omnimatte"]
+	path = 3rd/omnimatte
+	url = git@github.com:erikalu/omnimatte.git
