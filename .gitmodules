@@ -13,3 +13,18 @@
 [submodule "3rd/omnimatte"]
 	path = 3rd/omnimatte
 	url = git@github.com:erikalu/omnimatte.git
+[submodule "3rd/MatAnyone"]
+	path = 3rd/MatAnyone
+	url = git@github.com:pq-yang/MatAnyone.git
+[submodule "3rd/MatAnyone2"]
+	path = 3rd/MatAnyone2
+	url = git@github.com:pq-yang/MatAnyone2.git
+[submodule "3rd/ViewPoint"]
+	path = 3rd/ViewPoint
+	url = git@github.com:ali-vilab/ViewPoint.git
+[submodule "3rd/lumiere-pytorch"]
+	path = 3rd/lumiere-pytorch
+	url = git@github.com:lucidrains/lumiere-pytorch.git
+[submodule "3rd/FollowYourCanvas"]
+	path = 3rd/FollowYourCanvas
+	url = git@github.com:mayuelala/FollowYourCanvas.git

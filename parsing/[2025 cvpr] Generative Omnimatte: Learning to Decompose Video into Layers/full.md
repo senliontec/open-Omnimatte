@@ -1,0 +1,383 @@
+# Generative Omnimatte: Learning to Decompose Video into Layers
+
+Yao-Chih Lee1,2,\* Erika Lu¹ Sarah Rumbley¹ Michal Geyer1,3 Jia-Bin Huang² Tali Dekel1,3 Forrester Cole¹
+
+1Google DeepMind 2University of Maryland College Park 3Weizmann Institute of Science
+
+https://gen-omnimatte.github.io
+
+![](images/d4a10295ce707199e346dbeb678ca2a4c1e20e7372adba66f2088aa107f042ba.jpg)  
+Input video  
+Output: Omnimatte layers  
+Object removal  
+Layer editing
+
+Figure 1. Generative Omnimatte. Our method decomposes a video into a set of RGBA omnimatte layers, where each layer consists of a fully-visible object and its associated effects like shadows and reflections. We improve upon existing work by adding a generative video prior, allowing our method to complete occluded regions (top, middle) and handle dynamic backgrounds (bottom).
+
+## Abstract
+
+Given a video and a set of input object masks, an omnimatte method aims to decompose the video into semantically meaningful layers containing individual objects along with their associated effects, such as shadows and reflections. Existing omnimatte methods assume a static background or accurate pose and depth estimation and produce poor decompositions when these assumptions are violated. Furthermore, due to the lack of generative prior on natural videos, existing methods cannot complete dynamic occluded regions. We present a novel generative layered video decomposition framework to address the omnimatte problem. Our method does not assume a stationary scene or require camera pose or depth information and produces clean, complete layers, including convincing completions
+
+of occluded dynamic regions. Our core idea is to train a video diffusion model to identify and remove scene effects caused by a specific object. We show that this model can be fnetuned from an existing video inpainting model with a small, carefully curated dataset, and demonstrate highquality decompositions and editing results for a wide range of casually captured videos containing soft shadows, glossy reflections, splashing water, and more.
+
+## 1. Introduction
+
+Natural videos typically intertwine complex signals about our dynamic world, such as camera motion, articulated object movement, intricate scene effects, and time-varying interaction between objects. Mid-level representations that model this complexity are vital for intuitive interaction and editing of video content. One such representation is a decomposition of video into a set of semantically meaningful, semi-transparent layers, typically with one layer for each foreground object and the background. The utility of layers in creating visual effects has fueled interest in generating them from casually-captured video.
+
+Omnimatte [19, 29, 35–37, 47] methods produce semantically meaningful layers that contain individual objects along with their associated effects, such as shadows and reflections. To infer the complex space-time correlations between objects and their effects, existing methods rely heavily on restrictive assumptions such as a stationary background or accurate camera and depth estimation. These methods fail when these assumptions are violated. Furthermore, existing methods cannot complete occluded regions, limiting their potential applications (Fig. 2).
+
+In this work, we present a novel generative layered video decomposition framework that overcomes previous limitations by leveraging the strong generative prior of a pretrained video diffusion model [7]. The video prior serves two purposes. First, the model's internal features reveal connections between objects and their effects (Fig. 5) that can be exposed through finetuning, similar to recent works that apply the internal features of video diffusion models for analysis tasks [22, 44]. Second, the model can directly complete occluded areas in the layer decomposition, including dynamic regions. This prior is a key factor that enables our method to dispense with the ad-hoc, limited priors of previous works [19, 29, 36, 47] and the restrictions they place on the input video.
+
+However, existing video inpainting models are not directly applicable to the omnimatte task — because they inpaint only the region indicated by a binary mask, they lack the flexibility to remove associated effects outside of the mask region (Fig. 3). Instead, we finetune the video inpainting model to create an object-effect-removal model, and apply it as a core component of a layer-decomposition system (Fig. 4). The model produces a “clean-plate" RGB background layer and initialization for the foreground layers. The final RGBA foreground layers are optimized to reconstruct the input video while remaining sparse. Since the pretrained model's features already connect objects and their effects, a small, carefully curated dataset of real and synthetic examples of object-effect associations is sufficient for finetuning.
+
+Our method advances video layer decomposition in two directions: (i) it operates on casual videos where previous methods fail, without relying on a stationary background or camera poses, and (ii) it generates realistic, dynamic layers for both fully occluded regions and regions partially occluded by shadows or reflections. These capabilities unlock various creative editing tasks such as object removal, movement retiming, and foreground stylization (Fig. 1). We will release the dataset of real and synthetic layered videos used to finetune the video inpainting model.
+
+![](images/bc16128061e0a269d9be600fb1949591c4c457749d28cc52564a455382648aed.jpg)  
+Figure 2. Limitations of existing Omnimatte methods. Omnimatte methods [19, 29, 36, 47] rely on restrictive motion assumptions, such as stationary background, resulting in dynamic background elements becoming entangled with foreground object layers. Furthermore, these methods lack a generative and semantic prior for completing occluded pixels and accurately associating effects with their corresponding objects.
+
+![](images/cdc9fecf3fe3afbbc3dd1c9b6177eaeeaa5046c1ae95128a8661997e9880755b.jpg)  
+Figure 3. Limitations of inpainting models for object removal. While video inpainting models (e.g., [66]) can complete plausible background pixels in the input mask region, they preserve the removed objects' shadows and reflections outside the mask.
+
+## 2. Related Work
+
+Transparent Images and Matting. Transparent (RGBA) images and videos are widely used in various applications, including rotoscoping and visual effects synthesis. The matting problem [40, 50] aims to extract foreground RGBAs and background layers from the given images or videos. In the visual effects industry, this layer decomposition is traditionally achieved by green-screen chroma keying, requiring complex filming setups and manual postprocessing [34]. Deep learning methods [24, 26, 30, 52] approach this problem by training on large-scale alpha matte groundtruth [26, 30]. These studies focus on estimating fine-level alpha mattes for foregrounds but cannot capture the correlated effects. Recent advancements [62] have enabled text-to-RGBA image generation with plausible effects by finetuning Stable Diffusion [42] on a transparent image dataset. Nonetheless, decomposing videos into layers with effect association is a different problem domain and remains under-explored.
+
+Video Layer Decomposition. Decomposing a video into a set of semantically meaningful layers enables a wide range of applications, including video editing [5, 23, 25, 45], motion re-timing [35], view synthesis [43, 67], game deconstruction [46], and obstruction removal [2, 3, 33]. Our work focuses on synthesizing fully-visible layers of individual objects and their associated effects from a video.
+
+Video Matting with Associated Effects. Omnimatte [35, 36], inspired by early flow-based methods [1, 9, 51], leverages motion cues to decompose a video into RGBA matte layers, each comprising an object and its associated effects. It assumes a static background, modeled by planar homographies, and groups the time-varying residual (moving objects and effects) into foreground layers through a test-time optimization step. Recent works extend Omnimatte by enhancing the deep image priors [19, 37] and relaxing the planar homography constraint to non-rigid warping [35, 59] or 3D scene representations [29, 47]. However, these approaches are limited to restrictive motion assumptions (e.g., static backgrounds, accurate pose estimation) and lack generative capabilities and semantic understanding for completing occluded areas and detecting precise object-effect associations (Fig. 2). Our method, in contrast, requires no motion assumption and leverages the generative and semantic priors of our object-effect-removal model to obtain a set of fully-visible layers with accurately associated effects.
+
+Video Generation and Inpainting. Recent advancements in diffusion models have significantly improved the capabilities of text-to-video generation. These models [7, 8, 12, 16, 17, 21, 48, 56, 58, 60, 65] are trained on massive datasets of video-text pairs, enabling them to generate visually appealing videos from text descriptions.
+
+Text-to-video models have been adapted for the task of inpainting (e.g., [38, 64, 68]), in which they synthesize content in a user-specified mask region, conditioned on the surrounding visual context. While existing video inpainting methods [11, 15, 28, 31, 54, 61, 64] are often employed for object removal, these models cannot handle the effects that extend beyond mask boundaries, leaving undesired shadows and reflections in the output frames (Fig. 3).
+
+Object Effect Removal. Work [13, 32] in video shadow removal focuses specifically on removing cast shadows, but does not aim to perform object-shadow association, object removal, or background completion. Recent methods [4, 53] fine-tune image diffusion models for object and effect removal. However, they are unsuitable for video object removal because they lack temporal coherence when run on individual frames. Moreover, our goal extends beyond object removal; we aim to decompose a video into an entire set of omnimattes to enable layer-based video editing tasks.
+
+## 3. Method
+
+Given an RGB video I and N object masks $\{ m _ { i } \} _ { i = 1 } ^ { N } .$ our goal is to generate $N + 1$ video layers: a clean-plate RGB background $\mathcal { T } _ { \mathrm { b g } }$ and N foreground RGBA omnimattes $\{ \mathcal { O } _ { i } \} _ { i = 1 } ^ { N }$ , each containing one object and its associated effects (such as shadows or reflections).
+
+Since ground-truth layered video data is scarce, we aim to apply an existing video diffusion model (Sec. 3.1) with minimal modifications. Large, pretrained video models have already learned the required associations between objects and their effects as part of their generative task (Sec. 3.3), so we aim to bring out this ability by finetuning the model with a small dataset of layered videos (Sec. 3.4).
+
+The diffusion model produces RGB (without alpha), and retraining to produce alpha maps would require a large dataset of RGBA layers [62]. To avoid changing the output space of the model, we employ a two-step process (Fig. 4): (1) creation of the clean-plate video $\mathcal { T } _ { \mathrm { b g } }$ and N “soloed" or single-object videos $\mathcal { T } _ { i }$ containing only object i and the background, and (2) reconstruction of the foreground layers $\mathcal { O } _ { i }$ from the pairs $( \mathbb { Z } _ { i } , \mathbb { Z } _ { \mathrm { b g } } )$ (Fig. 4). To construct the background $\mathcal { T } _ { \mathrm { b g } }$ and solo videos $\mathcal { T } _ { i } ,$ we train a new video objecteffect-removal model, which we dub “Casper"\*, guided by a trimask (Sec. 3.2). We then reconstruct the layers $\mathcal { O } _ { i }$ via test-time optimization (Sec. 3.5).
+
+## 3.1. Base Video Diffusion Model
+
+Our object-effect-removal model, Casper, builds upon the inpainting variant of the video diffusion model, Lumiere [7]. Lumiere is a text-to-video generator with a two-stage cascade of pixel-based diffusion models. The first-stage base model generates an 80-frame video at 128×128px resolution from a text prompt. The second stage, a spatial super-resolution (SSR) model, upsamples the output of the base model to 1024× 1024px resolution.
+
+The Lumiere inpainting model [7, 38], finetuned from the original text-to-video base model, takes two additional conditions: a masked RGB video with zeroed-out inpainting regions and a binary mask video m. The base inpainting model is followed by the same SSR to achieve highresolution quality.
+
+Casper is finetuned from the inpainting model to perform object-and-effect removal. While Casper keeps the same model architecture as the base inpainting model, our decomposition framework introduces novel strategies for input object masking (Sec. 3.2).
+
+![](images/b987241917d6294ca954a6aa87c96a9f5a58710f9a89bc078e98f91d4e51be3b.jpg)  
+Figure 4. Generative omnimatte framework. Given an input video and binary object masks, we first apply our object-effect-removal model, Casper, to generate a clean-plate background $\mathcal { T } _ { \mathrm { b g } }$ and a set of single-object (solo) videos $\mathcal { T } _ { i }$ applying different trimask conditions. The trimasks specify regions to preserve (white), remove (black), and regions that potentially contain uncertain object effects (gray). In Stage 2, a test-time optimization reconstructs the omnimatte layers $\mathcal { O } _ { i }$ from pairs of $\mathcal { T } _ { i }$ and $\mathcal { T } _ { \mathrm { b g } } .$
+
+## 3.2. Object and Effect Removal with Trimask
+
+The original Lumiere inpainting model is conditioned on a binary mask m that indicates regions to be inpainted $( m =$ 0) and preserved $( m = 1 )$ . Our object-effect-removal task introduces extra ambiguity: the “preservation"region may not be completely preserved, but instead can be potentially changed (e.g., to erase shadows).
+
+To address the ambiguity, we propose a trimask condition $\mathcal { M } ,$ derived from the binary object masks $\{ m _ { i } \} _ { i = 1 } ^ { N }$ The trimask explicitly marks three regions: the objects to remove $( \mathcal { M } = 0 )$ , objects to preserve $( \mathcal { M } = 1 )$ , and background areas $( \mathcal { M } = 0 . 5 )$ that may contain effects to be removed or preserved (Fig. 4). To obtain the clean-plate background video $\mathcal { T } _ { \mathrm { b g } }$ , we use a background trimask $\mathcal { M } _ { b g }$ that marks all objects as areas to remove and the background as an area to potentially modify. To associate effects with their corresponding N objects, we aim to produce N solo (single-object) videos $\mathcal { T } _ { i }$ that contain a single object and its correlated effects. The $N$ input trimasks $\{ \mathcal { M } _ { i } \} _ { i = 1 } ^ { N }$ mark the object i as a preservation area and the remaining $N - 1$ objects as removal areas. The set of $N + 1$ trimasks $( \mathcal { M } _ { b g }$ and $\{ \mathcal { M } _ { i } \} _ { i = 1 } ^ { N } )$ are fed into Casper separately, each with the same noise initialization, to generate N solo videos $\mathcal { T } _ { i }$ and the background video $\mathcal { T } _ { \mathrm { b g } }$ . We obtain the binary object masks $m _ { i }$ using SegmentAnything2 [41].
+
+Additionally, instead of a masking the RGB values in the input video, we follow ObjectDrop [53] and keep the RGB values of the removal regions $( \mathcal { M } = 0 )$ in the input video condition, allowing the model to associate the content inside the mask with the corresponding effects outside the mask.
+
+![](images/c0b770dcdb05d88047abb89f6835ec95259d6c20d661a742b3b8479cd0f5e9a4.jpg)  
+Figure 5. Effect association prior in a pretrained video generation model. We input a video to a pretrained text-to-video generator [7] using an SDEdit approach [39] and analyze the spatial selfattention weights. By measuring the attention weights between query tokens and key tokens located within target object areas, we observe that the generator can effectively associate effects with target objects. In this specific example, we re-noise the video to $t = 0 . 5$ and visualize the attention in the middle bottleneck of the U-Net at the sampling step t = 0.125.
+
+During inference, the inputs to Casper are a text prompt describing the target removal scene, and a concatenation of the input video, trimask, and noisy video at a 128px resolution $( e . g . , 2 2 4 \times 1 2 8 \mathrm { p x } )$ . The model takes 256 DDPM [20] sampling steps without classifier-free guidance for inference (\~12 minutes for an 80-frame video). We adopt temporal multidiffusion [6] to handle longer videos.
+
+## 3.3. Effect Association Prior in Video Generator
+
+To investigate Lumiere's inherent understanding of objecteffect associations, we analyze the self-attention pattern during denoising of a given video using SDEdit [39]. We focus on the spatial self-attention within the frame since it is the strongest indicator of the model's prior on object-effect associations. Specifically, we measure the self-attention weights between the query tokens and key tokens associated with the object of interest. For a query at the spatial location p in the $j ^ { \mathrm { t h } }$ frame $\mathcal { T } ^ { j }$ , the response to the object is calculated as:
+
+$$
+r ( p ) = \frac { \sum _ { y \in m ^ { j } } \mathbf { W } _ { p , y } } { \sum _ { x \in \mathbb { Z } ^ { j } } \mathbf { W } _ { p , x } } ,\tag{1}
+$$
+
+where W is the attention weight matrix obtained by the attention operation [49], and $\mathbf { W } _ { p , x }$ denotes the weight between the query at p and the key token at x. The numerator sums the weights between the query and all the keys within object mask $m ^ { j }$ , and the denominator normalizes this sum by the total weight across the entire image space $\mathcal { T } ^ { j }$
+
+As visualized in Fig. 5, we observe that the query tokens in the shadow areas exhibit attention to the object region. This suggests that the pretrained model [7] can associate objects and their effects. Leveraging this prior knowledge, we hypothesize that a relatively small training dataset can be sufficient to train an effective object-effect-removal model.
+
+## 3.4. Training Data for Object and Effect Removal
+
+We curate a training dataset of real and synthetic video examples (Fig. 6) from the following four categories:
+
+Omnimatte. We collect 31 scenes from successful results of existing omnimatte methods [29, 36, 47] to form the training tuples of input video, input trimask, and target background video. These scenes, mostly from the DAVIS [10] dataset, feature static backgrounds and single objects, providing basic examples of shadows and reflections in real-world videos.
+
+Tripod. We supplement our dataset with 15 in-the-wild videos from the web, captured by stationary cameras. These videos contain objects moving in and out of the scenes, which can be segmented into pseudo tuples of videos with and without the objects. These videos include examples of water effects $( e . g .$ , reflections, splashing, ripples) and ambient background motion. We augment these videos with Ken Burns effects to simulate camera motion.
+
+Kubric. While the real-world videos provide valuable object-effect examples, they primarily depict single-object scenes, limiting the model's ability to learn effect association with multiple objects. Hence, we incorporate 569 synthetic videos generated using Kubric [18]. By rendering multi-object scenes in Blender [14] and making objects transparent, we create ground-truth removal videos that preserve the physical interactions and motion of the remaining scene elements. Moreover, we observe that many realworld scenarios exhibit multiple instances of the same object type in a scene, such as dogs, pedestrians, or vehicles. Therefore, we generate scenes with duplicated objects to train the model to handle multiple similar objects. We also insert reflective surfaces in the scenes to simulate water and glass reflections.
+
+![](images/f5c49ea3be1ed9b12e0d6041150b5b25dd159e4e0aaaa9f9c948c5a31cf7bbdf.jpg)
+
+![](images/929b7ed628e977e20fbc47a9bd0db7da5c3dfba16daf8b22029ccccd29809f0b.jpg)  
+(a) Omnimatte  
+(b) Tripod
+
+![](images/08da7720c43ade942f70485ac14cd5a0965f960be0571a7584bc27ad18fbd70c.jpg)  
+(c) Kubric
+
+![](images/8fbc22278ddc3bb062f48bc4d1ea4d652c2fb7d9316e46d72e075474ff768244.jpg)  
+(d) Object-Paste  
+Figure 6. Training data for object and effect removal. (a) We collect omnimatte results from existing omnimatte methods to provide examples of cause-and-effect relationships in real videos. (b) The Tripod dataset consists of videos captured with stationary cameras, providing pseudo-examples of more complex realworld scenarios, such as water effects and dynamic backgrounds. (c) We use Kubric [18] to synthesize multi-object scenes with diverse reflections and shadows. (d) We segment objects from real videos and paste them onto target real videos [57] to strengthen the model's inpainting capabilities and background preservation.
+
+Object-Paste. We synthesize 1024 video tuples from real videos in the YouTube-VOS Dataset [57], using SegmentAnything2 [41] to crop objects from a random video and paste them onto a target video. The training input and target are the composited video and original video, respectively. Training on this data strengthens the model's inpainting and background preservation abilities.
+
+The text prompts of the training data are captioned by BLIP-2 [27], describing the target video that the objecteffect-removal model should learn to generate. We augment the dataset with spatial horizontal flipping, temporal flipping, and random cropping to a 128× 128px resolution. We balance the four data categories with different ratios, using approximately equal proportions (50%) of real and synthesized data. Please refer to the Supplementary Material for the training details.
+
+## 3.5. Omnimatte Optimization
+
+As described in Sec. 3.2, we obtain solo videos $\{ \mathcal { T } _ { i } \} _ { i = 1 } ^ { N }$ and the background $\mathcal { T } _ { \mathrm { b g } }$ from an N-object video input. Given each pair of $( \mathbb { Z } _ { i } , \mathbb { Z } _ { \mathrm { b g } } )$ , the goal is to reconstruct an omn-
+
+imatte layer, $\mathcal { O } _ { i }$ , such that its composition with the background, $\mathcal { T } _ { \mathrm { b g } }$ , matches the solo video, $\mathcal { T } _ { i }$
+
+$$
+\mathcal { T } _ { i } \approx C o m p ( \mathcal { T } _ { \mathrm { b g } } , \mathcal { T } _ { i , \mathrm { f g } } , \alpha _ { i } ) = \alpha _ { i } \mathcal { T } _ { i , \mathrm { f g } } + ( 1 - \alpha _ { i } ) \mathcal { T } _ { \mathrm { b g } } ,\tag{2}
+$$
+
+where $\mathcal { T } _ { i , \mathrm { f g } }$ and $\alpha _ { i }$ are the RGB and alpha channels of the omnimatte $\mathcal { O } _ { i }$
+
+Variables. Unlike previous methods [19, 29, 36, 47] that jointly optimize the background scene model with the foreground omnimattes, our method first produces a clean background video which is kept constant during the optimization. Therefore, the variables to optimize are the foreground RGB $\mathcal { T } _ { i , \mathrm { f g } }$ and alpha $\alpha _ { i } .$ Following existing methods [29, 36, 47], we use a U-Net to generate smooth alphas from the inputs $\mathcal { T } _ { i }$ and error map $\Delta _ { i } = | \mathcal { T } _ { i } - \mathcal { T } _ { \mathrm { b g } } |$ . We directly optimize the pixel values of the RGB $\mathcal { T } _ { i , \mathrm { f g } }$ for efficiency, with a sigmoid to constrain the range to [0, 1].
+
+Loss function. Similar to [29, 36, 47], we use a reconstruction loss, $\mathcal { L } _ { \mathrm { r e c o n } }$ (the difference between the target T and the composited video) to drive the optimization:
+
+$$
+\mathcal { L } _ { \mathrm { r e c o n } } = \Vert \mathcal { Z } _ { i } - C o m p ( \mathcal { T } _ { \mathrm { b g } } , \mathcal { T } _ { i , \mathrm { f g } } , \alpha _ { i } ) \Vert _ { 2 } .\tag{3}
+$$
+
+To prevent the foreground omnimatte from being overly sensitive to reconstruction error, we add $L _ { 0 } .$ and $L _ { 1 ^ { - } }$ sparsity regularization on the alpha map:
+
+$$
+\mathcal { L } _ { \mathrm { s p a r s i t y } } = \beta _ { 1 } \| \alpha _ { i } \| _ { 1 } + \beta _ { 0 } \Phi _ { 0 } ( \alpha _ { i } ) ,\tag{4}
+$$
+
+where $\Phi _ { 0 }$ denotes an approximate $L _ { 0 }$ proposed in [36], and $\beta _ { 1 }$ and $\beta _ { 0 }$ are the hyper-parameters balancing the loss.
+
+To optimize the alpha network from scratch, a mask supervision loss, ${ \mathcal { L } } _ { \mathrm { m a s k } } = \| m _ { i } - \alpha _ { i } \| _ { 2 }$ , is used to guide the learning of alpha $\alpha _ { i }$ from the input object mask $m _ { i }$ . The loss is gradually reduced over the optimization iterations. The final omnimatte $\mathcal { O } _ { i }$ is obtained by minimizing the total loss of $\mathcal { L } _ { \mathrm { r e c o n } } + \lambda _ { \mathrm { s p a r s i t y } } \mathcal { L } _ { \mathrm { s p a r s i t y } } + \lambda _ { \mathrm { m a s k } } \mathcal { L } _ { \mathrm { m a s k } }$
+
+Upsampling and Detail Transfer. The Casper model has a resolution of 128px (e.g., 224× 128) inherited from the Lumiere base stage. Lumiere's SSR stage [7] is used to upsample the base model outputs to the target resolution 640×384. The RGBA omnimatte layers $\mathcal { O } _ { i }$ are first optimized at the base resolution, then upsampled and optimized further at the target resolution. Finally, a detail transfer step [35, 36, 47] is applied to fully opaque regions. Please see SM for further details.
+
+## 4. Results
+
+We compare our method with SOTA omnimatte methods [29, 47]. We also compare Casper with video inpainting models [7, 66] and ObjectDrop [53] on object-removal tasks. Note that ObjectDrop is an image-based model, and thus, it processes each video frame independently. We obtain the results of [47, 53] from the respective authors.
+
+![](images/e91a2174bf713598b585318bd1d84e1faa45d61963694b8f94ad24868deb9e5a.jpg)  
+Figure 7. Qualitative comparisons with omnimatte methods. For each example, we show the background layer and foreground omnimattes generated by different methods in the top and bottom rows, respectively. Existing methods [29, 36, 47] struggle with relatively stationary foregounds (“"boat"), and struggle to complete heavily occluded objects (“horses"). While [29, 47] can handle scenes with parallax (“horses"), the background layer appears blurry due to imperfect camera pose and depth estimation.
+
+## 4.1. Qualitative Results
+
+We compare omnimatte methods in Fig. 7. In “boat", existing approaches fail to separate the boat's wake from the background layer, while our method correctly places it in the boat's layer. For “horses", Omnimatte3D [47] and OmnimatteRF [29] produce blurry background layers because their 3D-aware background representations are sensitive to camera pose estimation quality. Furthermore, none of the existing Omnimatte methods can disocclude the horse in the last row. In contrast, our method does not require camera pose information and can inpaint heavily occluded objects.
+
+Fig. 8 compares our Casper model with existing methods for object removal. Video inpainting models [7, 66] fail to remove soft shadows and reflections outside the input masks. ObjectDrop [53] can remove shadows in “cartoon" and “parkour", but it processes frames independently and inpaints regions without global context. This leads to inconsistent hallucinations, such as a missing car in “parkour" and inconsistent background trees in “car-puddle". Our model effectively removes soft shadows (“cartoon"), handles shadows cast on complex structures (“parkour"), and excels at multi-object removal (“penguins"). We encourage readers to view SM for video comparisons.
+
+Ours  
+![](images/d92e6f3552f1d3d8b31d741103414b13dc1d593165cd68de34c802e432f11138.jpg)  
+Input video
+
+![](images/f6a3fd674753dea6901db27eb76168c60cb8c1660d449ceabc5bd8d211008c8e.jpg)  
+Object(s) to remove
+
+![](images/1299d2b6effe63240a3e21183d87f5f60d247559082702ca645328974d996a84.jpg)
+
+![](images/0734026fa617352b94f42838f03248a74b76bcb3d59f20f104998c0ea56a0b7d.jpg)  
+ProPainter [66]
+
+![](images/24344ae1f4edebb2baa3cb7f6351832b6780ec3bf1316ca250007cf1da62c89a.jpg)
+
+![](images/12ad5322f639b55c36ede9097580afe431f87cf98d08686014fb047d6130aa62.jpg)  
+Figure 8. Visual comparison on object removal. We compare our removal model with state-of-the-art video inpainting models [7, 66] and per-frame ObjectDrop [53]. Inpainting models fail to remove effects that extend beyond the provided mask boundaries. ObjectDrop processes video frames independently, lacking temporal information to preserve backgrounds and produce temporally coherent results. We encourage readers to view the supplementary material for video comparisons.
+
+Table 1. Quantitative comparison. Following the benchmark established in OmnimatteRF [29], we evaluate the removal quality on background videos of 10 synthetic scenes in two categories. Our method achieves the best overall scores in both PSNR and LPIPS metrics. We adopt the numbers of [23, 29, 36] reported in [29]. Best results are highlighted in red and second-best in yellow. Results marked as “-" indicate failures in some scenes (e.g., all-zero outputs in [47]). We present the per-scene scores in SM.  
+![](images/3116cce318873706919cc631170203a2e937ae8bead60330eb12083b974bc882.jpg)
+
+<table><tr><td rowspan="2">Scene Metric</td><td colspan="2">Movie</td><td colspan="2">Kubric</td><td colspan="2">Average</td></tr><tr><td>PSNR↑</td><td>LPIPS↓</td><td>PSNR↑</td><td>LPIPS↓</td><td>PSNR↑</td><td>LPIPS↓</td></tr><tr><td>ObjectDrop [53]</td><td>28.05</td><td>0.124</td><td>34.22</td><td>0.083</td><td>31.14</td><td>0.104</td></tr><tr><td>Propainter [66]</td><td>27.44</td><td>0.114</td><td>34.67</td><td>0.056</td><td>31.06</td><td>0.085</td></tr><tr><td>Lumiere inpainting [7]</td><td>26.62</td><td>0.148</td><td>31.46</td><td>0.157</td><td>29.04</td><td>0.153</td></tr><tr><td>Ominmatte [36]</td><td>21.76</td><td>0.239</td><td>26.81</td><td>0.207</td><td>24.29</td><td>0.223</td></tr><tr><td>LNA [23]</td><td>23.10</td><td>0.129</td><td>1</td><td>=</td><td>=</td><td>=</td></tr><tr><td>Omnimatte3D [47]</td><td></td><td></td><td>1</td><td>=</td><td></td><td></td></tr><tr><td>OmnimatteRF [29]</td><td>33.86</td><td>0.017</td><td>40.91</td><td>0.028</td><td>37.38</td><td>0.023</td></tr><tr><td>Ours</td><td>32.69</td><td>0.030</td><td>44.07</td><td>0.010</td><td>38.38</td><td>0.020</td></tr></table>
+
+(a) Training data  
+![](images/40e0368ba33ad943625c9c5d608d4f08fb46e865e93be2e4bc8b5eb3840ecee2.jpg)
+
+We adopt the evaluation protocol from OmnimatteRF [29] to assess background layer reconstruction on ten synthetic scenes. The synthetic dataset comprises 5 Movie scenes and 5 Kubric scenes generated by [55]. Each scene has a corresponding ground-truth background without foreground objects and effects. We use PSNR and LPIPS [63] as evaluation metrics. We confirm that our Kubric training data does not overlap with the Kubric scenes used in the evaluation.
+
+![](images/2721cb9be48d5989ccb50b19f6698165d5744719c0d2ccd272da33a7ff8a8a0a.jpg)  
+(b) Mask condition
+
+## 4.2. Quantitative comparison
+
+The quantitative results are presented in Table 1. Existing layer decomposition methods perform a global static scene optimization for each video. Omnimatte [36] and Layered Neural Atlas [23] utilize 2D motion models and thus struggle to handle parallax. Omnimatte3D [47] fails to construct a background scene model in two cases and struggles with stationary foreground objects in the Movie scenes.
+
+![](images/b0dc92f638fcbada863d34fc8830a5e78a5e709a9b330e56fabd99729dc3ba96.jpg)  
+Figure 9. Ablation study. (a) We ablate four different categories of training examples to validate their individual contributions. (b) The proposed trimask allows for greater control over defining regions to preserve or alter. Models trained with binary masks lack this flexibility and may remove objects that are intended to be kept (e.g., the umbrella). (c) Optimizing the foreground RGB of omnimattes rather than using pixels directly from the input video results in cleaner foreground layers. Best viewed zoomed-in on a display.
+
+OmnimatteRF [29] applies an additional background retraining step to further improve removal results and, in some cases, can complete the inpainting regions more accurately due to the global scene model optimization. Overall, our method achieves the best performance in both metrics. We provide visual comparisons of the evaluation scenes in SM.
+
+## 4.3. Ablation study.
+
+Training data. We assess the individual contributions of each dataset category to our model's performance in Fig. 9a.
+
+![](images/ec900cba1b6987e9010d284081a4b8c1e2eb3340077cdff2ce79653c734be090.jpg)  
+Figure 10. Applications. Our omnimattes enable diverse video editing tasks. Please refer to SM for full video demonstrations.
+
+The Omnimatte data provides real-world shadow and reflection scenes. The Tripod data complements Omnimatte by providing additional real-world scenarios, including specific examples of water reflections, to better handle water effects. Our Kubric synthetic data strengthens the model's ability to handle multi-object scenes. Object-Paste, synthesized by overlaying objects onto real videos, reduces undesired background changes and improves inpainting quality. Mask condition. As shown in Fig. 9b, the proposed trimask explicitly defines the regions to be removed or preserved, thereby enabling more accurate handling of multiobject scenarios. In contrast, the model trained on binary masks is susceptible to ambiguity, potentially leading to undesired removal of objects meant to be preserved.
+
+Omnimatte optimization. The omnimatte reconstruction optimizes both foreground RGB and alpha channels. If the foreground RGB channel is not optimized and instead fixed as the input foreground video, the resulting omnimatte may exhibit increased background color contamination and hinder the generation of soft alpha mattes. (Fig. 9c).
+
+## 4.4. Applications
+
+As showcased in Fig. 1 and Fig. 10, our omnimattes enable a wide range of video editing for users, such as layer insertion and replacement. Each layer can also be independently edited with different transformations, stylizations, and time offsets for motion retiming [35]. The edited layers can then be recomposed seamlessly to generate novel videos.
+
+## 5. Discussion and Limitations
+
+Our method overcomes the limitations of existing omnimatte approaches by incorporating a finetuned video inpainting model that performs object and effect removal. This is achieved by finetuning a pretrained inpainting model on a small training set, without modifying the architecture to generate an additional alpha channel. The RGB outputs of the video model are then used to reconstruct the RGBA omnimatte layers using an optimization step.
+
+The finetuned model inherits the original diffusion model's learned prior on natural videos, allowing for strong generalization to scenarios not present in the training set (e.g., human hands in "lego," "cartoon"). However, this reliance on a data-driven prior can also limit the range of effects the method can handle. For example, since we did not include training data capturing physical deformations, our current model does not remove effects such as bending poles or trampolines (Fig. 11a). However, our ablation experiments (Fig. 9) indicate the model responds well to small additions to the training data, suggesting that it may be possible capture these effects by curating additional data.
+
+![](images/ad1793d573a03626b311fd3c57a78e98895a2fc681b5d392e204464a6f611cfa.jpg)  
+Figure 11. Limitations. (a) Casper effectively removes objects and their associated shadows and reflections, while keeping shape deformation in the outputs. (b) In challenging multi-object cases, Casper may struggle to accurately separate individual effects.
+
+![](images/f831b9a6d8b02bcc2a2f60bdc675bee7013b30f1db358ff5983c5fc9c11620b7.jpg)  
+Figure 12. User-specified trimask. Casper may introduce undesired changes to dynamic background elements (e.g., wave details). To mitigate this, users may specify a coarse preservation region to merge with the trimasks. The zoomed-in boxes show precise detail preservation in the specified background area.
+
+We also observed challenging multi-object cases where, despite apparently appropriate training data, our model fails to correctly remove effects (Fig. 11b). We hypothesize the model may need to be trained with additional information (e.g., instance segmentation) to disambiguate objects and their effects when multiple, very similar objects are present.
+
+Finally, we observe some cases where Casper will associate unrelated background effects with a foreground layer, such as the waves in Fig. 12. Our system allows the user to modify the trimask to preserve background areas in simple cases (Fig. 12, mid). In future work, such lightweight user input can be used to enlarge and improve the training set.
+
+We present a new, generative approach to video layer decomposition. The current method already outperforms previous methods based on more limited priors, and will continue to improve as more ground-truth layered video data becomes available and generative video priors gain strength.
+
+Acknowledgments. We would like to thank Charles Herrmann, Daniel Geng, Junhwa Hur, Hadi Alzayer, Deqing Sun, Daniel Vlasic, Miki Rubinstein, and Bill Freeman for their insightful discussions and generous support. We sincerely appreciate Ray Li, Scott Wisdom, Andrei Kapishnikov, Matthew Grimes, AJ Maschinot, and Shu-Jung Han for their invaluable help in filming testing videos and contributing creative editing ideas.
+
+## References
+
+[1] Edward H Adelson. Layered representations for vision and video. In Proceedings IEEE Workshop on Representation of Visual Scenes (In Conjunction with ICCV'95), 1995. 3
+
+[2] Jean-Baptiste Alayrac, Joao Carreira, Relja Arandjelovic, and Andrew Zisserman. Controllable attention for structured layered video decomposition. In ICCV, 2019. 3
+
+[3] Jean-Baptiste Alayrac, Joao Carreira, and Andrew Zisserman. The visual centrifuge: Model-free layered video representations. In CVPR, 2019. 3
+
+[4] Hadi Alzayer, Zhihao Xia, Xuaner Zhang, Eli Shechtman, Jia-Bin Huang, and Michael Gharbi. Magic fixup: Streamlining photo editing by watching dynamic videos. arXiv preprint arXiv:2403.13044, 2024. 3
+
+[5] Omer Bar-Tal, Dolev Ofri-Amar, Rafail Fridman, Yoni Kasten, and Tali Dekel. Text2LIVE: Text-driven layered image and video editing. In ECCV, 2022. 3
+
+[6] Omer Bar-Tal, Lior Yariv, Yaron Lipman, and Tali Dekel. MultiDiffusion: Fusing diffusion paths for controlled image generation. In ICML, 2023. 4
+
+[7] Omer Bar-Tal, Hila Chefer, Omer Tov, Charles Herrmann, Roni Paiss, Shiran Zada, Ariel Ephrat, Junhwa Hur, Guanghui Liu, Amit Raj, et al. Lumiere: A space-time diffusion model for video generation. In SIGGRAPH Asia 2024, 2024.2, 3, 4, 5, 6, 7
+
+[8] Andreas Blattmann, Tim Dockhorn, Sumith Kulal, Daniel Mendelevitch, Maciej Kilian, Dominik Lorenz, Yam Levi, Zion English, Vikram Voleti, Adam Letts, et al. Stable video diffusion: Scaling latent video diffusion models to large datasets. arXiv preprint arXiv:2311.15127, 2023. 3
+
+[9] Gabriel J Brostow and Irfan A Essa. Motion based decompositing of video. In ICCV, 1999. 3
+
+[10] Sergi Caelles, Jordi Pont-Tuset, Federico Perazzi, Alberto Montes, Kevis-Kokitsi Maninis, and Luc Van Gool. The 2019 DAVIS Challenge on VOS: Unsupervised multi-object segmentation. arXiv:1905.00737, 2019. 5
+
+[11] Ya-Liang Chang, Zhe Yu Liu, Kuan-Ying Lee, and Winston Hsu. Free-form video inpainting with 3d gated convolution and temporal patchgan. In ICCV, 2019. 3
+
+[12] Haoxin Chen, Yong Zhang, Xiaodong Cun, Menghan Xia, Xintao Wang, Chao Weng, and Ying Shan. Videocrafter2: Overcoming data limitations for high-quality video diffusion models. In CVPR, 2024. 3
+
+[13] Zhihao Chen, Liang Wan, Yefan Xiao, Lei Zhu, and Huazhu Fu. Learning physical-spatio-temporal features for video shadow removal. IEEE Transactions on Circuits and Systems for Video Technology, 2024. 3
+
+[14] Blender Online Community. Blender - a 3D modelling and rendering package. Blender Foundation, Stichting Blender Foundation, Amsterdam, 2018. 5
+
+[15] Chen Gao, Ayush Saraf, Jia-Bin Huang, and Johannes Kopf. Flow-edge guided video completion. In ECCV, 2020. 3
+
+[16] Songwei Ge, Seungjun Nah, Guilin Liu, Tyler Poon, Andrew Tao, Bryan Catanzaro, David Jacobs, Jia-Bin Huang, Ming-Yu Liu, and Yogesh Balaji. Preserve your own correlation: A noise prior for video diffusion models. In ICCV, 2023. 3
+
+[17] Rohit Girdhar, Mannat Singh, Andrew Brown, Quentin Duval, Samaneh Azadi, Sai Saketh Rambhatla, Akbar Shah, Xi Yin, Devi Parikh, and Ishan Misra. Emu video: Factorizing text-to-video generation by explicit image conditioning. arXiv preprint arXiv:2311.10709, 2023. 3
+
+[18] Klaus Greff, Francois Belletti, Lucas Beyer, Carl Doersch, Yilun Du, Daniel Duckworth, David J Fleet, Dan Gnanapragasam, Florian Golemo, Charles Herrmann, Thomas Kipf, Abhijit Kundu, Dmitry Lagun, Issam Laradji, Hsueh-Ti (Derek) Liu, Henning Meyer, Yishu Miao, Derek Nowrouzezahrai, Cengiz Oztireli, Etienne Pot, Noha Radwan, Daniel Rebain, Sara Sabour, Mehdi S. M. Sajjadi, Matan Sela, Vincent Sitzmann, Austin Stone, Deqing Sun, Suhani Vora, Ziyu Wang, Tianhao Wu, Kwang Moo Yi, Fangcheng Zhong, and Andrea Tagliasacchi. Kubric: a scalable dataset generator. In CVPR, 2022. 5
+
+[19] Zeqi Gu, Wenqi Xian, Noah Snavely, and Abe Davis. Factormatte: Redefining video matting for re-composition tasks. ACM TOG, pages 1–14, 2023. 2, 3, 6
+
+[20] Jonathan Ho, Ajay Jain, and Pieter Abbeel. Denoising diffusion probabilistic models. In NeurIPS, 2020. 4
+
+[21] Jonathan Ho, William Chan, Chitwan Saharia, Jay Whang, Ruiqi Gao, Alexey Gritsenko, Diederik P Kingma, Ben Poole, Mohammad Norouzi, David J Fleet, et al. Imagen video: High definition video generation with diffusion models. arXiv preprint arXiv:2210.02303, 2022. 3
+
+[22] Wenbo Hu, Xiangjun Gao, Xiaoyu Li, Sijie Zhao, Xiaodong Cun, Yong Zhang, Long Quan, and Ying Shan. DepthCrafter: Generating consistent long depth sequences for open-world videos. arXiv preprint arXiv:2409.02095, 2024.2
+
+[23] Yoni Kasten, Dolev Ofri, Oliver Wang, and Tali Dekel. Layered neural atlases for consistent video editing. In SIG-GRAPH Asia, 2021. 3, 7
+
+[24] Zhanghan Ke, Jiayu Sun, Kaican Li, Qiong Yan, and Rynson WH Lau. MODNet: Real-time trimap-free portrait matting via objective decomposition. In AAAI, 2022. 2
+
+[25] Yao-Chih Lee, Ji-Ze Genevieve Jang, Yi-Ting Chen, Elizabeth Qiu, and Jia-Bin Huang. Shape-aware text-driven layered video editing. In CVPR, 2023. 3
+
+[26] Jizhizi Li, Sihan Ma, Jing Zhang, and Dacheng Tao. Privacypreserving portrait matting. In Proceedings of the 29th ACM international conference on multimedia, 2021. 2, 3
+
+[27] Junnan Li, Dongxu Li, Silvio Savarese, and Steven Hoi. Blip-2: Bootstrapping language-image pre-training with frozen image encoders and large language models. In ICML, 2023.5
+
+[28] Zhen Li, Cheng-Ze Lu, Jianhua Qin, Chun-Le Guo, and Ming-Ming Cheng. Towards an end-to-end framework for flow-guided video inpainting. In CVPR, 2022. 3
+
+[29] Geng Lin, Chen Gao, Jia-Bin Huang, Changil Kim, Yipeng Wang, Matthias Zwicker, and Ayush Saraf. OmnimatteRF: Robust omnimatte with 3d background modeling. In ICCV, 2023. 2, 3, 5, 6, 7
+
+[30] Shanchuan Lin, Andrey Ryabtsev, Soumyadip Sengupta, Brian L Curless, Steven M Seitz, and Ira Kemelmacher-Shlizerman. Real-time high-resolution background matting. In CVPR, 2021. 2, 3
+
+[31] Rui Liu, Hanming Deng, Yangyi Huang, Xiaoyu Shi, Lewei Lu, Wenxiu Sun, Xiaogang Wang, Jifeng Dai, and Hongsheng Li. FuseFormer: Fusing fine-grained information in transformers for video inpainting. In ICCV, 2021. 3
+
+[32] Yaojie Liu, Andrew Z Hou, Xinyu Huang, Liu Ren, and Xiaoming Liu. Blind removal of facial foreign shadows. In BMVC, 2022. 3
+
+[33] Yu-Lun Liu, Wei-Sheng Lai, Ming-Hsuan Yang, Yung-Yu Chuang, and Jia-Bin Huang. Learning to see through obstructions. In CVPR, 2020. 3
+
+[34] The Foundry Visionmongers Ltd. Nuke, 2024. 2
+
+[35] Erika Lu, Forrester Cole, Tali Dekel, Weidi Xie, Andrew Zisserman, David Salesin, William T Freeman, and Michael Rubinstein. Layered neural rendering for retiming people in video. In SIGGRAPH Asia, 2020. 2, 3, 6, 8
+
+[36] Erika Lu, Forrester Cole, Tali Dekel, Andrew Zisserman, William T Freeman, and Michael Rubinstein. Omnimatte: Associating objects and their effects in video. In CVPR, 2021.2, 3,5,6, 7
+
+[37] Erika Lu, Forrester Cole, Weidi Xie, Tali Dekel, Bill Freeman, Andrew Zisserman, and Michael Rubinstein. Associating objects and their effects in video through coordination games. In NeurIPS, 2022. 2, 3
+
+[38] Jingwei Ma, Erika Lu, Roni Paiss, Shiran Zada, Aleksander Holynski, Tali Dekel, Brian Curless, Michael Rubinstein, and Forrester Cole. VidPanos: Generative panoramic videos from casual panning videos. In SIGGRAPH Asia 2024, 2024. 3
+
+[39] Chenlin Meng, Yutong He, Yang Song, Jiaming Song, Jiajun Wu, Jun-Yan Zhu, and Stefano Ermon. SDEdit: Guided image synthesis and editing with stochastic differential equations. In ICLR, 2021. 4, 5
+
+[40] Thomas Porter and Tom Duff. Compositing digital images. In Proceedings of the 11th annual conference on Computer graphics and interactive techniques, 1984. 2
+
+[41] Nikhila Ravi, Valentin Gabeur, Yuan-Ting Hu, Ronghang Hu, Chaitanya Ryali, Tengyu Ma, Haitham Khedr, Roman Rädle, Chloe Rolland, Laura Gustafson, Eric Mintun, Junting Pan, Kalyan Vasudev Alwala, Nicolas Carion, Chao-Yuan Wu, Ross Girshick, Piotr Dollár, and Christoph Feichtenhofer. SAM 2: Segment anything in images and videos. arXiv preprint arXiv:2408.00714, 2024. 4, 5
+
+[42] Robin Rombach, Andreas Blattmann, Dominik Lorenz, Patrick Esser, and Björn Ommer. High-resolution image synthesis with latent diffusion models. In CVPR, 2022. 3
+
+[43] Jonathan Shade, Steven Gortler, Li-wei He, and Richard Szeliski. Layered depth images. In Proceedings of the 25th annual conference on Computer graphics and interactive techniques, 1998. 3
+
+[44] Jiahao Shao, Yuanbo Yang, Hongyu Zhou, Youmin Zhang, Yujun Shen, Matteo Poggi, and Yiyi Liao. Learning temporally consistent video depth from video diffusion priors. arXiv preprint arXiv:2406.01493, 2024. 2
+
+[45] Gaurav Shrivastava, Ser-Nam Lim, and Abhinav Shrivastava. Video decomposition prior: Editing videos layer by layer. In ICLR, 2024. 3
+
+[46] Dmitriy Smirnov, Michael Gharbi, Matthew Fisher, Vitor Guizilini, Alexei Efros, and Justin M Solomon. Marionette: Self-supervised sprite learning. In NeurIPS, 2021. 3
+
+[47] Mohammed Suhail, Erika Lu, Zhengqi Li, Noah Snavely, Leonid Sigal, and Forrester Cole. Omnimatte3D: Associating objects and their effects in unconstrained monocular video. In CVPR, 2023. 2, 3, 5, 6, 7
+
+[48] Genmo Team. Mochi 1. https ://github. com/ genmoai/models,2024.3
+
+[49] Ashish Vaswani, Noam Shazeer, Niki Parmar, Jakob Uszkoreit, Llion Jones, Aidan N Gomez, Lukasz Kaiser, and Illia Polosukhin. Attention is all you need. In NeurIPS, 2017. 5
+
+[50] Jue Wang, Michael F Cohen, et al. Image and video matting: a survey. Foundations and Trends® in Computer Graphics and Vision, pages 97–175, 2008. 2
+
+[51] John YA Wang and Edward H Adelson. Representing moving images with layers. IEEE TIP, pages 625–638, 1994. 3
+
+[52] Zhixiang Wang, Baiang Li, Jian Wang, Yu-Lun Liu, Jinwei Gu, Yung-Yu Chuang, and Shin’ichi Satoh. Matting by generation. In SIGGRAPH, 2024. 2
+
+[53] Daniel Winter, Matan Cohen, Shlomi Fruchter, Yael Pritch, Alex Rav-Acha, and Yedid Hoshen. ObjectDrop: Bootstrapping counterfactuals for photorealistic object removal and insertion. In ECCV, 2024. 3, 4, 6, 7
+
+[54] Jianzong Wu, Xiangtai Li, Chenyang Si, Shangchen Zhou, Jingkang Yang, Jiangning Zhang, Yining Li, Kai Chen, Yunhai Tong, Ziwei Liu, et al. Towards language-driven video inpainting via multimodal large language models. In CVPR, 2024.3
+
+[55] Tianhao Wu, Fangcheng Zhong, Andrea Tagliasacchi, Forrester Cole, and Cengiz Oztireli. D²NeRF: Self-supervised decoupling of dynamic and static objects from a monocular video. In NeurIPS, 2022. 7
+
+[56] Jinbo Xing, Menghan Xia, Yong Zhang, Haoxin Chen, Wangbo Yu, Hanyuan Liu, Gongye Liu, Xintao Wang, Ying Shan, and Tien-Tsin Wong. Dynamicrafter: Animating open-domain images with video diffusion priors. In ECCV. Springer, 2024. 3
+
+[57] Ning Xu, Linjie Yang, Yuchen Fan, Dingcheng Yue, Yuchen Liang, Jianchao Yang, and Thomas Huang. Youtube-vos: A large-scale video object segmentation benchmark. arXiv preprint arXiv:1809.03327, 2018. 5
+
+[58] Zhuoyi Yang, Jiayan Teng, Wendi Zheng, Ming Ding, Shiyu Huang, Jiazheng Xu, Yuanming Yang, Wenyi Hong, Xiaohan Zhang, Guanyu Feng, et al. Cogvideox: Text-to-video
+
+diffusion models with an expert transformer. arXiv preprint arXiv:2408.06072, 2024. 3
+
+[59] Vickie Ye, Zhengqi Li, Richard Tucker, Angjoo Kanazawa, and Noah Snavely. Deformable sprites for unsupervised video decomposition. In CVPR, 2022. 3
+
+[60] David Junhao Zhang, Jay Zhangjie Wu, Jia-Wei Liu, Rui Zhao, Lingmin Ran, Yuchao Gu, Difei Gao, and Mike Zheng Shou. Show-1: Marrying pixel and latent diffusion models for text-to-video generation. IJCV, pages 1–15, 2024. 3
+
+[61] Kaidong Zhang, Jingjing Fu, and Dong Liu. Flow-guided transformer for video inpainting. In ECCV, 2022. 3
+
+[62] Lvmin Zhang and Maneesh Agrawala. Transparent image layer diffusion using latent transparency. In SIGGRAPH, 2024.3
+
+[63] Richard Zhang, Phillip Isola, Alexei A Efros, Eli Shechtman, and Oliver Wang. The unreasonable effectiveness of deep features as a perceptual metric. In CVPR, 2018. 7
+
+[64] Zhixing Zhang, Bichen Wu, Xiaoyan Wang, Yaqiao Luo, Luxin Zhang, Yinan Zhao, Peter Vajda, Dimitris Metaxas, and Licheng Yu. AVID: Any-length video inpainting with diffusion model. In CVPR, 2024. 3
+
+[65] Zangwei Zheng, Xiangyu Peng, Tianji Yang, Chenhui Shen, Shenggui Li, Hongxin Liu, Yukun Zhou, Tianyi Li, and Yang You. Open-sora: Democratizing efficient video production for all, 2024. 3
+
+[66] Shangchen Zhou, Chongyi Li, Kelvin C.K Chan, and Chen Change Loy. ProPainter: Improving propagation and transformer for video inpainting. In ICCV, 2023. 2, 6, 7
+
+[67] Tinghui Zhou, Richard Tucker, John Flynn, Graham Fyffe, and Noah Snavely. Stereo magnification: learning view synthesis using multiplane images. In SIGGRAPH, 2018. 3
+
+[68] Bojia Zi, Shihao Zhao, Xianbiao Qi, Jianan Wang, Yukai Shi, Qianyu Chen, Bin Liang, Kam-Fai Wong, and Lei Zhang. Cococo: Improving text-guided video inpainting for better consistency, controllability and compatibility. arXiv preprint arXiv:2403.12035, 2024. 3

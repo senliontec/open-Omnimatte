@@ -1,0 +1,3978 @@
+[
+    [
+        {
+            "type": "title",
+            "content": {
+                "title_content": [
+                    {
+                        "type": "text",
+                        "content": "Lumiere: A Space-Time Diffusion Model for Video Generation"
+                    }
+                ],
+                "level": 1
+            },
+            "bbox": [
+                80,
+                95,
+                797,
+                118
+            ]
+        },
+        {
+            "type": "paragraph",
+            "content": {
+                "paragraph_content": [
+                    {
+                        "type": "text",
+                        "content": "OMER BAR-TAL*, Google Research, Israel and Weizmann Institute of Science, Israel"
+                    }
+                ]
+            },
+            "bbox": [
+                78,
+                131,
+                671,
+                146
+            ]
+        },
+        {
+            "type": "paragraph",
+            "content": {
+                "paragraph_content": [
+                    {
+                        "type": "text",
+                        "content": "HILA CHEFER*, Google Research, Israel and Tel Aviv University, Israel"
+                    }
+                ]
+            },
+            "bbox": [
+                80,
+                148,
+                578,
+                165
+            ]
+        },
+        {
+            "type": "paragraph",
+            "content": {
+                "paragraph_content": [
+                    {
+                        "type": "text",
+                        "content": "OMER TOV*, Google Research, Israel"
+                    }
+                ]
+            },
+            "bbox": [
+                80,
+                166,
+                356,
+                181
+            ]
+        },
+        {
+            "type": "paragraph",
+            "content": {
+                "paragraph_content": [
+                    {
+                        "type": "text",
+                        "content": "CHARLES HERRMANN†, Google Research, United States of America"
+                    }
+                ]
+            },
+            "bbox": [
+                80,
+                184,
+                584,
+                200
+            ]
+        },
+        {
+            "type": "paragraph",
+            "content": {
+                "paragraph_content": [
+                    {
+                        "type": "text",
+                        "content": "RONI PAISS†, Google Research, Israel"
+                    }
+                ]
+            },
+            "bbox": [
+                80,
+                200,
+                361,
+                217
+            ]
+        },
+        {
+            "type": "paragraph",
+            "content": {
+                "paragraph_content": [
+                    {
+                        "type": "text",
+                        "content": "SHIRAN ZADA†, Google Research, Israel"
+                    }
+                ]
+            },
+            "bbox": [
+                80,
+                218,
+                385,
+                234
+            ]
+        },
+        {
+            "type": "paragraph",
+            "content": {
+                "paragraph_content": [
+                    {
+                        "type": "text",
+                        "content": "ARIEL EPHRAT†, Google Research, Israel"
+                    }
+                ]
+            },
+            "bbox": [
+                78,
+                236,
+                385,
+                252
+            ]
+        },
+        {
+            "type": "paragraph",
+            "content": {
+                "paragraph_content": [
+                    {
+                        "type": "text",
+                        "content": "JUNHWA HUR†, Google Research, United States of America"
+                    }
+                ]
+            },
+            "bbox": [
+                78,
+                253,
+                514,
+                270
+            ]
+        },
+        {
+            "type": "paragraph",
+            "content": {
+                "paragraph_content": [
+                    {
+                        "type": "text",
+                        "content": "GUANGHUI LIU, Google Research, United States of America"
+                    }
+                ]
+            },
+            "bbox": [
+                78,
+                271,
+                517,
+                287
+            ]
+        },
+        {
+            "type": "paragraph",
+            "content": {
+                "paragraph_content": [
+                    {
+                        "type": "text",
+                        "content": "AMIT RAJ, Google Research, United States of America"
+                    }
+                ]
+            },
+            "bbox": [
+                80,
+                289,
+                465,
+                305
+            ]
+        },
+        {
+            "type": "paragraph",
+            "content": {
+                "paragraph_content": [
+                    {
+                        "type": "text",
+                        "content": "YUANZHEN LI, Google Research, United States of America"
+                    }
+                ]
+            },
+            "bbox": [
+                78,
+                306,
+                504,
+                323
+            ]
+        },
+        {
+            "type": "paragraph",
+            "content": {
+                "paragraph_content": [
+                    {
+                        "type": "text",
+                        "content": "MICHAEL RUBINSTEIN, Google Research, United States of America"
+                    }
+                ]
+            },
+            "bbox": [
+                80,
+                324,
+                580,
+                340
+            ]
+        },
+        {
+            "type": "paragraph",
+            "content": {
+                "paragraph_content": [
+                    {
+                        "type": "text",
+                        "content": "TOMER MICHAELI, Google Research, Israel and Technion - Israel Institute of Technology, Israel"
+                    }
+                ]
+            },
+            "bbox": [
+                78,
+                342,
+                756,
+                358
+            ]
+        },
+        {
+            "type": "paragraph",
+            "content": {
+                "paragraph_content": [
+                    {
+                        "type": "text",
+                        "content": "OLIVER WANG, Google Research, United States of America"
+                    }
+                ]
+            },
+            "bbox": [
+                80,
+                359,
+                511,
+                376
+            ]
+        },
+        {
+            "type": "paragraph",
+            "content": {
+                "paragraph_content": [
+                    {
+                        "type": "text",
+                        "content": "DEQING SUN, Google Research, United States of America"
+                    }
+                ]
+            },
+            "bbox": [
+                78,
+                377,
+                500,
+                393
+            ]
+        },
+        {
+            "type": "paragraph",
+            "content": {
+                "paragraph_content": [
+                    {
+                        "type": "text",
+                        "content": "TALI DEKEL, Google Research, Israel and Weizmann Institute of Science, Israel"
+                    }
+                ]
+            },
+            "bbox": [
+                78,
+                395,
+                632,
+                411
+            ]
+        },
+        {
+            "type": "paragraph",
+            "content": {
+                "paragraph_content": [
+                    {
+                        "type": "text",
+                        "content": "INBAR MOSSERI†, Google Research, Israel"
+                    }
+                ]
+            },
+            "bbox": [
+                80,
+                412,
+                401,
+                429
+            ]
+        },
+        {
+            "type": "image",
+            "content": {
+                "image_source": {
+                    "path": "images/ada2596053eddb6361102613cfc9f355972e1d40a7856fc4218c68cd5d77126b.jpg"
+                },
+                "image_caption": [],
+                "image_footnote": [
+                    {
+                        "type": "text",
+                        "content": "Red sports car coming around a bend in a mountain road"
+                    }
+                ]
+            },
+            "bbox": [
+                173,
+                449,
+                493,
+                531
+            ]
+        },
+        {
+            "type": "image",
+            "content": {
+                "image_source": {
+                    "path": "images/3af40add6eca694b93472338f529016a2891198366addcbfca63589e2c9857af.jpg"
+                },
+                "image_caption": [
+                    {
+                        "type": "text",
+                        "content": "Text-to-Video"
+                    },
+                    {
+                        "type": "text",
+                        "content": "Image-to-Video"
+                    }
+                ],
+                "image_footnote": [
+                    {
+                        "type": "text",
+                        "content": "Teddy bear surfer rides the wave in the tropics"
+                    }
+                ]
+            },
+            "bbox": [
+                504,
+                449,
+                823,
+                531
+            ]
+        },
+        {
+            "type": "image",
+            "content": {
+                "image_source": {
+                    "path": "images/a7c8e239651a0100bee97ad8bdaef19372b2427231422732c2a7c38b03ffaf16.jpg"
+                },
+                "image_caption": [],
+                "image_footnote": [
+                    {
+                        "type": "text",
+                        "content": "An elephant walking in a forest"
+                    }
+                ]
+            },
+            "bbox": [
+                173,
+                547,
+                493,
+                631
+            ]
+        },
+        {
+            "type": "image",
+            "content": {
+                "image_source": {
+                    "path": "images/68437fa3b775b30fb9e136eb99e00ca3e59987fead2d9b1740851ab20226a4cd.jpg"
+                },
+                "image_caption": [],
+                "image_footnote": [
+                    {
+                        "type": "text",
+                        "content": "A rabbit looking around"
+                    }
+                ]
+            },
+            "bbox": [
+                506,
+                547,
+                823,
+                631
+            ]
+        },
+        {
+            "type": "image",
+            "content": {
+                "image_source": {
+                    "path": "images/15bb499386c75572db6d0bd7f6ed2c844803db655c6c910fe440f0f9d4fd5b7e.jpg"
+                },
+                "image_caption": [],
+                "image_footnote": [
+                    {
+                        "type": "text",
+                        "content": "A butterfly fluttering from flower to flower in style [V]"
+                    }
+                ]
+            },
+            "bbox": [
+                174,
+                633,
+                490,
+                736
+            ]
+        },
+        {
+            "type": "image",
+            "content": {
+                "image_source": {
+                    "path": "images/eca50035d0d377d859eba32459c2a940732a4564db57b44e02148eb7293bbf77.jpg"
+                },
+                "image_caption": [],
+                "image_footnote": [
+                    {
+                        "type": "text",
+                        "content": "Chocolate syrup pouring on pancakes"
+                    }
+                ]
+            },
+            "bbox": [
+                495,
+                643,
+                825,
+                736
+            ]
+        },
+        {
+            "type": "paragraph",
+            "content": {
+                "paragraph_content": [
+                    {
+                        "type": "text",
+                        "content": "Fig. 1. Sample results generated by Lumiere, including text-to-video generation (first row), image-to-video (second row), style-referenced generation, and video inpainting (third row; the bounding box indicates the inpainting mask region). Style image by freepik/brgfx, inpainting by Pexels/Monstera Production"
+                    }
+                ]
+            },
+            "bbox": [
+                78,
+                747,
+                916,
+                773
+            ]
+        },
+        {
+            "type": "paragraph",
+            "content": {
+                "paragraph_content": [
+                    {
+                        "type": "text",
+                        "content": "†Core technical contribution."
+                    }
+                ]
+            },
+            "bbox": [
+                81,
+                796,
+                222,
+                808
+            ]
+        },
+        {
+            "type": "paragraph",
+            "content": {
+                "paragraph_content": [
+                    {
+                        "type": "text",
+                        "content": "Authors' Contact Information: Omer Bar-Tal, Google Research, Israel and Weizmann Institute of Science, Israel, omer234@gmail.com; Hila Chefer, Google Research, Israel and Tel Aviv University, Israel, hilach70@gmail.com; Omer Tov, Google Research, Israel, omertov@google.com; Charles Herrmann, Google Research, United States of America, irwinherrmann@google.com; Roni Paiss, Google Research, Israel, ronipaiss@google."
+                    }
+                ]
+            },
+            "bbox": [
+                78,
+                815,
+                482,
+                868
+            ]
+        },
+        {
+            "type": "paragraph",
+            "content": {
+                "paragraph_content": [
+                    {
+                        "type": "text",
+                        "content": "com; Shiran Zada, Google Research, Israel, shiranz@google.com; Ariel Ephrat, Google Research, Israel, arielephrat@google.com; Junhwa Hur, Google Research, United States of America, junhwa.hur@gmail.com; Guanghui Liu, Google Research, United States of America, gl676c@gmail.com; Amit Raj, Google Research, United States of America, amitrajs@google.com; Yuanzhen Li, Google Research, United States of America, yzli@ google.com; Michael Rubinstein, Google Research, United States of America, mrub@ google.com; Tomer Michaeli, Google Research, Israel and Technion - Israel Institute of Technology, Israel, tomer.m@ee.technion.ac.il; Oliver Wang, Google Research, United"
+                    }
+                ]
+            },
+            "bbox": [
+                513,
+                785,
+                918,
+                868
+            ]
+        },
+        {
+            "type": "paragraph",
+            "content": {
+                "paragraph_content": [
+                    {
+                        "type": "text",
+                        "content": "for profit or commercial advantage and that copies bear this notice and the full citation"
+                    }
+                ]
+            },
+            "bbox": [
+                514,
+                875,
+                916,
+                886
+            ]
+        },
+        {
+            "type": "page_footnote",
+            "content": {
+                "page_footnote_content": [
+                    {
+                        "type": "text",
+                        "content": "*Equal first author."
+                    }
+                ]
+            },
+            "bbox": [
+                81,
+                785,
+                173,
+                796
+            ]
+        },
+        {
+            "type": "page_footer",
+            "content": {
+                "page_footer_content": [
+                    {
+                        "type": "text",
+                        "content": "SA Conference Papers '24, December 03–06, 2024, Tokyo, Japan"
+                    }
+                ]
+            },
+            "bbox": [
+                612,
+                893,
+                916,
+                905
+            ]
+        },
+        {
+            "type": "page_footer",
+            "content": {
+                "page_footer_content": [
+                    {
+                        "type": "text",
+                        "content": "Permission to make digital or hard copies of all or part of this work for personal or classroom use is granted without fee provided that copies are not made or distributed"
+                    }
+                ]
+            },
+            "bbox": [
+                78,
+                876,
+                482,
+                897
+            ]
+        }
+    ],
+    [
+        {
+            "type": "paragraph",
+            "content": {
+                "paragraph_content": [
+                    {
+                        "type": "text",
+                        "content": "We introduce Lumiere – a text-to-video diffusion model designed for synthesizing videos that portray realistic, diverse and coherent motion – a pivotal challenge in video synthesis. To this end, we introduce a Space-Time U-Net architecture that generates the entire temporal duration of the video at once, through a single pass in the model. This is in contrast to existing video models which synthesize distant keyframes followed by temporal super-resolution – an approach that inherently makes global temporal consistency difficult to achieve. By deploying both spatial and (importantly) temporal down- and up-sampling and leveraging a pre-trained text-to-image diffusion model, our model learns to directly generate a full-frame-rate, low-resolution video by processing it in multiple space-time scales. We demonstrate state-of-the-art text-to-video generation results , and show that our design easily facilitates a wide range of content creation tasks and video editing applications, including image-to-video, video inpainting, and stylized generation."
+                    }
+                ]
+            },
+            "bbox": [
+                78,
+                101,
+                485,
+                279
+            ]
+        },
+        {
+            "type": "paragraph",
+            "content": {
+                "paragraph_content": [
+                    {
+                        "type": "text",
+                        "content": "CCS Concepts: • Computing methodologies → Computer vision."
+                    }
+                ]
+            },
+            "bbox": [
+                78,
+                284,
+                455,
+                297
+            ]
+        },
+        {
+            "type": "paragraph",
+            "content": {
+                "paragraph_content": [
+                    {
+                        "type": "text",
+                        "content": "Additional Key Words and Phrases: Text-to-video generation, diffusion mod-els"
+                    }
+                ]
+            },
+            "bbox": [
+                78,
+                303,
+                483,
+                329
+            ]
+        },
+        {
+            "type": "title",
+            "content": {
+                "title_content": [
+                    {
+                        "type": "text",
+                        "content": "ACM Reference Format:"
+                    }
+                ],
+                "level": 2
+            },
+            "bbox": [
+                80,
+                335,
+                228,
+                347
+            ]
+        },
+        {
+            "type": "paragraph",
+            "content": {
+                "paragraph_content": [
+                    {
+                        "type": "text",
+                        "content": "Omer Bar-Tal, Hila Chefer, Omer Tov, Charles Herrmann, Roni Paiss, Shiran Zada, Ariel Ephrat, Junhwa Hur, Guanghui Liu, Amit Raj, Yuanzhen Li, Michael Rubinstein, Tomer Michaeli, Oliver Wang, Deqing Sun, Tali Dekel, and Inbar Mosseri. 2024. Lumiere: A Space-Time Diffusion Model for Video Generation. In SIGGRAPH Asia 2024 Conference Papers (SA Conference Papers '24), December 03–06, 2024, Tokyo, Japan. ACM, New York, NY, USA, 11 pages. https://doi.org/10.1145/3680528.3687614"
+                    }
+                ]
+            },
+            "bbox": [
+                78,
+                347,
+                483,
+                438
+            ]
+        },
+        {
+            "type": "title",
+            "content": {
+                "title_content": [
+                    {
+                        "type": "text",
+                        "content": "1 Introduction"
+                    }
+                ],
+                "level": 2
+            },
+            "bbox": [
+                81,
+                450,
+                194,
+                464
+            ]
+        },
+        {
+            "type": "paragraph",
+            "content": {
+                "paragraph_content": [
+                    {
+                        "type": "text",
+                        "content": "Generative models for images have seen tremendous progress in recent years. State-of-the-art text-to-image (T2I) diffusion models are now capable of synthesizing high-resolution photo-realistic images that adhere to complex text prompts [Ramesh et al. 2022; Rombach et al. 2022; Saharia et al. 2022b], and allow a wide range of image editing capabilities [Po et al. 2023] and other downstream uses. However, training large-scale text-to-video (T2V) foundation models remains an open challenge due to the added complexities that motion introduces. Not only are we sensitive to errors in modeling natural motion, but the added temporal data dimension introduces significant challenges in terms of memory and compute requirements, as well as the scale of the required training data to learn this more complex distribution. As a result, while T2V models are rapidly improving, existing models are still restricted in terms of video duration, overall visual quality, and the degree of realistic motion that they can generate. A prevalent approach among existing T2V models is to adopt a cascaded design in which a base model generates distant keyframes, and subsequent temporal superresolution (TSR) models generate the missing data between the keyframes in non-overlapping segments. While memory efficient, the ability to generate globally coherent motion using temporal cascades is inherently restricted for the following reasons: (i) The base model generates an aggressively sub-sampled set of keyframes, in which fast motion becomes temporally aliased and thus ambiguous (ii) TSR modules are constrained to fixed, small temporal context windows, and thus cannot consistently resolve aliasing ambiguities across the full duration of the video (illustrated in Fig. 2 in the case of synthesizing periodic motion, e.g., walking). (iii) Cascaded training regimens in general suffer from a domain gap, where the TSR model is trained on real downsampled video frames, but at inference time is used to interpolate generated frames, which accumulates errors. Here, we take a different approach by introducing a new T2V diffusion framework that generates the full temporal duration of the video at once. We achieve this by using a Space-Time U-Net (STUNet) architecture that learns to downsample the signal in both space and time, and performs the majority of its computation in a compact space-time representation. This approach allows us to generate 80 frames at 16fps (or 5 seconds, which is longer than the average shot duration in most media [Cutting and Candan 2015]) with a single base model, leading to more globally coherent motion compared to prior work. Surprisingly, this design choice has been overlooked by previous T2V models, which follow the convention to include only spatial down- and up-sampling operations in the architecture, and maintain a fixed temporal resolution across the network [Blattmann et al. 2023b; Ge et al. 2023; Girdhar et al. 2023; Guo et al. 2023; Ho et al. 2022a,b; Po et al. 2023; Singer et al. 2022; Wang et al. 2023a; Zhang et al. 2023b]. To benefit from the powerful generative prior of T2I models, we follow the trend of building Lumiere on top of a pretrained (and fixed) T2I model [Hong et al 2022; Saharia et al. 2022b; Singer et al. 2022]. In our case, the T2I model works in pixel space and consists of a base model followed by a spatial super-resolution (SSR) cascade. Since the SSR network operates at high spatial resolution, applying it on the entire video duration is infeasible in terms of memory requirements. Common SSR solutions use a temporal windowing approach, which splits the video into non-overlapping segments and stitches together the results. However, this can lead to inconsistencies in appearance at the boundaries between windows [Girdhar et al. 2023]. We propose to extend Multidiffusion [Bar-Tal et al. 2023], an approach proposed for achieving global continuity in panoramic image generation, to the temporal domain, where we compute spatial super-resolution on temporal windows, and aggregate results into a globally coherent solution over the whole video clip. We demonstrate state-of-the-art video generation results and show how to easily adapt Luimere to a plethora of video content creation tasks, including video inpainting (Fig. 6), image-to-video generation (Fig. 9), or generating stylized videos that comply with a given style image (Fig. 8). Finally, we demonstrate that generating the full video at once allows us to easily invoke off-the-shelf editing methods to perform consistent editing (Fig. 10)."
+                    }
+                ]
+            },
+            "bbox": [
+                78,
+                467,
+                485,
+                747
+            ]
+        },
+        {
+            "type": "paragraph",
+            "content": {
+                "paragraph_content": []
+            },
+            "bbox": [
+                511,
+                102,
+                919,
+                794
+            ]
+        },
+        {
+            "type": "title",
+            "content": {
+                "title_content": [
+                    {
+                        "type": "text",
+                        "content": "2 Related Work"
+                    }
+                ],
+                "level": 2
+            },
+            "bbox": [
+                514,
+                815,
+                637,
+                830
+            ]
+        },
+        {
+            "type": "paragraph",
+            "content": {
+                "paragraph_content": [
+                    {
+                        "type": "text",
+                        "content": "Text-to-Image Generation. Most of the common approaches for text-to-image (T2I) generation are based on diffusion models [Ho et al. 2020; Sohl-Dickstein et al. 2015; Song et al. 2020]. Of these,"
+                    }
+                ]
+            },
+            "bbox": [
+                513,
+                833,
+                919,
+                877
+            ]
+        },
+        {
+            "type": "page_number",
+            "content": {
+                "page_number_content": [
+                    {
+                        "type": "text",
+                        "content": "2"
+                    }
+                ]
+            },
+            "bbox": [
+                81,
+                69,
+                91,
+                78
+            ]
+        },
+        {
+            "type": "page_header",
+            "content": {
+                "page_header_content": [
+                    {
+                        "type": "text",
+                        "content": "Bar-Tal, Chefer, Tov, Herrmann, Paiss, Zada, Ephrat, Hur, Liu, Raj, Li, Rubinstein, Michaeli, Wang, Sun, Dekel and Mosseri"
+                    }
+                ]
+            },
+            "bbox": [
+                111,
+                68,
+                689,
+                80
+            ]
+        },
+        {
+            "type": "page_footnote",
+            "content": {
+                "page_footnote_content": [
+                    {
+                        "type": "text",
+                        "content": "States of America, olwang@google.com; Deqing Sun, Google Research, United States of America, deqingsun@google.com; Tali Dekel, Google Research, Israel and Weizmann Institute of Science, Israel, tali.dekel@weizmann.ac.il; Inbar Mosseri, Google Research Israel, inbarm@google.com."
+                    }
+                ]
+            },
+            "bbox": [
+                78,
+                756,
+                483,
+                799
+            ]
+        },
+        {
+            "type": "page_footnote",
+            "content": {
+                "page_footnote_content": [
+                    {
+                        "type": "text",
+                        "content": "on the first page. Copyrights for third-party components of this work must be honored. For all other uses, contact the owner/author(s). SA Conference Papers '24, December 03–06, 2024, Tokyo, Japan © 2024 Copyright held by the owner/author(s). ACM ISBN 979-8-4007-1131-2/24/12 https://doi.org/10.1145/3680528.3687614"
+                    }
+                ]
+            },
+            "bbox": [
+                78,
+                809,
+                482,
+                877
+            ]
+        },
+        {
+            "type": "page_footer",
+            "content": {
+                "page_footer_content": [
+                    {
+                        "type": "text",
+                        "content": "SA Conference Papers '24, December 03–06, 2024, Tokyo, Japan"
+                    }
+                ]
+            },
+            "bbox": [
+                80,
+                893,
+                383,
+                906
+            ]
+        }
+    ],
+    [
+        {
+            "type": "image",
+            "content": {
+                "image_source": {
+                    "path": "images/00ac809546be816295c1277689747a8930e3d959e1164a77d4817af121c87d04.jpg"
+                },
+                "image_caption": [
+                    {
+                        "type": "text",
+                        "content": "Fig. 2. Temporal consistency in generated videos. Representative examples of generated videos using our model and ImagenVideo [Ho et al. 2022a] for periodic motion. We apply Lumiere image-to-video generation, conditioned on the first frame of a video generated by ImagenVideo, and visualize corresponding X-T slices. ImagenVideo struggles to generate globally coherent repetitive motion due to its cascaded design and temporal super resolution modules, which fail to resolve aliasing ambiguities consistently across temporal windows."
+                    }
+                ],
+                "image_footnote": []
+            },
+            "bbox": [
+                106,
+                101,
+                890,
+                429
+            ]
+        },
+        {
+            "type": "paragraph",
+            "content": {
+                "paragraph_content": [
+                    {
+                        "type": "text",
+                        "content": "DALL-E2 [Ramesh et al. 2022] and Imagen [Saharia et al. 2022b] achieve photorealistic text-to-image generation using cascaded diffusion models, whereas Stable Diffusion [Rombach et al. 2022] performs generation in a compressed low-dimensional latent space. A promising line of works design T2I diffusion models that generate high-resolution images end-to-end, without a spatial superresolution cascaded system or fixed pre-trained latent space [Chen 2023; Gu et al. 2023; Hoogeboom et al. 2023]. Here, we design a T2V model that generates the full frame duration at once, avoiding the temporal cascade commonly involved in T2V models."
+                    }
+                ]
+            },
+            "bbox": [
+                78,
+                520,
+                485,
+                660
+            ]
+        },
+        {
+            "type": "paragraph",
+            "content": {
+                "paragraph_content": [
+                    {
+                        "type": "text",
+                        "content": "Text-to-Video Generation. Recently, there have been substantial efforts in training large-scale T2V models on large scale datasets with autoregressive Transformers (e.g., [Hong et al. 2022; Kondratyuk et al. 2023; Villegas et al. 2023; Wu et al. 2022]) or Diffusion Models (e.g., [Gupta et al. 2023; Ho et al. 2022a,b]). A prominent approach for T2V and Image-to-Video generation is to “inflate” a pre-trained T2I model by inserting temporal layers to its architecture, and finetuning only those, or optionally the whole model, on video data [Blattmann et al. 2023b; Ge et al. 2023; Girdhar et al. 2023; Pika labs 2023; RunwayML 2023; Singer et al. 2022; Yuan et al. 2024]. PYoCo [Ge et al. 2023] carefully design video noise prior and obtain better performance for fine-tuning a T2I model for video generation. VideoLDM [Blattmann et al. 2023b] and AnimateDiff [Guo et al. 2023] inflate StableDiffusion [Rombach et al. 2022] and train only the newly-added temporal layers, showing they can be combined with the weights of personalized T2I models. Concurrent to our work, Diffusion Transformers [Peebles and Xie 2023] have gained prominence in video generation following the release of Sora [Brooks et al. 2024], enabling high-quality multi-resolution and multi-duration generation."
+                    }
+                ]
+            },
+            "bbox": [
+                76,
+                681,
+                485,
+                877
+            ]
+        },
+        {
+            "type": "paragraph",
+            "content": {
+                "paragraph_content": []
+            },
+            "bbox": [
+                513,
+                520,
+                919,
+                603
+            ]
+        },
+        {
+            "type": "paragraph",
+            "content": {
+                "paragraph_content": [
+                    {
+                        "type": "text",
+                        "content": "Interestingly, the ubiquitous convention of existing video generation schemes is to maintain a fxed temporal resolution across the network, which limits their ability to process full-length clips. In this work, we design a new inflation scheme which includes learning to downsample the video in both space and time, and performing the majority of computation in the compressed space-time feature space of the network. We extend an Imagen T2I model [Saharia et al. 2022b], however our architectural contributions could be used for latent diffusion as well, and are orthogonal to possible improvements to the diffusion noise scheduler [Ge et al. 2023], architecture design [Brooks et al. 2024; Peebles and Xie 2023], or to the video data curation [Blattmann et al. 2023a]."
+                    }
+                ]
+            },
+            "bbox": [
+                511,
+                603,
+                919,
+                771
+            ]
+        },
+        {
+            "type": "title",
+            "content": {
+                "title_content": [
+                    {
+                        "type": "text",
+                        "content": "3 Lumiere"
+                    }
+                ],
+                "level": 2
+            },
+            "bbox": [
+                514,
+                789,
+                601,
+                803
+            ]
+        },
+        {
+            "type": "paragraph",
+            "content": {
+                "paragraph_content": [
+                    {
+                        "type": "text",
+                        "content": "We utilize Diffusion Probabilistic Models as our generative approach [Croitoru et al. 2022; Dhariwal and Nichol 2021; Ho et al. 2020; Nichol and Dhariwal 2021; Sohl-Dickstein et al. 2015]. These models are trained to approximate a data distribution (in our case, a distribution over videos) through a series of denoising steps. Starting from a"
+                    }
+                ]
+            },
+            "bbox": [
+                511,
+                806,
+                918,
+                877
+            ]
+        },
+        {
+            "type": "page_header",
+            "content": {
+                "page_header_content": [
+                    {
+                        "type": "text",
+                        "content": "Lumiere: A Space-Time Diffusion Model for Video Generation"
+                    }
+                ]
+            },
+            "bbox": [
+                589,
+                68,
+                883,
+                79
+            ]
+        },
+        {
+            "type": "page_number",
+            "content": {
+                "page_number_content": [
+                    {
+                        "type": "text",
+                        "content": "3"
+                    }
+                ]
+            },
+            "bbox": [
+                905,
+                69,
+                916,
+                78
+            ]
+        },
+        {
+            "type": "page_footer",
+            "content": {
+                "page_footer_content": [
+                    {
+                        "type": "text",
+                        "content": "SA Conference Papers '24, December 03–06, 2024, Tokyo, Japan"
+                    }
+                ]
+            },
+            "bbox": [
+                612,
+                893,
+                916,
+                905
+            ]
+        }
+    ],
+    [
+        {
+            "type": "image",
+            "content": {
+                "image_source": {
+                    "path": "images/05123ed198b8c8f76ee3ad4027d89942f370054d4042801b1413a87926838ef0.jpg"
+                },
+                "image_caption": [
+                    {
+                        "type": "text",
+                        "content": "Fig. 3. Lumiere pipeline. We illustrate our pipeline and the main difference from most common approach taken by previous works. (a) The common approach consists of a base model that generates distant keyframes, and a cascade of temporal super-resolution (TSR) models which subsequently fill in frames. A spatial super-resolution (SSR) model is applied in non-overlapping windows to obtain the high-resolution result. (b) In contrast, the base model in our framework process all frames at once, without a cascade of TSR models, allowing us to learn globally coherent motion. To obtain the high-resolution video, we apply a SSR model on overlapping windows and utilize MultiDiffusion [Bar-Tal et al. 2023] to combine the predictions into a coherent result. See Sec.3 for details."
+                    }
+                ],
+                "image_footnote": []
+            },
+            "bbox": [
+                83,
+                97,
+                910,
+                398
+            ]
+        },
+        {
+            "type": "paragraph",
+            "content": {
+                "paragraph_content": [
+                    {
+                        "type": "text",
+                        "content": "Gaussian i.i.d. noise sample, the diffusion model gradually denoises it until reaching a clean sample drawn from the approximated target distribution. Diffusion models can learn a conditional distribution by incorporating additional guiding signals, such as text embedding, or spatial conditioning (e.g., depth map) [Croitoru et al. 2023; Dhariwal and Nichol 2021; Saharia et al. 2022a; Zhang et al. 2023a]."
+                    }
+                ]
+            },
+            "bbox": [
+                78,
+                494,
+                483,
+                578
+            ]
+        },
+        {
+            "type": "paragraph",
+            "content": {
+                "paragraph_content": [
+                    {
+                        "type": "text",
+                        "content": "Our framework consists of a base model and a spatial superresolution (SSR) model. As illustrated in Fig. 3b, our base model generates full clips at a coarse spatial resolution. The output of our base model is spatially upsampled using a temporally-aware SSR model, resulting with a high-resolution video. We next describe the key design choices in our architecture, and demonstrate the applicability of our framework for a variety of downstream applications."
+                    }
+                ]
+            },
+            "bbox": [
+                78,
+                578,
+                485,
+                676
+            ]
+        },
+        {
+            "type": "title",
+            "content": {
+                "title_content": [
+                    {
+                        "type": "text",
+                        "content": "3.1 Space-Time U-Net (STUnet)"
+                    }
+                ],
+                "level": 2
+            },
+            "bbox": [
+                78,
+                705,
+                308,
+                719
+            ]
+        },
+        {
+            "type": "paragraph",
+            "content": {
+                "paragraph_content": [
+                    {
+                        "type": "text",
+                        "content": "To make our problem computationally tractable, we propose to use a space-time U-Net which downsamples the input signal both spatially and temporally, and performs the majority of its computation on this compact space-time representation. We draw inspiration from Çiçek et al. [2016], who generalize the U-Net architecture [Ronneberger et al. 2015] to include 3D pooling operations for efficient processing of volumetric biomedical data. Our architecture is illustrated in Fig. 4. We interleave temporal blocks in the T2I architecture, and insert temporal down- and up-sampling modules following each pre-trained spatial resizing module (Fig. 4a). The temporal blocks include temporal convolutions (Fig. 4b) and temporal attention (Fig. 4c). Specifically, in all levels except for the coarsest, we insert factorized space-time convolutions (Fig. 4b) which allow increasing the non-linearities in the network compared to full-3D convolutions while reducing the computational costs, and increasing the expressiveness compared to 1D convolutions [Tran et al. 2018]. As the computational requirements of temporal attention scale quadratically with the number of frames, we incorporate temporal attention only at the coarsest resolution, which contains a space-time compressed representation of the video. Operating on the low dimensional feature map allows us to stack several temporal attention blocks with limited computational overhead. Similarly to [Blattmann et al. 2023b; Guo et al. 2023], we train the newly added parameters, and keep the weights of the pre-trained T2I fixed. Notably, the common inflation approach ensures that at initialization, the T2V model is equivalent to the pre-trained T2I model, i.e., generates videos as a collection of independent image samples. However, in our case, it is impossible to satisfy this property due to the temporal down- and up-sampling modules. We empirically found that initializing these modules to perform nearest-neighbor down- and up- sampling operations results with a good starting point (see SM)"
+                    }
+                ]
+            },
+            "bbox": [
+                78,
+                723,
+                485,
+                877
+            ]
+        },
+        {
+            "type": "paragraph",
+            "content": {
+                "paragraph_content": []
+            },
+            "bbox": [
+                511,
+                494,
+                919,
+                773
+            ]
+        },
+        {
+            "type": "title",
+            "content": {
+                "title_content": [
+                    {
+                        "type": "text",
+                        "content": "3.2 Multidiffusion for Spatial-Super Resolution"
+                    }
+                ],
+                "level": 2
+            },
+            "bbox": [
+                514,
+                787,
+                846,
+                803
+            ]
+        },
+        {
+            "type": "paragraph",
+            "content": {
+                "paragraph_content": [
+                    {
+                        "type": "text",
+                        "content": "Due to memory constraints, the inflated SSR network can operate only on short video segments of the video. To avoid temporal boundary artifacts, we achieve smooth transitions between the temporal segments by employing Multidiffusion [Bar-Tal et al. 2023] along the temporal axis. At each generation step, we split the noisy input video"
+                    }
+                ]
+            },
+            "bbox": [
+                513,
+                806,
+                919,
+                877
+            ]
+        },
+        {
+            "type": "page_number",
+            "content": {
+                "page_number_content": [
+                    {
+                        "type": "text",
+                        "content": "4"
+                    }
+                ]
+            },
+            "bbox": [
+                81,
+                69,
+                93,
+                79
+            ]
+        },
+        {
+            "type": "page_header",
+            "content": {
+                "page_header_content": [
+                    {
+                        "type": "text",
+                        "content": "• Bar-Tal, Chefer, Tov, Herrmann, Paiss, Zada, Ephrat, Hur, Liu, Raj, Li, Rubinstein, Michaeli, Wang, Sun, Dekel and Mosseri"
+                    }
+                ]
+            },
+            "bbox": [
+                96,
+                68,
+                689,
+                80
+            ]
+        },
+        {
+            "type": "page_footer",
+            "content": {
+                "page_footer_content": [
+                    {
+                        "type": "text",
+                        "content": "SA Conference Papers '24, December 03–06, 2024, Tokyo, Japan"
+                    }
+                ]
+            },
+            "bbox": [
+                78,
+                893,
+                383,
+                906
+            ]
+        }
+    ],
+    [
+        {
+            "type": "image",
+            "content": {
+                "image_source": {
+                    "path": "images/33b6d2559f0310749360f467063095055768927e583ff32b0151a3ba38716369.jpg"
+                },
+                "image_caption": [
+                    {
+                        "type": "text",
+                        "content": "Fig. 4. STUNet architecture. We “inflate” a pre-trained T2I U-Net architecture [Ho et al. 2022a] into a Space-Time UNet (STUNet) that down- and up-sample the video in both space and time. (a) An illustration of STUNet's activation maps; color indicates features resulting from different temporal modules: (b) Convolution-based blocks which consist of pre-trained T2l layers followed by a factorized space-time convolution, and (c) Attention-based blocks at the coarsest U-Net level in which the pre-trained T2l layers are followed by temporal attention. Since the video representation is compressed at the coarsest level, we stack several temporal attention layers with limited computational overhead. See Sec. 3.1 for details."
+                    }
+                ],
+                "image_footnote": []
+            },
+            "bbox": [
+                81,
+                98,
+                900,
+                303
+            ]
+        },
+        {
+            "type": "paragraph",
+            "content": {
+                "paragraph_content": [
+                    {
+                        "type": "equation_inline",
+                        "content": "J \\in \\mathbb { R } ^ { H \\times W \\times T \\times 3 }"
+                    },
+                    {
+                        "type": "text",
+                        "content": "into a set of overlapping segments "
+                    },
+                    {
+                        "type": "equation_inline",
+                        "content": "\\{ J _ { i } \\} _ { i = 1 } ^ { N }"
+                    },
+                    {
+                        "type": "text",
+                        "content": ", where "
+                    },
+                    {
+                        "type": "equation_inline",
+                        "content": "J _ { i } \\in \\mathbb { R } ^ { H \\times W \\times T ^ { \\prime } \\times 3 }"
+                    },
+                    {
+                        "type": "text",
+                        "content": "is the "
+                    },
+                    {
+                        "type": "equation_inline",
+                        "content": "i ^ { \\mathrm { t h } }"
+                    },
+                    {
+                        "type": "text",
+                        "content": "segment, which has temporal duration "
+                    },
+                    {
+                        "type": "equation_inline",
+                        "content": "T ^ { \\prime } < T ."
+                    },
+                    {
+                        "type": "text",
+                        "content": "To reconcile the per-segment SSR predictions, "
+                    },
+                    {
+                        "type": "equation_inline",
+                        "content": "\\{ \\Phi ( J _ { i } ) \\} _ { i = 1 } ^ { N } ,"
+                    },
+                    {
+                        "type": "text",
+                        "content": "we define the result of the denoising step to be the solution of the optimization problem"
+                    }
+                ]
+            },
+            "bbox": [
+                78,
+                398,
+                483,
+                472
+            ]
+        },
+        {
+            "type": "equation_interline",
+            "content": {
+                "math_content": "\\underset { J ^ { \\prime } } { \\arg \\operatorname* { m i n } } \\sum _ { i = 1 } ^ { n } \\left\\| J ^ { \\prime } - \\Phi ( J _ { i } ) \\right\\| ^ { 2 } .",
+                "math_type": "latex",
+                "image_source": {
+                    "path": "images/176c31c2840b81686d598380d56722d3f65d7185e4ff0620a7fd8f7166a3fa5d.jpg"
+                }
+            },
+            "bbox": [
+                199,
+                476,
+                361,
+                511
+            ]
+        },
+        {
+            "type": "paragraph",
+            "content": {
+                "paragraph_content": [
+                    {
+                        "type": "text",
+                        "content": "The solution to this problem is given by linearly combining the predictions over overlapping windows. See SM."
+                    }
+                ]
+            },
+            "bbox": [
+                78,
+                513,
+                482,
+                542
+            ]
+        },
+        {
+            "type": "title",
+            "content": {
+                "title_content": [
+                    {
+                        "type": "text",
+                        "content": "3.3 Implementation details"
+                    }
+                ],
+                "level": 2
+            },
+            "bbox": [
+                80,
+                553,
+                277,
+                568
+            ]
+        },
+        {
+            "type": "paragraph",
+            "content": {
+                "paragraph_content": [
+                    {
+                        "type": "text",
+                        "content": "We train our T2V model on a dataset containing 30M videos along with their text caption. The 2D-UNet follows the architecture of Imagen (see details in [Saharia et al. 2022b]). We then inflate it by inserting temporal layers as described in Sec. 3.1 and Fig. 4. The videos are 80 frames long at 16 fps (5 seconds). The base model is trained at 128× 128. We train the base model for 240K steps using 128 V5 TPUs with a batch size of 128. As discussed in Sec. 3, to benefit from the T2I prior, we train only the temporal layers, hence we train only on videos. We employ the ada factor optimizer [Shazeer and Stern 2018] with its default configuration and a constant learning rate of 1e-5. We apply the same Cosine noise scheduler used for the pre-trained Imagen T2I model [Saharia et al. 2022b]. Note that unlike the Linear scheduler commonly used in latent space models, the Cosine scheduler reaches a near zero SNR without any modifications [Lin et al. 2024]. For the SSR model, we use the same architecture and optimization parameters as in Imagen SSR [Saharia et al. 2022b]. We inflate the SSR model in a similar manner to our base model inflation. Due to the extensive computational requirements, our inflated SSR is adapted to handle 8 frames at once, and we apply MultiDiffusion [Bar-Tal et al. 2023] to achieve consistency between windows (see Sec. 3.2). The SSR outputs 1024 × 1024 frames. Our STUnet and SSR models contain 5.5B and 1B parameters respectively."
+                    }
+                ]
+            },
+            "bbox": [
+                78,
+                570,
+                483,
+                877
+            ]
+        },
+        {
+            "type": "title",
+            "content": {
+                "title_content": [
+                    {
+                        "type": "text",
+                        "content": "4 Applications"
+                    }
+                ],
+                "level": 2
+            },
+            "bbox": [
+                514,
+                401,
+                629,
+                416
+            ]
+        },
+        {
+            "type": "paragraph",
+            "content": {
+                "paragraph_content": [
+                    {
+                        "type": "text",
+                        "content": "The lack of a TSR cascade makes it easier to extend Lumiere to downstream applications. In particular, our model provides an intuitive interface for downstream applications that require an off-the-shelf T2V model (e.g., Gal et al. [2023]; Meng et al. [2022]; Poole et al. [2023]). We demonstrate this property by performing video-to-video editing using SDEdit [Meng et al. 2022] (see Fig. 10). We next discuss a number of such applications, including style conditioned generation, image-to-video, inpainting and outpainting, and cinemagraphs. We present example frames in Figs. 8-10 and refer the reader to the Supplementary Material (SM) on our webpage for full video results"
+                    }
+                ]
+            },
+            "bbox": [
+                511,
+                419,
+                919,
+                559
+            ]
+        },
+        {
+            "type": "title",
+            "content": {
+                "title_content": [
+                    {
+                        "type": "text",
+                        "content": "4.1 Stylized Generation"
+                    }
+                ],
+                "level": 2
+            },
+            "bbox": [
+                514,
+                580,
+                689,
+                594
+            ]
+        },
+        {
+            "type": "paragraph",
+            "content": {
+                "paragraph_content": [
+                    {
+                        "type": "text",
+                        "content": "Recall that we only train the newly-added temporal layers and keep the pre-trained T2I weights fixed. Previous work showed that substituting the T2I weights with a model customized for a specific style allows to generate videos with the desired style [Guo et al. 2023]. We observe that this simple “plug-and-play\" approach often results in distorted or static videos (see SM), and hypothesize that this is caused by the significant deviation in the distribution of the input to the temporal layers from the fine-tuned spatial layers. Inspired by the success of GAN-based interpolation approaches [Pinkney and Adler 2020], we opt to strike a balance between style and motion by linearly interpolating between the fine-tuned T2I weights, "
+                    },
+                    {
+                        "type": "equation_inline",
+                        "content": "W _ { \\mathrm { s t y l e } } ,"
+                    },
+                    {
+                        "type": "text",
+                        "content": "and the original T2I weights, "
+                    },
+                    {
+                        "type": "equation_inline",
+                        "content": "W _ { \\mathrm { o r i g } } ."
+                    },
+                    {
+                        "type": "text",
+                        "content": "Specifically, we construct the interpolated weights as "
+                    },
+                    {
+                        "type": "equation_inline",
+                        "content": "W _ { \\mathrm { i n t e r p o l a t e } } = \\alpha \\cdot W _ { \\mathrm { s t y l e } } + ( 1 - \\alpha ) \\cdot W _ { \\mathrm { o r i g } } ."
+                    },
+                    {
+                        "type": "text",
+                        "content": "The interpolation coefficient "
+                    },
+                    {
+                        "type": "equation_inline",
+                        "content": "\\alpha \\doteq [ 0 . 5 , 1 ]"
+                    },
+                    {
+                        "type": "text",
+                        "content": "is chosen manually in our experiments to generate videos that adhere to the style and depict plausible motion."
+                    }
+                ]
+            },
+            "bbox": [
+                511,
+                598,
+                919,
+                820
+            ]
+        },
+        {
+            "type": "paragraph",
+            "content": {
+                "paragraph_content": [
+                    {
+                        "type": "text",
+                        "content": "Figure 8 presents sample results for various styles from [Sohn et al. 2023]. While more realistic styles such as “watercolor painting' result in realistic motion, other, less realistic spatial priors derived from vector art styles, result in corresponding unique non-realistic motion. For example, the “line drawing\" style results in animations that resemble pencil strokes “drawing\" the described scene, while the “cartoon” style results in content that gradually “pops out\" and constructs the scene (see SM for full videos)."
+                    }
+                ]
+            },
+            "bbox": [
+                513,
+                820,
+                918,
+                877
+            ]
+        },
+        {
+            "type": "page_header",
+            "content": {
+                "page_header_content": [
+                    {
+                        "type": "text",
+                        "content": "Lumiere: A Space-Time Diffusion Model for Video Generation"
+                    }
+                ]
+            },
+            "bbox": [
+                589,
+                68,
+                885,
+                79
+            ]
+        },
+        {
+            "type": "page_number",
+            "content": {
+                "page_number_content": [
+                    {
+                        "type": "text",
+                        "content": "5"
+                    }
+                ]
+            },
+            "bbox": [
+                905,
+                69,
+                916,
+                78
+            ]
+        },
+        {
+            "type": "page_footer",
+            "content": {
+                "page_footer_content": [
+                    {
+                        "type": "text",
+                        "content": "SA Conference Papers '24, December 03–06, 2024, Tokyo, Japan"
+                    }
+                ]
+            },
+            "bbox": [
+                612,
+                893,
+                916,
+                906
+            ]
+        }
+    ],
+    [
+        {
+            "type": "paragraph",
+            "content": {
+                "paragraph_content": []
+            },
+            "bbox": [
+                78,
+                99,
+                483,
+                157
+            ]
+        },
+        {
+            "type": "title",
+            "content": {
+                "title_content": [
+                    {
+                        "type": "text",
+                        "content": "4.2 Conditional Generation"
+                    }
+                ],
+                "level": 2
+            },
+            "bbox": [
+                78,
+                167,
+                281,
+                183
+            ]
+        },
+        {
+            "type": "paragraph",
+            "content": {
+                "paragraph_content": [
+                    {
+                        "type": "text",
+                        "content": "Similarly to Blattmann et al. [2023b]; Wang et al. [2023b], we extend our model to video generation conditioned on additional input signals (e.g., image or mask). We achieve this by modifying the model to take as input two signals in addition to the noisy video "
+                    },
+                    {
+                        "type": "equation_inline",
+                        "content": "J \\in \\mathbb { R } ^ { T \\times H \\times W \\times 3 }"
+                    },
+                    {
+                        "type": "text",
+                        "content": "and the driving text prompt. Specifically, we add the masked conditioning video "
+                    },
+                    {
+                        "type": "equation_inline",
+                        "content": "\\breve { C } \\in \\mathbb { R } ^ { \\breve { T } \\times H \\times \\breve { W } \\times 3 }"
+                    },
+                    {
+                        "type": "text",
+                        "content": "and its corresponding binary mask "
+                    },
+                    {
+                        "type": "equation_inline",
+                        "content": "M \\in \\mathbb { R } ^ { \\breve { T } \\times H \\times W \\times 1 }"
+                    },
+                    {
+                        "type": "text",
+                        "content": ", such that the overall input to the model is the concatenated tensor "
+                    },
+                    {
+                        "type": "equation_inline",
+                        "content": "\\langle J , C , M \\rangle \\in \\mathbb { R } ^ { T \\times H \\times W \\times \\hat { 7 } }"
+                    },
+                    {
+                        "type": "text",
+                        "content": ". We expand the channel dimension of the first convolution layer from 3 to 7 in order to accommodate the modified input shape and fine-tune our base T2V model to denoise J based on C, M. During this fine-tuning process, we take J to be the noisy version of the training video, and C to be a masked version of the clean video. This encourages the model to learn to copy the unmasked information in C to the output video while only animating the masked content, as desired. While all mask-conditioned applications can be implemented in a single model, training a separate I2V model yields better results."
+                    }
+                ]
+            },
+            "bbox": [
+                76,
+                185,
+                485,
+                422
+            ]
+        },
+        {
+            "type": "paragraph",
+            "content": {
+                "paragraph_content": [
+                    {
+                        "type": "text",
+                        "content": "Image-to-Video. In this case, the first video frame is given as input. The conditioning signal C contains this first frame followed by blank frames for the rest of the video. The corresponding mask M contains ones (i.e., unmasked content) for the first frame and zeros (i.e., masked content) for the rest of the video. Figures 1 and 9 show results of image-conditioned generation (see SM for more results). Our model generates videos that start with the desired frame, and exhibit intricate coherent motion across the entire video duration."
+                    }
+                ]
+            },
+            "bbox": [
+                76,
+                429,
+                485,
+                541
+            ]
+        },
+        {
+            "type": "paragraph",
+            "content": {
+                "paragraph_content": [
+                    {
+                        "type": "text",
+                        "content": "Inpainting. Here, the conditioning signals are a user-provided video C and a mask M that describes the region to complete in the video. Note that the inpainting application can be used for object replacement/insertion (Fig. 1) as well as for localized editing (Fig. 6). The effect is a seamless and natural completion of the masked region, with contents guided by the text prompt. We refer the reader to the SM for more examples of both inpainting and outpainting."
+                    }
+                ]
+            },
+            "bbox": [
+                76,
+                547,
+                485,
+                646
+            ]
+        },
+        {
+            "type": "paragraph",
+            "content": {
+                "paragraph_content": [
+                    {
+                        "type": "text",
+                        "content": "Cinemagraphs. We additionally consider the application of animating the content of an image only within a specific user-provided region. The conditioning signal C is the input image duplicated across the entire video, while the mask M contains ones for the entire first frame (i.e., the first frame is unmasked), and for the other frames, the mask contains ones only outside the user-provided region (i.e., the other frames are masked inside the region we wish to animate). We provide sample results in Fig. 7 and in the SM. Since the first frame remains unmasked, the animated content is encouraged to maintain the appearance from the conditioning image."
+                    }
+                ]
+            },
+            "bbox": [
+                76,
+                651,
+                485,
+                791
+            ]
+        },
+        {
+            "type": "title",
+            "content": {
+                "title_content": [
+                    {
+                        "type": "text",
+                        "content": "5 Evaluation and Comparisons"
+                    }
+                ],
+                "level": 2
+            },
+            "bbox": [
+                78,
+                803,
+                305,
+                816
+            ]
+        },
+        {
+            "type": "paragraph",
+            "content": {
+                "paragraph_content": [
+                    {
+                        "type": "text",
+                        "content": "Evaluation settings. We evaluate our model on a collection of 109 text prompts describing diverse objects and scenes. The prompt list consists of 91 prompts used by prior works [Blattmann et al. 2023b; Ho et al. 2022a; Singer et al. 2022] and the rest were created by us (see SM). Additionally, we employ a zero-shot evaluation protocol on the UCF101 dataset [Soomro et al. 2012] (see Sec. 5.2)."
+                    }
+                ]
+            },
+            "bbox": [
+                78,
+                819,
+                485,
+                877
+            ]
+        },
+        {
+            "type": "table",
+            "content": {
+                "image_source": {
+                    "path": "images/65971e3d227c46195d285196435fa451e8bef3c4f4195d14edb8619adb2a3b70.jpg"
+                },
+                "table_caption": [
+                    {
+                        "type": "text",
+                        "content": "Table 1. Zero-shot text-to-video generation comparison on UCF101 [Soomro et al. 2012]. Our method achieves competitive FVD [Unterthiner et al. 2018] and IS [Salimans et al. 2016] scores. See Tab. 5.2."
+                    }
+                ],
+                "table_footnote": [],
+                "html": "<table><tr><td>Method</td><td>FVD↓</td><td>IS ↑</td></tr><tr><td>MagicVideo [Zhou et al. 2022]</td><td>655.00</td><td></td></tr><tr><td>Emu Video [Girdhar et al. 2023]</td><td>606.20</td><td>42.70</td></tr><tr><td>Video LDM [Blattmann et al. 2023b]</td><td>550.61</td><td>33.45</td></tr><tr><td>Show-1 [Zhang et al. 2023b]</td><td>394.46</td><td>35.42</td></tr><tr><td>Make-A-Video [Singer et al. 2022]</td><td>367.23</td><td>33.00</td></tr><tr><td>PYoCo [Ge et al. 2023]</td><td>355.19</td><td>47.76</td></tr><tr><td>SVD [Blattmann et al. 2023a]</td><td>242.02</td><td></td></tr><tr><td>Lumiere (Ours)</td><td>332.49</td><td>37.54</td></tr></table>",
+                "table_type": "simple_table",
+                "table_nest_level": 1
+            },
+            "bbox": [
+                531,
+                148,
+                900,
+                290
+            ]
+        },
+        {
+            "type": "paragraph",
+            "content": {
+                "paragraph_content": []
+            },
+            "bbox": [
+                513,
+                313,
+                916,
+                340
+            ]
+        },
+        {
+            "type": "paragraph",
+            "content": {
+                "paragraph_content": [
+                    {
+                        "type": "text",
+                        "content": "We illustrate text-to-video generation in Figs. 1 and 9. Our method generates high-quality videos depicting both intricate object motion (e.g., walking astronaut in Fig. 9) and coherent camera motion (e.g., car in Fig. 1). We refer the reader to the SM for full-video results."
+                    }
+                ]
+            },
+            "bbox": [
+                513,
+                340,
+                918,
+                397
+            ]
+        },
+        {
+            "type": "paragraph",
+            "content": {
+                "paragraph_content": [
+                    {
+                        "type": "text",
+                        "content": "Baselines. We compare our method to prominent T2V diffusion models: (i) ImagenVideo [Ho et al. 2022a], that operates in pixelspace and consists of a cascade of 7 models (a base model, 3 TSR models, and 3 SSR models); (ii) AnimateDiff [Guo et al. 2023], (iii) StableVideoDiffusion (SVD) [Blattmann et al. 2023a], and (iv) Zero-Scope [Wang et al. 2023a] that inflate Stable Diffusion [Rombach et al. 2022] and train on video data; note that AnimateDiff and Zero-Scope output only 16, and 36 frames respectively. SVD released only their image-to-video model, which outputs 25 frames and is not conditioned on text. Additionally, we compare to (v) Pika [Pika labs 2023] and (vi) Gen-2 [RunwayML 2023] commercial T2V models that have available API. Furthermore, we quantitatively compare to additional T2V models that are closed-source in Sec. 5.2."
+                    }
+                ]
+            },
+            "bbox": [
+                511,
+                402,
+                919,
+                584
+            ]
+        },
+        {
+            "type": "title",
+            "content": {
+                "title_content": [
+                    {
+                        "type": "text",
+                        "content": "5.1 Qualitative Evaluation"
+                    }
+                ],
+                "level": 2
+            },
+            "bbox": [
+                514,
+                593,
+                707,
+                608
+            ]
+        },
+        {
+            "type": "paragraph",
+            "content": {
+                "paragraph_content": [
+                    {
+                        "type": "text",
+                        "content": "We provide qualitative comparison between our model and the baselines in SM. We observed that Gen-2 [RunwayML 2023] and Pika [Pika labs 2023] demonstrate high per-frame visual quality; however, their outputs are characterized by a very limited amount of motion, often resulting in near-static videos. ImagenVideo [Ho et al. 2022a] produces a reasonable amount of motion, but at a lower overall visual quality. AnimateDiff [Guo et al. 2023] and ZeroScope [Wang et al. 2023a] exhibit noticeable motion but are also prone to visual artifacts. Moreover, they generate videos of shorter durations specifically 2 and 3.6 seconds, respectively. In contrast, our method produces 5-second videos that have higher motion magnitude while maintaining temporal consistency and overall quality."
+                    }
+                ]
+            },
+            "bbox": [
+                511,
+                611,
+                919,
+                780
+            ]
+        },
+        {
+            "type": "title",
+            "content": {
+                "title_content": [
+                    {
+                        "type": "text",
+                        "content": "5.2 Quantitative Evaluation"
+                    }
+                ],
+                "level": 2
+            },
+            "bbox": [
+                514,
+                789,
+                717,
+                803
+            ]
+        },
+        {
+            "type": "paragraph",
+            "content": {
+                "paragraph_content": [
+                    {
+                        "type": "text",
+                        "content": "User Study. We adopt the Two-alternative Forced Choice (2AFC) protocol, as used in previous works [Blattmann et al. 2023a; Kolkin et al. 2019; Rombach et al. 2022; Zhang et al. 2018]. In this protocol, participants were presented with a randomly selected pair of videos: one generated by our model and the other by one of the baseline"
+                    }
+                ]
+            },
+            "bbox": [
+                511,
+                806,
+                919,
+                877
+            ]
+        },
+        {
+            "type": "page_number",
+            "content": {
+                "page_number_content": [
+                    {
+                        "type": "text",
+                        "content": "6"
+                    }
+                ]
+            },
+            "bbox": [
+                80,
+                69,
+                93,
+                79
+            ]
+        },
+        {
+            "type": "page_header",
+            "content": {
+                "page_header_content": [
+                    {
+                        "type": "text",
+                        "content": "Bar-Tal, Chefer, Tov, Herrmann, Paiss, Zada, Ephrat, Hur, Liu, Raj, Li, Rubinstein, Michaeli, Wang, Sun, Dekel and Mosseri"
+                    }
+                ]
+            },
+            "bbox": [
+                111,
+                68,
+                689,
+                80
+            ]
+        },
+        {
+            "type": "page_footer",
+            "content": {
+                "page_footer_content": [
+                    {
+                        "type": "text",
+                        "content": "SA Conference Papers '24, December 03–06, 2024, Tokyo, Japan"
+                    }
+                ]
+            },
+            "bbox": [
+                78,
+                893,
+                383,
+                906
+            ]
+        }
+    ],
+    [
+        {
+            "type": "paragraph",
+            "content": {
+                "paragraph_content": [
+                    {
+                        "type": "text",
+                        "content": "A purple strapless dress"
+                    }
+                ]
+            },
+            "bbox": [
+                333,
+                330,
+                468,
+                342
+            ]
+        },
+        {
+            "type": "chart",
+            "content": {
+                "image_source": {
+                    "path": "images/345df30e49a7ad56cabf278428a6737ac74437a3298b831a642cbf94388386ae.jpg"
+                },
+                "content": "",
+                "chart_caption": [],
+                "chart_footnote": []
+            },
+            "bbox": [
+                80,
+                95,
+                390,
+                181
+            ]
+        },
+        {
+            "type": "chart",
+            "content": {
+                "image_source": {
+                    "path": "images/836f3b623de032f87daaf43016ad65de508c8532e1e36ec6da30921510caafb8.jpg"
+                },
+                "content": "",
+                "chart_caption": [
+                    {
+                        "type": "text",
+                        "content": "(a) Text-to-Video"
+                    }
+                ],
+                "chart_footnote": []
+            },
+            "bbox": [
+                393,
+                95,
+                705,
+                181
+            ]
+        },
+        {
+            "type": "chart",
+            "content": {
+                "image_source": {
+                    "path": "images/ef895307e2c6cf4980168a1b8e49025398866c3a9d29f767f151fa37f11b2011.jpg"
+                },
+                "content": "",
+                "chart_caption": [
+                    {
+                        "type": "text",
+                        "content": "(b) Image-to-Video"
+                    }
+                ],
+                "chart_footnote": []
+            },
+            "bbox": [
+                705,
+                95,
+                913,
+                180
+            ]
+        },
+        {
+            "type": "image",
+            "content": {
+                "image_source": {
+                    "path": "images/eb24f0e3c36d860ce3ada04f615e126775135e2a00b75729f18c08ec33681a88.jpg"
+                },
+                "image_caption": [
+                    {
+                        "type": "text",
+                        "content": "Fig. 5. User study. We compare our method to each of the baselines. For each baseline, we report the percentage of user votes in our favor (blue) and in favor of the baseline (orange). Our method was preferred by users in both text-to-video, and image-to-video generation. See Sec. 5.2."
+                    }
+                ],
+                "image_footnote": []
+            },
+            "bbox": [
+                81,
+                251,
+                287,
+                329
+            ]
+        },
+        {
+            "type": "image",
+            "content": {
+                "image_source": {
+                    "path": "images/9cd0dfaca7f1da9d078eb5a40ecd185028702f5b9800d8766d692a071d094ed1.jpg"
+                },
+                "image_caption": [
+                    {
+                        "type": "text",
+                        "content": "Source Image + Mask"
+                    }
+                ],
+                "image_footnote": []
+            },
+            "bbox": [
+                81,
+                330,
+                289,
+                419
+            ]
+        },
+        {
+            "type": "image",
+            "content": {
+                "image_source": {
+                    "path": "images/29777a937c020fafcc9612c3c972fda8ead38cf3a8423fec2dbcf22dbb98d552.jpg"
+                },
+                "image_caption": [],
+                "image_footnote": []
+            },
+            "bbox": [
+                294,
+                250,
+                500,
+                330
+            ]
+        },
+        {
+            "type": "image",
+            "content": {
+                "image_source": {
+                    "path": "images/90d63e0eb73a839e48ee8bd9b011969d913699583dea1e983ac13c185b380554.jpg"
+                },
+                "image_caption": [
+                    {
+                        "type": "text",
+                        "content": "A chick wearing rain boots"
+                    }
+                ],
+                "image_footnote": [
+                    {
+                        "type": "text",
+                        "content": "A stripe strapless dress"
+                    }
+                ]
+            },
+            "bbox": [
+                294,
+                338,
+                501,
+                420
+            ]
+        },
+        {
+            "type": "image",
+            "content": {
+                "image_source": {
+                    "path": "images/66ec2364516cb7cb95da43e879773255398dc7ac16ce83cdf0068dd7efb7c2f1.jpg"
+                },
+                "image_caption": [
+                    {
+                        "type": "text",
+                        "content": "Fig. 6. Inpainting. Examples of video inpainting with Lumiere. For each input video (top left corner of each frame), we animate the masked area of the video using our model. Chick video by Pexels/KATRIN BOLOVTSOVA, woman video by Pexels/Maksim Goncharenok"
+                    },
+                    {
+                        "type": "text",
+                        "content": "Fig. 7. Cinemagraphs. Given only an input image and a mask (left), our method generates a video in which the marked area is animated and the rest remains static (right). Butterfly image by pixabay/ROverhate, campfire image by pixabay/chrisaram2"
+                    }
+                ],
+                "image_footnote": []
+            },
+            "bbox": [
+                86,
+                518,
+                500,
+                699
+            ]
+        },
+        {
+            "type": "paragraph",
+            "content": {
+                "paragraph_content": [
+                    {
+                        "type": "text",
+                        "content": "methods. Participants were then asked to choose the video they deemed better in terms of visual quality and motion. Additionally, they were asked to select the video that more accurately matched the target text prompt. We collected ~400 user judgments for each baseline and question, utilizing the Amazon Mechanical Turk (AMT) platform. As illustrated in Fig. 5, our method was preferred over all baselines by the users and demonstrated better alignment with the text prompts. Note that ZeroScope and AnimateDiff generate videos only at 3.6 and 2 second respectively, we thus trim our videos to match their duration when comparing to them."
+                    }
+                ]
+            },
+            "bbox": [
+                78,
+                792,
+                485,
+                877
+            ]
+        },
+        {
+            "type": "paragraph",
+            "content": {
+                "paragraph_content": []
+            },
+            "bbox": [
+                513,
+                253,
+                918,
+                309
+            ]
+        },
+        {
+            "type": "paragraph",
+            "content": {
+                "paragraph_content": [
+                    {
+                        "type": "text",
+                        "content": "We further conduct a user study for comparing our image-tovideo model (see Sec. 4.2) against Pika [Pika labs 2023], StableVideoDiffusion (SVD) [Blattmann et al. 2023a], and Gen2[RunwayML 2023]. Note that SVD image-to-video model is not conditioned on text, we thus focus our survey on the video quality. As seen in Fig. 5, our method was preferred by users compared to the baselines. For a detailed description of the evaluation protocol, please refer to SM."
+                    }
+                ]
+            },
+            "bbox": [
+                513,
+                309,
+                919,
+                407
+            ]
+        },
+        {
+            "type": "paragraph",
+            "content": {
+                "paragraph_content": [
+                    {
+                        "type": "text",
+                        "content": "Zero-shot evaluation on UCF101. Following the evaluation protocols of Blattmann et al. [2023a] and Ge et al. [2023], we quantitatively evaluate our method for zero-shot text-to-video generation on UCF101 [Soomro et al. 2012]. Tab. 1 reports the Fréchet Video Distance (FVD) [Unterthiner et al. 2018] and Inception Score (IS) [Salimans et al. 2016] of our method and previous work. We achieve competitive FVD and IS scores. However, as discussed in previous work (e.g., Chong and Forsyth [2020]; Girdhar et al. [2023]; Ho et al. [2022a]), these metrics do not faithfully reflect human perception, and may be significantly influenced by low-level details [Parmar et al. 2022] and by the distribution shift between the reference UCF101 data and the T2V training data [Girdhar et al. 2023]. Furthermore, the protocol uses only 16 frames from generated videos and thus is not able to capture long-term motion."
+                    }
+                ]
+            },
+            "bbox": [
+                513,
+                422,
+                919,
+                617
+            ]
+        },
+        {
+            "type": "title",
+            "content": {
+                "title_content": [
+                    {
+                        "type": "text",
+                        "content": "5.3 Ablations"
+                    }
+                ],
+                "level": 2
+            },
+            "bbox": [
+                514,
+                636,
+                620,
+                650
+            ]
+        },
+        {
+            "type": "paragraph",
+            "content": {
+                "paragraph_content": [
+                    {
+                        "type": "text",
+                        "content": "As mentioned in Fig. 3, the common approach to generate fullframe-rate videos is by incorporating a Temporal SR model [Ho et al. 2022a; Singer et al. 2022]. To quantify the performance gain of incorporating the temporal up- and down- sampling layers instead of a TSR model, we compare the runtime and memory footprint of running base + TSR models to our proposed STUnet. For the comparison, we define the base model to generate 16 keyframes and have the same architecture as our STUnet only without the temporal up and down sampling units. We then follow this approach for the TSR model, which generates 16 frames conditioned on 4 keyframes. Comparing our STUnet to the base keyframes model, the temporal downsampling units allow us to generate 5× as many frames at the cost of 1.5× increase in memory, compared to the base model. Additionally, generating 80 frames with our STUnet is 2.5× times faster compared to a sequential run of the keyframes and TSR models using a single V5 TPU. Additional ablations on the temporal consistency of the baseline, Multi-Diffusion in the SSR stage, and model initialization are available in the SM."
+                    }
+                ]
+            },
+            "bbox": [
+                511,
+                654,
+                919,
+                877
+            ]
+        },
+        {
+            "type": "page_header",
+            "content": {
+                "page_header_content": [
+                    {
+                        "type": "text",
+                        "content": "Lumiere: A Space-Time Diffusion Model for Video Generation"
+                    }
+                ]
+            },
+            "bbox": [
+                589,
+                68,
+                885,
+                79
+            ]
+        },
+        {
+            "type": "page_number",
+            "content": {
+                "page_number_content": [
+                    {
+                        "type": "text",
+                        "content": "7"
+                    }
+                ]
+            },
+            "bbox": [
+                905,
+                69,
+                916,
+                78
+            ]
+        },
+        {
+            "type": "page_footer",
+            "content": {
+                "page_footer_content": [
+                    {
+                        "type": "text",
+                        "content": "SA Conference Papers '24, December 03–06, 2024, Tokyo, Japan."
+                    }
+                ]
+            },
+            "bbox": [
+                612,
+                893,
+                916,
+                906
+            ]
+        }
+    ],
+    [
+        {
+            "type": "image",
+            "content": {
+                "image_source": {
+                    "path": "images/b0b82f93b3bf6884f7f1636eb6b9f83e8e03e80daee3a777e532c41a8f1030b1.jpg"
+                },
+                "image_caption": [
+                    {
+                        "type": "text",
+                        "content": "Fig. 8. Stylized Generation. Given a driving style image and its corresponding set of fine-tuned text-to-image weights, we perform linear interpolation between the fine-tuned and pre-trained weights of the model's spatial layers. We present results for (A) vector art styles, and (B) realistic styles. The results demonstrate Lumiere's ability to creatively match a different motion prior to each of the spatial styles (frames shown from left to right). See Sec. 4.1 for details. 3D rendering and catroon style images designed by Freepik, golden melting and watercolor style images designed by unsplash."
+                    }
+                ],
+                "image_footnote": []
+            },
+            "bbox": [
+                111,
+                97,
+                883,
+                292
+            ]
+        },
+        {
+            "type": "paragraph",
+            "content": {
+                "paragraph_content": []
+            },
+            "bbox": [
+                78,
+                380,
+                482,
+                409
+            ]
+        },
+        {
+            "type": "title",
+            "content": {
+                "title_content": [
+                    {
+                        "type": "text",
+                        "content": "6 Conclusions and Limitations"
+                    }
+                ],
+                "level": 2
+            },
+            "bbox": [
+                78,
+                422,
+                302,
+                438
+            ]
+        },
+        {
+            "type": "paragraph",
+            "content": {
+                "paragraph_content": [
+                    {
+                        "type": "text",
+                        "content": "We presented a new text-to-video generation framework, utilizing a pre-trained text-to-image diffusion model. We identified an inherent limitation in learning globally-coherent motion in the prevalent approach of first generating distant keyframes and subsequently interpolating them using a cascade of temporal super-resolution models. To tackle this challenge, we introduced a space-time UNet architecture that directly generates full frame-rate video clips, by incorporating both spatial, and temporal down- and up-sampling modules. We demonstrated state-of-the-art generation results, and showed the applicability of our approach for a wide range of applications, including image-to-video, inpainting, and stylized generation."
+                    }
+                ]
+            },
+            "bbox": [
+                78,
+                441,
+                485,
+                593
+            ]
+        },
+        {
+            "type": "paragraph",
+            "content": {
+                "paragraph_content": [
+                    {
+                        "type": "text",
+                        "content": "As for limitations, similar to other video generation works, our model struggles at times to exactly follow the textual prompt, or to accurately generate fast and complex motion (e.g. gymnastics). Additionally, our method is not designed to generate videos longer than 5 seconds, that consist of multiple shots, or that involve transitions between scenes. Generating such content remains an open challenge for future research. Furthermore, we established our model on top of a T2I model that operates in the pixel space, and thus involves a spatial super resolution module to produce high resolution images. Nevertheless, our design principles are applicable to latent video diffusion models [Rombach et al. 2022], and can trigger further research in the design of text-to-video models."
+                    }
+                ]
+            },
+            "bbox": [
+                78,
+                593,
+                485,
+                761
+            ]
+        },
+        {
+            "type": "title",
+            "content": {
+                "title_content": [
+                    {
+                        "type": "text",
+                        "content": "7 Societal Impact"
+                    }
+                ],
+                "level": 2
+            },
+            "bbox": [
+                80,
+                775,
+                214,
+                789
+            ]
+        },
+        {
+            "type": "paragraph",
+            "content": {
+                "paragraph_content": [
+                    {
+                        "type": "text",
+                        "content": "Our primary goal in this work is to enable novice users to generate visual content in a creative and flexible way. However, there is a risk of misuse for creating fake or harmful content with our technology, and we believe that it is crucial to develop and apply tools for detecting biases and malicious use cases in order to ensure a safe and fair use."
+                    }
+                ]
+            },
+            "bbox": [
+                78,
+                792,
+                483,
+                876
+            ]
+        },
+        {
+            "type": "title",
+            "content": {
+                "title_content": [
+                    {
+                        "type": "text",
+                        "content": "Acknowledgments"
+                    }
+                ],
+                "level": 2
+            },
+            "bbox": [
+                514,
+                380,
+                643,
+                395
+            ]
+        },
+        {
+            "type": "paragraph",
+            "content": {
+                "paragraph_content": [
+                    {
+                        "type": "text",
+                        "content": "We would like to thank Ronny Votel, Orly Liba, Hamid Mohammadi, April Lehman, Bryan Seybold, David Ross, Dan Goldman, Hartwig Adam, Xuhui Jia, Xiuye Gu, Mehek Sharma, Keyu Zhang, Rachel Hornung, Oran Lang, Jess Gallegos, William T. Freeman and David Salesin for their collaboration, helpful discussions, feedback and support. We thank owners of images and videos used in our experiments for sharing their valuable assets (attributions can be found in our webpage)."
+                    }
+                ]
+            },
+            "bbox": [
+                511,
+                397,
+                919,
+                508
+            ]
+        },
+        {
+            "type": "title",
+            "content": {
+                "title_content": [
+                    {
+                        "type": "text",
+                        "content": "References"
+                    }
+                ],
+                "level": 2
+            },
+            "bbox": [
+                516,
+                536,
+                593,
+                549
+            ]
+        },
+        {
+            "type": "list",
+            "content": {
+                "list_type": "reference_list",
+                "list_items": [
+                    {
+                        "item_type": "text",
+                        "item_content": [
+                            {
+                                "type": "text",
+                                "content": "Omer Bar-Tal, Lior Yariv, Yaron Lipman, and Tali Dekel. 2023. MultiDiffusion: Fusing diffusion paths for controlled image generation."
+                            }
+                        ]
+                    },
+                    {
+                        "item_type": "text",
+                        "item_content": [
+                            {
+                                "type": "text",
+                                "content": "Andreas Blattmann, Tim Dockhorn, Sumith Kulal, Daniel Mendelevitch, Maciej Kilian, Dominik Lorenz, Yam Levi, Zion English, Vikram Voleti, Adam Letts, et al. 2023a. Stable Video Diffusion: Scaling Latent Video Diffusion Models to Large Datasets. arXiv preprint arXiv:2311.15127 (2023)"
+                            }
+                        ]
+                    },
+                    {
+                        "item_type": "text",
+                        "item_content": [
+                            {
+                                "type": "text",
+                                "content": "Andreas Blattmann, Robin Rombach, Huan Ling, Tim Dockhorn, Seung Wook Kim, Sanja Fidler, and Karsten Kreis. 2023b. Align your Latents: High-Resolution Video Synthesis with Latent Diffusion Models."
+                            }
+                        ]
+                    },
+                    {
+                        "item_type": "text",
+                        "item_content": [
+                            {
+                                "type": "text",
+                                "content": "Tim Brooks, Bill Peebles, Connor Holmes, Will DePue, Yufei Guo, Li Jing, David Schnurr, Joe Taylor, Troy Luhman, Eric Luhman, Clarence Ng, Ricky Wang, and Aditya Ramesh. 2024. Video generation models as world simulators. (2024). https: //openai.com/research/video-generation-models-as-world-simulators"
+                            }
+                        ]
+                    },
+                    {
+                        "item_type": "text",
+                        "item_content": [
+                            {
+                                "type": "text",
+                                "content": "Ting Chen. 2023. On the importance of noise scheduling for diffusion models. arXiv preprint arXiv:2301.10972 (2023)."
+                            }
+                        ]
+                    },
+                    {
+                        "item_type": "text",
+                        "item_content": [
+                            {
+                                "type": "text",
+                                "content": "Min Jin Chong and David Forsyth. 2020. Effectively unbiased FID and Inception Score and where to find them. 6070–6079."
+                            }
+                        ]
+                    },
+                    {
+                        "item_type": "text",
+                        "item_content": [
+                            {
+                                "type": "text",
+                                "content": "Özgün Çiçek, Ahmed Abdulkadir, Soeren S Lienkamp, Thomas Brox, and Olaf Ronneberger. 2016. 3D U-Net: learning dense volumetric segmentation from sparse annotation. Springer, 424-432."
+                            }
+                        ]
+                    },
+                    {
+                        "item_type": "text",
+                        "item_content": [
+                            {
+                                "type": "text",
+                                "content": "Florinel-Alin Croitoru, Vlad Hondru, Radu Tudor Ionescu, and Mubarak Shah. 2022. Diffusion models in vision: A survey. arXiv preprint arXiv:2209.04747 (2022)."
+                            }
+                        ]
+                    },
+                    {
+                        "item_type": "text",
+                        "item_content": [
+                            {
+                                "type": "text",
+                                "content": "Florinel-Alin Croitoru, Vlad Hondru, Radu Tudor Ionescu, and Mubarak Shah. 2023 Diffusion models in vision: A survey. IEEE Transactions on Pattern Analysis and Machine Intelligence (2023)."
+                            }
+                        ]
+                    },
+                    {
+                        "item_type": "text",
+                        "item_content": [
+                            {
+                                "type": "text",
+                                "content": "James E Cutting and Ayse Candan. 2015. Shot durations, shot classes, and the increased pace of popular movies."
+                            }
+                        ]
+                    },
+                    {
+                        "item_type": "text",
+                        "item_content": [
+                            {
+                                "type": "text",
+                                "content": "Prafulla Dhariwal and Alexander Nichol. 2021. Diffusion models beat gans on image synthesis. Advances in Neural Information Processing Systems (2021)."
+                            }
+                        ]
+                    },
+                    {
+                        "item_type": "text",
+                        "item_content": [
+                            {
+                                "type": "text",
+                                "content": "Rinon Gal, Yael Vinker, Yuval Alaluf, Amit H. Bermano, Daniel Cohen-Or, Ariel Shamir, and Gal Chechik. 2023. Breathing Life Into Sketches Using Text-to-Video Priors. arXiv preprint arXiv:2311.13608 (2023)."
+                            }
+                        ]
+                    }
+                ]
+            },
+            "bbox": [
+                516,
+                551,
+                916,
+                573
+            ]
+        },
+        {
+            "type": "page_header",
+            "content": {
+                "page_header_content": [
+                    {
+                        "type": "text",
+                        "content": "8 • Bar-Tal, Chefer, Tov, Herrmann, Paiss, Zada, Ephrat, Hur, Liu, Raj, Li, Rubinstein, Michaeli, Wang, Sun, Dekel and Mosseri"
+                    }
+                ]
+            },
+            "bbox": [
+                78,
+                68,
+                687,
+                79
+            ]
+        },
+        {
+            "type": "page_footer",
+            "content": {
+                "page_footer_content": [
+                    {
+                        "type": "text",
+                        "content": "SA Conference Papers '24, December 03–06, 2024, Tokyo, Japan"
+                    }
+                ]
+            },
+            "bbox": [
+                78,
+                893,
+                383,
+                905
+            ]
+        }
+    ],
+    [
+        {
+            "type": "list",
+            "content": {
+                "list_type": "reference_list",
+                "list_items": [
+                    {
+                        "item_type": "text",
+                        "item_content": [
+                            {
+                                "type": "text",
+                                "content": "Songwei Ge, Seungjun Nah, Guilin Liu, Tyler Poon, Andrew Tao, Bryan Catanzaro, David Jacobs, Jia-Bin Huang, Ming-Yu Liu, and Yogesh Balaji. 2023. Preserve your own correlation: A noise prior for video diffusion models. 22930–22941."
+                            }
+                        ]
+                    },
+                    {
+                        "item_type": "text",
+                        "item_content": [
+                            {
+                                "type": "text",
+                                "content": "Rohit Girdhar, Mannat Singh, Andrew Brown, Quentin Duval, Samaneh Azadi, Sai Saketh Rambhatla, Akbar Shah, Xi Yin, Devi Parikh, and Ishan Misra. 2023. Emu Video: Factorizing Text-to-Video Generation by Explicit Image Conditioning. arXiv preprint arXiv:2311.10709 (2023)."
+                            }
+                        ]
+                    },
+                    {
+                        "item_type": "text",
+                        "item_content": [
+                            {
+                                "type": "text",
+                                "content": "Jiatao Gu, Shuangfei Zhai, Yizhe Zhang, Josh Susskind, and Navdeep Jaitly. 2023. Matryoshka diffusion models. arXiv preprint arXiv:2310.15111 (2023)."
+                            }
+                        ]
+                    },
+                    {
+                        "item_type": "text",
+                        "item_content": [
+                            {
+                                "type": "text",
+                                "content": "Yuwei Guo, Ceyuan Yang, Anyi Rao, Yaohui Wang, Yu Qiao, Dahua Lin, and Bo Dai. 2023. AnimateDiff: Animate your personalized text-to-image diffusion models without specific tuning. arXiv preprint arXiv:2307.04725 (2023)."
+                            }
+                        ]
+                    },
+                    {
+                        "item_type": "text",
+                        "item_content": [
+                            {
+                                "type": "text",
+                                "content": "Agrim Gupta, Lijun Yu, Kihyuk Sohn, Xiuye Gu, Meera Hahn, Li Fei-Fei, Irfan Essa, Lu Jiang, and José Lezama. 2023. Photorealistic Video Generation with Diffusion Models. arXiv preprint arXiv:2312.06662 (2023)."
+                            }
+                        ]
+                    },
+                    {
+                        "item_type": "text",
+                        "item_content": [
+                            {
+                                "type": "text",
+                                "content": "Jonathan Ho, William Chan, Chitwan Saharia, Jay Whang, Ruiqi Gao, Alexey Gritsenko, Diederik P Kingma, Ben Poole, Mohammad Norouzi, David J Fleet, et al. 2022a. Imagen video: High definition video generation with diffusion models. arXiv preprint arXiv:2210.02303 (2022)."
+                            }
+                        ]
+                    },
+                    {
+                        "item_type": "text",
+                        "item_content": [
+                            {
+                                "type": "text",
+                                "content": "Jonathan Ho, Ajay Jain, and Pieter Abbeel. 2020. Denoising diffusion probabilistic models. 33 (2020), 6840–6851."
+                            }
+                        ]
+                    },
+                    {
+                        "item_type": "text",
+                        "item_content": [
+                            {
+                                "type": "text",
+                                "content": "Jonathan Ho, Tim Salimans, Alexey Gritsenko, William Chan, Mohammad Norouzi, and David J. Fleet. 2022b. Video Diffusion Models. arXiv:2204.03458 [cs.CV]"
+                            }
+                        ]
+                    },
+                    {
+                        "item_type": "text",
+                        "item_content": [
+                            {
+                                "type": "text",
+                                "content": "Wenyi Hong, Ming Ding, Wendi Zheng, Xinghan Liu, and Jie Tang. 2022. CogVideo: Large-scale pretraining for text-to-video generation via transformers. arXiv preprint arXiv:2205.15868 (2022)."
+                            }
+                        ]
+                    },
+                    {
+                        "item_type": "text",
+                        "item_content": [
+                            {
+                                "type": "text",
+                                "content": "Emiel Hoogeboom, Jonathan Heek, and Tim Salimans. 2023. Simple diffusion: End-toend diffusion for high resolution images."
+                            }
+                        ]
+                    },
+                    {
+                        "item_type": "text",
+                        "item_content": [
+                            {
+                                "type": "text",
+                                "content": "Nicholas Kolkin, Jason Salavon, and Gregory Shakhnarovich. 2019. Style transfer by relaxed optimal transport and self-similarity. 10051–10060."
+                            }
+                        ]
+                    },
+                    {
+                        "item_type": "text",
+                        "item_content": [
+                            {
+                                "type": "text",
+                                "content": "Dan Kondratyuk, Lijun Yu, Xiuye Gu, José Lezama, Jonathan Huang, Rachel Hornung, Hartwig Adam, Hassan Akbari, Yair Alon, Vighnesh Birodkar, et al. 2023. VideoPoet: A Large Language Model for Zero-Shot Video Generation. arXiv preprint arXiv:2312.14125 (2023)."
+                            }
+                        ]
+                    },
+                    {
+                        "item_type": "text",
+                        "item_content": [
+                            {
+                                "type": "text",
+                                "content": "Shanchuan Lin, Bingchen Liu, Jiashi Li, and Xiao Yang. 2024. Common diffusion noise schedules and sample steps are flawed. In Proceedings of the IEEE/CVF Winter Conference on Applications of Computer Vision. 5404–5411."
+                            }
+                        ]
+                    },
+                    {
+                        "item_type": "text",
+                        "item_content": [
+                            {
+                                "type": "text",
+                                "content": "Chenlin Meng, Yutong He, Yang Song, Jiaming Song, Jiajun Wu, Jun-Yan Zhu, and Stefano Ermon. 2022. SDEdit: Guided Image Synthesis and Editing with Stochastic Differential Equations."
+                            }
+                        ]
+                    },
+                    {
+                        "item_type": "text",
+                        "item_content": [
+                            {
+                                "type": "text",
+                                "content": "Alexander Quinn Nichol and Prafulla Dhariwal. 2021. Improved denoising diffusion probabilistic models. In International Conference on Machine Learning. PMLR."
+                            }
+                        ]
+                    },
+                    {
+                        "item_type": "text",
+                        "item_content": [
+                            {
+                                "type": "text",
+                                "content": "Gaurav Parmar, Richard Zhang, and Jun-Yan Zhu. 2022. On Aliased Resizing and Surprising Subtleties in GAN Evaluation. In CVPR."
+                            }
+                        ]
+                    },
+                    {
+                        "item_type": "text",
+                        "item_content": [
+                            {
+                                "type": "text",
+                                "content": "William Peebles and Saining Xie. 2023. Scalable Diffusion Models with Transformers. arXiv:2212.09748 [cs.CV] https://arxiv.org/abs/2212.09748"
+                            }
+                        ]
+                    },
+                    {
+                        "item_type": "text",
+                        "item_content": [
+                            {
+                                "type": "text",
+                                "content": "Pika labs. 2023. https://www.pika.art/ (2023)."
+                            }
+                        ]
+                    },
+                    {
+                        "item_type": "text",
+                        "item_content": [
+                            {
+                                "type": "text",
+                                "content": "Justin NM Pinkney and Doron Adler. 2020. Resolution dependent GAN interpolation for controllable image synthesis between domains. In Machine Learning for Creativity and Design NeurIPS 2020 Workshop."
+                            }
+                        ]
+                    },
+                    {
+                        "item_type": "text",
+                        "item_content": [
+                            {
+                                "type": "text",
+                                "content": "Ryan Po, Wang Yifan, Vladislav Golyanik, Kfir Aberman, Jonathan T Barron, Amit H Bermano, Eric Ryan Chan, Tali Dekel, Aleksander Holynski, Angjoo Kanazawa, et al. 2023. State of the art on diffusion models for visual computing. arXiv preprint arXiv:2310.07204 (2023)."
+                            }
+                        ]
+                    },
+                    {
+                        "item_type": "text",
+                        "item_content": [
+                            {
+                                "type": "text",
+                                "content": "Ben Poole, Ajay Jain, Jonathan T. Barron, and Ben Mildenhall. 2023. DreamFusion: Text-to-3D using 2D Diffusion."
+                            }
+                        ]
+                    },
+                    {
+                        "item_type": "text",
+                        "item_content": [
+                            {
+                                "type": "text",
+                                "content": "Aditya Ramesh, Prafulla Dhariwal, Alex Nichol, Casey Chu, and Mark Chen. 2022. Hierarchical text-conditional image generation with CLIP latents. arXiv preprint arXiv:2204.06125 (2022)."
+                            }
+                        ]
+                    },
+                    {
+                        "item_type": "text",
+                        "item_content": [
+                            {
+                                "type": "text",
+                                "content": "Robin Rombach, Andreas Blattmann, Dominik Lorenz, Patrick Esser, and Björn Ommer. 2022. High-resolution image synthesis with latent diffusion models. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition. 10684–10695."
+                            }
+                        ]
+                    },
+                    {
+                        "item_type": "text",
+                        "item_content": [
+                            {
+                                "type": "text",
+                                "content": "Olaf Ronneberger, Philipp Fischer, and Thomas Brox. 2015. U-Net: Convolutional networks for biomedical image segmentation. Springer, 234–241."
+                            }
+                        ]
+                    },
+                    {
+                        "item_type": "text",
+                        "item_content": [
+                            {
+                                "type": "text",
+                                "content": "RunwayML. 2023. Gen-2. https://research.runwayml.com/gen2 (2023)."
+                            }
+                        ]
+                    },
+                    {
+                        "item_type": "text",
+                        "item_content": [
+                            {
+                                "type": "text",
+                                "content": "Chitwan Saharia, William Chan, Huiwen Chang, Chris Lee, Jonathan Ho, Tim Salimans, David Fleet, and Mohammad Norouzi. 2022a. Palette: Image-to-image diffusion models. In ACM SIGGRAPH 2022 Conference Proceedings"
+                            }
+                        ]
+                    },
+                    {
+                        "item_type": "text",
+                        "item_content": [
+                            {
+                                "type": "text",
+                                "content": "Chitwan Saharia, William Chan, Saurabh Saxena, Lala Li, Jay Whang, Emily L Denton, Kamyar Ghasemipour, Raphael Gontijo Lopes, Burcu Karagol Ayan, Tim Salimans, et al. 2022b. Photorealistic text-to-image diffusion models with deep language understanding. 35 (2022), 36479–36494."
+                            }
+                        ]
+                    },
+                    {
+                        "item_type": "text",
+                        "item_content": [
+                            {
+                                "type": "text",
+                                "content": "Tim Salimans, Ian Goodfellow, Wojciech Zaremba, Vicki Cheung, Alec Radford, and Xi Chen. 2016. Improved techniques for training GANs. 29 (2016)."
+                            }
+                        ]
+                    },
+                    {
+                        "item_type": "text",
+                        "item_content": [
+                            {
+                                "type": "text",
+                                "content": "Noam Shazeer and Mitchell Stern. 2018. Adafactor: Adaptive learning rates with sublinear memory cost. In International Conference on Machine Learning. PMLR,"
+                            }
+                        ]
+                    },
+                    {
+                        "item_type": "text",
+                        "item_content": [
+                            {
+                                "type": "text",
+                                "content": "4596-4604."
+                            }
+                        ]
+                    },
+                    {
+                        "item_type": "text",
+                        "item_content": [
+                            {
+                                "type": "text",
+                                "content": "Uriel Singer, Adam Polyak, Thomas Hayes, Xi Yin, Jie An, Songyang Zhang, Qiyuan Hu, Harry Yang, Oron Ashual, Oran Gafni, et al. 2022. Make-a-Video: Text-to-video generation without text-video data. arXiv preprint arXiv:2209.14792 (2022)."
+                            }
+                        ]
+                    },
+                    {
+                        "item_type": "text",
+                        "item_content": [
+                            {
+                                "type": "text",
+                                "content": "Jascha Sohl-Dickstein, Eric Weiss, Niru Maheswaranathan, and Surya Ganguli. 2015. Deep unsupervised learning using nonequilibrium thermodynamics. In International Conference on Machine Learning. PMLR, 2256-2265."
+                            }
+                        ]
+                    },
+                    {
+                        "item_type": "text",
+                        "item_content": [
+                            {
+                                "type": "text",
+                                "content": "Kihyuk Sohn, Nataniel Ruiz, Kimin Lee, Daniel Castro Chin, Irina Blok, Huiwen Chang Jarred Barber, Lu Jiang, Glenn Entis, Yuanzhen Li, et al. 2023. StyleDrop: Text-to-Image Generation in Any Style. arXiv preprint arXiv:2306.00983 (2023)."
+                            }
+                        ]
+                    },
+                    {
+                        "item_type": "text",
+                        "item_content": [
+                            {
+                                "type": "text",
+                                "content": "Yang Song, Jascha Sohl-Dickstein, Diederik P Kingma, Abhishek Kumar, Stefano Ermon, and Ben Poole. 2020. Score-based generative modeling through stochastic differential equations. arXiv preprint arXiv:2011.13456 (2020)."
+                            }
+                        ]
+                    },
+                    {
+                        "item_type": "text",
+                        "item_content": [
+                            {
+                                "type": "text",
+                                "content": "Khurram Soomro, Amir Roshan Zamir, and Mubarak Shah. 2012. UCF101: A dataset of 101 human actions classes from videos in the wild. arXiv preprint arXiv:1212.0402 (2012)."
+                            }
+                        ]
+                    },
+                    {
+                        "item_type": "text",
+                        "item_content": [
+                            {
+                                "type": "text",
+                                "content": "Du Tran, Heng Wang, Lorenzo Torresani, Jamie Ray, Yann LeCun, and Manohar Paluri. 2018. A closer look at spatiotemporal convolutions for action recognition. 6450– 6459."
+                            }
+                        ]
+                    },
+                    {
+                        "item_type": "text",
+                        "item_content": [
+                            {
+                                "type": "text",
+                                "content": "Thomas Unterthiner, Sjoerd Van Steenkiste, Karol Kurach, Raphael Marinier, Marcin Michalski, and Sylvain Gelly. 2018. Towards accurate generative models of video: A new metric & challenges. arXiv preprint arXiv:1812.01717 (2018)."
+                            }
+                        ]
+                    },
+                    {
+                        "item_type": "text",
+                        "item_content": [
+                            {
+                                "type": "text",
+                                "content": "Ruben Villegas, Mohammad Babaeizadeh, Pieter-Jan Kindermans, Hernan Moraldo, Han Zhang, Mohammad Taghi Saffar, Santiago Castro, Julius Kunze, and Dumitru Erhan. 2023. Phenaki: Variable length video generation from open domain textual description."
+                            }
+                        ]
+                    },
+                    {
+                        "item_type": "text",
+                        "item_content": [
+                            {
+                                "type": "text",
+                                "content": "Jiuniu Wang, Hangjie Yuan, Dayou Chen, Yingya Zhang, Xiang Wang, and Shiwei Zhang. 2023a. Modelscope text-to-video technical report. arXiv preprint arXiv:2308.06571 (2023)."
+                            }
+                        ]
+                    },
+                    {
+                        "item_type": "text",
+                        "item_content": [
+                            {
+                                "type": "text",
+                                "content": "Xiang Wang, Hangjie Yuan, Shiwei Zhang, Dayou Chen, Jiuniu Wang, Yingya Zhang Yujun Shen, Deli Zhao, and Jingren Zhou. 2023b. VideoComposer: Compositional Video Synthesis with Motion Controllability. arXiv preprint arXiv:2306.02018 (2023)."
+                            }
+                        ]
+                    },
+                    {
+                        "item_type": "text",
+                        "item_content": [
+                            {
+                                "type": "text",
+                                "content": "Chenfei Wu, Jian Liang, Lei Ji, Fan Yang, Yuejian Fang, Daxin Jiang, and Nan Duan. 2022. Nüwa: Visual synthesis pre-training for neural visual world creation. Springer, 720-736."
+                            }
+                        ]
+                    },
+                    {
+                        "item_type": "text",
+                        "item_content": [
+                            {
+                                "type": "text",
+                                "content": "Xin Yuan, Jinoo Baek, Keyang Xu, Omer Tov, and Hongliang Fei. 2024. Inflation with Diffusion: Efficient Temporal Adaptation for Text-to-Video Super-Resolution. arXiv:arXiv:2401.10404"
+                            }
+                        ]
+                    },
+                    {
+                        "item_type": "text",
+                        "item_content": [
+                            {
+                                "type": "text",
+                                "content": "David Junhao Zhang, Jay Zhangjie Wu, Jia-Wei Liu, Rui Zhao, Lingmin Ran, Yuchao Gu, Difei Gao, and Mike Zheng Shou. 2023b. Show-1: Marrying pixel and latent diffusion models for text-to-video generation. arXiv preprint arXiv:2309.15818 (2023)."
+                            }
+                        ]
+                    },
+                    {
+                        "item_type": "text",
+                        "item_content": [
+                            {
+                                "type": "text",
+                                "content": "Lvmin Zhang, Anyi Rao, and Maneesh Agrawala. 2023a. Adding conditional control to text-to-image diffusion models. In Proceedings of the IEEE/CVF International Conference on Computer Vision. 3836-3847."
+                            }
+                        ]
+                    },
+                    {
+                        "item_type": "text",
+                        "item_content": [
+                            {
+                                "type": "text",
+                                "content": "Richard Zhang, Phillip Isola, Alexei A Efros, Eli Shechtman, and Oliver Wang. 2018. The unreasonable effectiveness of deep features as a perceptual metric. 586–595."
+                            }
+                        ]
+                    },
+                    {
+                        "item_type": "text",
+                        "item_content": [
+                            {
+                                "type": "text",
+                                "content": "Daquan Zhou, Weimin Wang, Hanshu Yan, Weiwei Lv, Yizhe Zhu, and Jiashi Feng. 2022. MagicVideo: Efficient video generation with latent diffusion models. arXiv preprint arXiv:2211.11018 (2022)."
+                            }
+                        ]
+                    }
+                ]
+            },
+            "bbox": [
+                81,
+                103,
+                482,
+                133
+            ]
+        },
+        {
+            "type": "page_header",
+            "content": {
+                "page_header_content": [
+                    {
+                        "type": "text",
+                        "content": "Lumiere: A Space-Time Diffusion Model for Video Generation"
+                    }
+                ]
+            },
+            "bbox": [
+                589,
+                69,
+                885,
+                79
+            ]
+        },
+        {
+            "type": "page_number",
+            "content": {
+                "page_number_content": [
+                    {
+                        "type": "text",
+                        "content": "9"
+                    }
+                ]
+            },
+            "bbox": [
+                905,
+                69,
+                916,
+                78
+            ]
+        },
+        {
+            "type": "page_footer",
+            "content": {
+                "page_footer_content": [
+                    {
+                        "type": "text",
+                        "content": "SA Conference Papers '24, December 03–06, 2024, Tokyo, Japan"
+                    }
+                ]
+            },
+            "bbox": [
+                612,
+                893,
+                916,
+                905
+            ]
+        }
+    ],
+    [
+        {
+            "type": "image",
+            "content": {
+                "image_source": {
+                    "path": "images/2a58921638364653245dc13c441505ec39eee49cc3b3dc565ec983ed4ba894be.jpg"
+                },
+                "image_caption": [
+                    {
+                        "type": "text",
+                        "content": "Image-to-Video"
+                    }
+                ],
+                "image_footnote": []
+            },
+            "bbox": [
+                104,
+                204,
+                495,
+                280
+            ]
+        },
+        {
+            "type": "image",
+            "content": {
+                "image_source": {
+                    "path": "images/29bedc8e28f0333345f0fdeafd5aecf127b2280f0aefb830b794aba9f953c52d.jpg"
+                },
+                "image_caption": [],
+                "image_footnote": []
+            },
+            "bbox": [
+                503,
+                291,
+                893,
+                368
+            ]
+        },
+        {
+            "type": "image",
+            "content": {
+                "image_source": {
+                    "path": "images/843cb70aacd56e7a63c5222c5c31feece7ea951621ebad220c2ca85673bc80dd.jpg"
+                },
+                "image_caption": [],
+                "image_footnote": []
+            },
+            "bbox": [
+                104,
+                574,
+                495,
+                650
+            ]
+        },
+        {
+            "type": "image",
+            "content": {
+                "image_source": {
+                    "path": "images/2684f0b4f245bdb8b92ca749fe299797ac4e4e53ed9ddcac57a1de995871e26a.jpg"
+                },
+                "image_caption": [],
+                "image_footnote": []
+            },
+            "bbox": [
+                104,
+                487,
+                495,
+                563
+            ]
+        },
+        {
+            "type": "image",
+            "content": {
+                "image_source": {
+                    "path": "images/4b169c3319eb65eeab899785f3d69754ef13cfde42b74c43dd13e0dd4c72c65f.jpg"
+                },
+                "image_caption": [
+                    {
+                        "type": "text",
+                        "content": "Text-to-Video"
+                    }
+                ],
+                "image_footnote": []
+            },
+            "bbox": [
+                104,
+                114,
+                202,
+                191
+            ]
+        },
+        {
+            "type": "image",
+            "content": {
+                "image_source": {
+                    "path": "images/5e1f78e3476aab2c9104662cf5d0adea517cc7b72e5086ef632e7e5652eefb58.jpg"
+                },
+                "image_caption": [],
+                "image_footnote": []
+            },
+            "bbox": [
+                202,
+                114,
+                300,
+                191
+            ]
+        },
+        {
+            "type": "image",
+            "content": {
+                "image_source": {
+                    "path": "images/426c784645fa6c9f30c2dd8d7b49aa302f6c1bcc2a2e665649091ef5de7ef247.jpg"
+                },
+                "image_caption": [],
+                "image_footnote": [
+                    {
+                        "type": "text",
+                        "content": "Golden retriever puppy in the park, autumn"
+                    }
+                ]
+            },
+            "bbox": [
+                300,
+                116,
+                398,
+                191
+            ]
+        },
+        {
+            "type": "image",
+            "content": {
+                "image_source": {
+                    "path": "images/631bef6267c53e3ee2035a76bcca65906b402dfda873dbc9b31d9bd0e1d5bf8e.jpg"
+                },
+                "image_caption": [],
+                "image_footnote": []
+            },
+            "bbox": [
+                398,
+                116,
+                495,
+                191
+            ]
+        },
+        {
+            "type": "image",
+            "content": {
+                "image_source": {
+                    "path": "images/a3a8eed3db6359866b161dbdc352961c487027367f80206d66f9dcb951eb0817.jpg"
+                },
+                "image_caption": [],
+                "image_footnote": []
+            },
+            "bbox": [
+                503,
+                116,
+                599,
+                189
+            ]
+        },
+        {
+            "type": "image",
+            "content": {
+                "image_source": {
+                    "path": "images/7c77660850bfd457bd336042af5d8cd1803eda1a4070d10c8dbd8cabbd97ff24.jpg"
+                },
+                "image_caption": [],
+                "image_footnote": []
+            },
+            "bbox": [
+                601,
+                116,
+                697,
+                189
+            ]
+        },
+        {
+            "type": "image",
+            "content": {
+                "image_source": {
+                    "path": "images/731644bcf62255715e590f5114659f97d52c4756c2069011e4e93e8c3613fa1e.jpg"
+                },
+                "image_caption": [],
+                "image_footnote": []
+            },
+            "bbox": [
+                699,
+                116,
+                794,
+                188
+            ]
+        },
+        {
+            "type": "image",
+            "content": {
+                "image_source": {
+                    "path": "images/6f4f18ae19925c31bcf878a2b00cec450783578610135653af69d880f323e9ae.jpg"
+                },
+                "image_caption": [],
+                "image_footnote": [
+                    {
+                        "type": "text",
+                        "content": "Chocolate syrup pouring on a vanilla ice cream"
+                    },
+                    {
+                        "type": "text",
+                        "content": "Astronaut walking on the planet Mars"
+                    }
+                ]
+            },
+            "bbox": [
+                795,
+                114,
+                893,
+                189
+            ]
+        },
+        {
+            "type": "image",
+            "content": {
+                "image_source": {
+                    "path": "images/e5ff6d4aa3ebc6f83f496fc7c0e294b3006a282c52b288c7fc0f7d569ad9ddac.jpg"
+                },
+                "image_caption": [],
+                "image_footnote": []
+            },
+            "bbox": [
+                302,
+                291,
+                398,
+                367
+            ]
+        },
+        {
+            "type": "image",
+            "content": {
+                "image_source": {
+                    "path": "images/582fb4bfd0c0ec99d3ac8818b300bf3c0cabb1c60fcf340418a4adeedb2e595e.jpg"
+                },
+                "image_caption": [],
+                "image_footnote": []
+            },
+            "bbox": [
+                202,
+                290,
+                300,
+                367
+            ]
+        },
+        {
+            "type": "image",
+            "content": {
+                "image_source": {
+                    "path": "images/634d02ae2b2f1a94d5aa66f395f8b6fe4f653f6e153be08ab3f8bcca89c455d3.jpg"
+                },
+                "image_caption": [],
+                "image_footnote": [
+                    {
+                        "type": "text",
+                        "content": "Beer pouring into glass"
+                    }
+                ]
+            },
+            "bbox": [
+                104,
+                292,
+                202,
+                367
+            ]
+        },
+        {
+            "type": "image",
+            "content": {
+                "image_source": {
+                    "path": "images/22b061b820262b24fe5d2fee41ffe74ba329b0042aae477f8004072d5b6f1cc1.jpg"
+                },
+                "image_caption": [],
+                "image_footnote": []
+            },
+            "bbox": [
+                699,
+                204,
+                794,
+                277
+            ]
+        },
+        {
+            "type": "image",
+            "content": {
+                "image_source": {
+                    "path": "images/daee04bfd575db622847f740ff2da4c2df44f58d46b7ae43e60eede04b821b5f.jpg"
+                },
+                "image_caption": [],
+                "image_footnote": []
+            },
+            "bbox": [
+                398,
+                291,
+                495,
+                367
+            ]
+        },
+        {
+            "type": "image",
+            "content": {
+                "image_source": {
+                    "path": "images/a83b389b2b8067a2c662fd862b8ee7af06c579a0f1f8498fbef7006c91e4b03e.jpg"
+                },
+                "image_caption": [],
+                "image_footnote": []
+            },
+            "bbox": [
+                503,
+                204,
+                601,
+                279
+            ]
+        },
+        {
+            "type": "image",
+            "content": {
+                "image_source": {
+                    "path": "images/f8731b4a0028c2bf5b37b4e487cf256bb9484fe7920c2be21d4cbee91e2a33ef.jpg"
+                },
+                "image_caption": [],
+                "image_footnote": []
+            },
+            "bbox": [
+                300,
+                383,
+                397,
+                454
+            ]
+        },
+        {
+            "type": "image",
+            "content": {
+                "image_source": {
+                    "path": "images/2691b351411496b8cfdd568e8b89a661d683804b88ccc30ad8df43117fb8edb0.jpg"
+                },
+                "image_caption": [],
+                "image_footnote": [
+                    {
+                        "type": "text",
+                        "content": "Epic tracking of a gorilla walking gracefully"
+                    }
+                ]
+            },
+            "bbox": [
+                202,
+                383,
+                300,
+                454
+            ]
+        },
+        {
+            "type": "image",
+            "content": {
+                "image_source": {
+                    "path": "images/1aa3e28069d688f49c68e8cc64a478d658dbf99996fe1571b95a1dfd96cbcf06.jpg"
+                },
+                "image_caption": [],
+                "image_footnote": []
+            },
+            "bbox": [
+                795,
+                204,
+                892,
+                279
+            ]
+        },
+        {
+            "type": "image",
+            "content": {
+                "image_source": {
+                    "path": "images/6ef74f27af2ec97a91001724618b85e30a70a4211369d85f597aee0c9a75fed4.jpg"
+                },
+                "image_caption": [],
+                "image_footnote": [
+                    {
+                        "type": "text",
+                        "content": "A panda playing a ukulele at home"
+                    }
+                ]
+            },
+            "bbox": [
+                106,
+                380,
+                202,
+                455
+            ]
+        },
+        {
+            "type": "image",
+            "content": {
+                "image_source": {
+                    "path": "images/d6a2fe5b4983b66f3f352984444d1c4fa077fd12d16be16dd7642f059ca12ea8.jpg"
+                },
+                "image_caption": [],
+                "image_footnote": []
+            },
+            "bbox": [
+                602,
+                205,
+                696,
+                277
+            ]
+        },
+        {
+            "type": "image",
+            "content": {
+                "image_source": {
+                    "path": "images/93cbe34a6db83dbf0fbe429938b6979586a867a2e4faac282335afae88e2c440.jpg"
+                },
+                "image_caption": [],
+                "image_footnote": []
+            },
+            "bbox": [
+                398,
+                383,
+                495,
+                454
+            ]
+        },
+        {
+            "type": "image",
+            "content": {
+                "image_source": {
+                    "path": "images/ae1dfe015b5ff52d629b7d6c40776c486802c099412fc276230f319eeca0673d.jpg"
+                },
+                "image_caption": [],
+                "image_footnote": []
+            },
+            "bbox": [
+                503,
+                378,
+                602,
+                455
+            ]
+        },
+        {
+            "type": "image",
+            "content": {
+                "image_source": {
+                    "path": "images/56948d9a7532503ecf6be3eff93f14252a2012028e5ec1a6df1066eb63c73cc4.jpg"
+                },
+                "image_caption": [],
+                "image_footnote": []
+            },
+            "bbox": [
+                602,
+                380,
+                697,
+                454
+            ]
+        },
+        {
+            "type": "image",
+            "content": {
+                "image_source": {
+                    "path": "images/3e0ecf935b1fd4488a3eaeebd95f7b3cd677a92fc3d55b1f899d8b0da51b0a5a.jpg"
+                },
+                "image_caption": [],
+                "image_footnote": [
+                    {
+                        "type": "text",
+                        "content": "Sunset time lapse at the beach"
+                    },
+                    {
+                        "type": "text",
+                        "content": "Flying through a temple in ruins, epic, mist"
+                    },
+                    {
+                        "type": "text",
+                        "content": "A panda bear driving a car"
+                    }
+                ]
+            },
+            "bbox": [
+                699,
+                380,
+                794,
+                454
+            ]
+        },
+        {
+            "type": "image",
+            "content": {
+                "image_source": {
+                    "path": "images/5ed02e1df2266b2ef23406b6c4acfa2847b5705eece9077277e3d05dc1190e40.jpg"
+                },
+                "image_caption": [],
+                "image_footnote": []
+            },
+            "bbox": [
+                699,
+                488,
+                795,
+                563
+            ]
+        },
+        {
+            "type": "image",
+            "content": {
+                "image_source": {
+                    "path": "images/373403a17d85d1833e36341dfb924f9bc3a6d305bf80f0aba5454e1b7895f815.jpg"
+                },
+                "image_caption": [],
+                "image_footnote": []
+            },
+            "bbox": [
+                602,
+                488,
+                699,
+                563
+            ]
+        },
+        {
+            "type": "image",
+            "content": {
+                "image_source": {
+                    "path": "images/bce7e4303f17119244d23c233c13bfbf4005c694c35f9c63acd1893c2a45427c.jpg"
+                },
+                "image_caption": [],
+                "image_footnote": [
+                    {
+                        "type": "text",
+                        "content": "Bigfoot walking through the woods in Northern California"
+                    }
+                ]
+            },
+            "bbox": [
+                503,
+                488,
+                601,
+                563
+            ]
+        },
+        {
+            "type": "image",
+            "content": {
+                "image_source": {
+                    "path": "images/636cf28c4acb82e2c81503144354a3733e1602d1e35d94a2a1288f9cce587fb5.jpg"
+                },
+                "image_caption": [],
+                "image_footnote": []
+            },
+            "bbox": [
+                204,
+                665,
+                299,
+                738
+            ]
+        },
+        {
+            "type": "image",
+            "content": {
+                "image_source": {
+                    "path": "images/c58f1c3fdd0b2ad4db943b5e1257971e8d11cfcdcc1f4fcff80ded8957e59d76.jpg"
+                },
+                "image_caption": [],
+                "image_footnote": []
+            },
+            "bbox": [
+                797,
+                380,
+                892,
+                454
+            ]
+        },
+        {
+            "type": "image",
+            "content": {
+                "image_source": {
+                    "path": "images/9621086eb90aa4b9b5fe3a892ac680aff5af816cf776cb350efb7ff8edd22b95.jpg"
+                },
+                "image_caption": [],
+                "image_footnote": []
+            },
+            "bbox": [
+                398,
+                664,
+                495,
+                739
+            ]
+        },
+        {
+            "type": "image",
+            "content": {
+                "image_source": {
+                    "path": "images/2ba12da42a8d9b63cba9714c848a24af422fcf9959dcddbfb1aef9056a232e96.jpg"
+                },
+                "image_caption": [],
+                "image_footnote": []
+            },
+            "bbox": [
+                302,
+                665,
+                397,
+                739
+            ]
+        },
+        {
+            "type": "image",
+            "content": {
+                "image_source": {
+                    "path": "images/b2187cbdb87076f75e0861da66bd08f062e1cf9ddb1ccbc5fb601538593633fc.jpg"
+                },
+                "image_caption": [],
+                "image_footnote": [
+                    {
+                        "type": "text",
+                        "content": "Flying through an intense battle between pirate ships in a stormy ocean"
+                    }
+                ]
+            },
+            "bbox": [
+                106,
+                664,
+                200,
+                738
+            ]
+        },
+        {
+            "type": "image",
+            "content": {
+                "image_source": {
+                    "path": "images/6acff5dcb8ba653e695cfb39c51764c1d163e51eb29d5a28ffeca01e2e81521f.jpg"
+                },
+                "image_caption": [
+                    {
+                        "type": "text",
+                        "content": "A cat playing piano"
+                    }
+                ],
+                "image_footnote": []
+            },
+            "bbox": [
+                797,
+                488,
+                892,
+                563
+            ]
+        },
+        {
+            "type": "image",
+            "content": {
+                "image_source": {
+                    "path": "images/45d2d2d6efd45d954e7ac8ad2dbf64e365a1ee0136778b9970b366db88600d7d.jpg"
+                },
+                "image_caption": [],
+                "image_footnote": []
+            },
+            "bbox": [
+                503,
+                575,
+                599,
+                650
+            ]
+        },
+        {
+            "type": "image",
+            "content": {
+                "image_source": {
+                    "path": "images/93461fe807bffa272ab5260d015291f84141dc4f8d13bb32db6374ad885811dc.jpg"
+                },
+                "image_caption": [],
+                "image_footnote": []
+            },
+            "bbox": [
+                697,
+                577,
+                794,
+                648
+            ]
+        },
+        {
+            "type": "image",
+            "content": {
+                "image_source": {
+                    "path": "images/3332f73d690f98d139a344f956d9cf6bfa74b6b33dc64e9e4bd7bb2dc38dad97.jpg"
+                },
+                "image_caption": [],
+                "image_footnote": []
+            },
+            "bbox": [
+                601,
+                577,
+                699,
+                648
+            ]
+        },
+        {
+            "type": "image",
+            "content": {
+                "image_source": {
+                    "path": "images/052f57919e12330aa07e57065fea73d4144dd078bcfece079063d76b1d70ecca.jpg"
+                },
+                "image_caption": [],
+                "image_footnote": [
+                    {
+                        "type": "text",
+                        "content": "A teddy bear running in New York City"
+                    }
+                ]
+            },
+            "bbox": [
+                795,
+                574,
+                892,
+                650
+            ]
+        },
+        {
+            "type": "image",
+            "content": {
+                "image_source": {
+                    "path": "images/44935927014334ed1891c1c749d1076d54a7de3232f4c6aeee1602934c492e61.jpg"
+                },
+                "image_caption": [],
+                "image_footnote": []
+            },
+            "bbox": [
+                503,
+                664,
+                601,
+                738
+            ]
+        },
+        {
+            "type": "image",
+            "content": {
+                "image_source": {
+                    "path": "images/6e9bdfb03c7ea9e17ea7770698d7128ac79fa18dcc4a0d7a8d6fa125b008932c.jpg"
+                },
+                "image_caption": [],
+                "image_footnote": []
+            },
+            "bbox": [
+                104,
+                751,
+                495,
+                827
+            ]
+        },
+        {
+            "type": "image",
+            "content": {
+                "image_source": {
+                    "path": "images/4590a87b26790e7e04d6b9beef1c402598f959c6eeba0ac4a1cd28578eb9e9ec.jpg"
+                },
+                "image_caption": [],
+                "image_footnote": []
+            },
+            "bbox": [
+                601,
+                665,
+                697,
+                738
+            ]
+        },
+        {
+            "type": "image",
+            "content": {
+                "image_source": {
+                    "path": "images/05984505210e9da1417884383e68bc33ad94950f5189e41b9afc8ce9a178f465.jpg"
+                },
+                "image_caption": [],
+                "image_footnote": []
+            },
+            "bbox": [
+                699,
+                665,
+                794,
+                738
+            ]
+        },
+        {
+            "type": "image",
+            "content": {
+                "image_source": {
+                    "path": "images/08296ab71bb65afdb2a97fbc57f94b4733c7df1c967eec98a40b337ea6eb0178.jpg"
+                },
+                "image_caption": [],
+                "image_footnote": [
+                    {
+                        "type": "text",
+                        "content": "Bee buzzing busily around a field of blooming wildflowers"
+                    },
+                    {
+                        "type": "text",
+                        "content": "Jack russell terrier dog snowboarding. GoPro shot"
+                    }
+                ]
+            },
+            "bbox": [
+                795,
+                662,
+                892,
+                739
+            ]
+        },
+        {
+            "type": "image",
+            "content": {
+                "image_source": {
+                    "path": "images/717a767a5128403b8c62ab8f0c54af3d847f9d6ab6fee3d7d36ae49a6cb1374d.jpg"
+                },
+                "image_caption": [],
+                "image_footnote": [
+                    {
+                        "type": "text",
+                        "content": "Sailboat sailing on a sunny day in a mountain lake"
+                    }
+                ]
+            },
+            "bbox": [
+                503,
+                751,
+                893,
+                827
+            ]
+        },
+        {
+            "type": "paragraph",
+            "content": {
+                "paragraph_content": [
+                    {
+                        "type": "text",
+                        "content": "Fig. 9. Video generation results. Sample results of text-to-video and image-to-video generation. The text prompt is indicated below each example. For image-to-video, the leftmost frame is provided to the model as a condition (see Sec. 4.2). We refer the reader to the SM for full-video results. SA Conference Papers '24, December 03–06, 2024, Tokyo, Japan."
+                    }
+                ]
+            },
+            "bbox": [
+                78,
+                866,
+                916,
+                906
+            ]
+        },
+        {
+            "type": "page_number",
+            "content": {
+                "page_number_content": [
+                    {
+                        "type": "text",
+                        "content": "10"
+                    }
+                ]
+            },
+            "bbox": [
+                81,
+                69,
+                98,
+                78
+            ]
+        },
+        {
+            "type": "page_header",
+            "content": {
+                "page_header_content": [
+                    {
+                        "type": "text",
+                        "content": "Bar-Tal, Chefer, Tov, Herrmann, Paiss, Zada, Ephrat, Hur, Liu, Raj, Li, Rubinstein, Michaeli, Wang, Sun, Dekel and Mosseri"
+                    }
+                ]
+            },
+            "bbox": [
+                111,
+                68,
+                694,
+                80
+            ]
+        }
+    ],
+    [
+        {
+            "type": "image",
+            "content": {
+                "image_source": {
+                    "path": "images/06bbf7c5252b8745ddce937e4039f47f1d401e1cb9fcf05eeb7bb81c19d7fbea.jpg"
+                },
+                "image_caption": [
+                    {
+                        "type": "text",
+                        "content": "Fig. 10. Video-to-video via SDEdit. Our base model generates full-frame-rate videos, without a TSR cascade, and thus facilitates an intuitive interface for downstream applications. We demonstrate this property by applying SDEdit [Meng et al. 2022] using our model, achieving consistent video stylization. We show several frames of a given input video in the first row, and the corresponding edited frames below. Woman jogging video by Pexels/fauxels"
+                    }
+                ],
+                "image_footnote": []
+            },
+            "bbox": [
+                81,
+                94,
+                916,
+                364
+            ]
+        },
+        {
+            "type": "page_header",
+            "content": {
+                "page_header_content": [
+                    {
+                        "type": "text",
+                        "content": "Lumiere: A Space-Time Diffusion Model for Video Generation"
+                    }
+                ]
+            },
+            "bbox": [
+                584,
+                68,
+                882,
+                79
+            ]
+        },
+        {
+            "type": "page_number",
+            "content": {
+                "page_number_content": [
+                    {
+                        "type": "text",
+                        "content": "11"
+                    }
+                ]
+            },
+            "bbox": [
+                901,
+                69,
+                915,
+                78
+            ]
+        },
+        {
+            "type": "page_footer",
+            "content": {
+                "page_footer_content": [
+                    {
+                        "type": "text",
+                        "content": "SA Conference Papers '24, December 03–06, 2024, Tokyo, Japan."
+                    }
+                ]
+            },
+            "bbox": [
+                612,
+                893,
+                916,
+                906
+            ]
+        }
+    ]
+]

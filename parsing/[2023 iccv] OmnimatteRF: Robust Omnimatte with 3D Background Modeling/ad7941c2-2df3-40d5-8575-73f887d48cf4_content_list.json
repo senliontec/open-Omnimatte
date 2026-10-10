@@ -1,0 +1,1685 @@
+[
+    {
+        "type": "text",
+        "text": "OmnimatteRF: Robust Omnimatte with 3D Background Modeling",
+        "text_level": 1,
+        "bbox": [
+            148,
+            128,
+            820,
+            152
+        ],
+        "page_idx": 0
+    },
+    {
+        "type": "text",
+        "text": "Geng Lin¹Chen Gao2 Jia-Bin Huang1,2 Changil Kim² Yipeng Wang2Matthias Zwicker1Ayush Saraf2 1University of Maryland, College Park 2Meta",
+        "bbox": [
+            176,
+            180,
+            787,
+            239
+        ],
+        "page_idx": 0
+    },
+    {
+        "type": "text",
+        "text": "https://omnimatte-rf.github.io",
+        "bbox": [
+            349,
+            243,
+            620,
+            256
+        ],
+        "page_idx": 0
+    },
+    {
+        "type": "text",
+        "text": "Abstract",
+        "text_level": 2,
+        "bbox": [
+            233,
+            291,
+            313,
+            309
+        ],
+        "page_idx": 0
+    },
+    {
+        "type": "text",
+        "text": "Video matting has broad applications, from adding interesting effects to casually captured movies to assisting video production professionals. Matting with associated effects such as shadows and reflections has also attracted increasing research activity, and methods like Omnimatte have been proposed to separate dynamic foreground objects of interest into their own layers. However, prior works represent video backgrounds as 2D image layers, limiting their capacity to express more complicated scenes, thus hindering application to real-world videos. In this paper, we propose a novel video matting method, OmnimatteRF, that combines dynamic 2D foreground layers and a 3D background model. The 2D layers preserve the details of the subjects, while the 3D background robustly reconstructs scenes in real-world videos. Extensive experiments demonstrate that our method reconstructs scenes with better quality on various videos.",
+        "bbox": [
+            75,
+            325,
+            472,
+            583
+        ],
+        "page_idx": 0
+    },
+    {
+        "type": "text",
+        "text": "1. Introduction",
+        "text_level": 2,
+        "bbox": [
+            76,
+            616,
+            209,
+            632
+        ],
+        "page_idx": 0
+    },
+    {
+        "type": "text",
+        "text": "Video matting is the problem of separating a video into multiple layers with associated alpha mattes such that the layers are composited back to the original video. It has a wide variety of applications in video editing as it allows for substituting layers or processing them individually before compositing back, and thus has been studied well over decades. In typical applications like rotoscoping in video production and background blurring in online meetings, the goal is to obtain the masks containing only the object of interest. In many cases, however, it is often preferred to be able to create video mattes that include not only the object of interest but also its associated effects, like shadow and reflections. This could reduce the often-required, additional manual segmentation of secondary effects and help increase realism in the resulting edited video. Being able to factor out the related effects of foreground objects also helps reconstruct a clean background, which is preferred in applications like object removal. Despite these benefits, this problem is much more ill-posed and has been much less explored than the conventional matting problem.",
+        "bbox": [
+            75,
+            643,
+            472,
+            901
+        ],
+        "page_idx": 0
+    },
+    {
+        "type": "image",
+        "img_path": "images/306e29f8588f501ef6e19d64b047469d2f89d99826c9eeff110ba098c48aa01d.jpg",
+        "image_caption": [
+            "(a) Omnimatte BG"
+        ],
+        "image_footnote": [],
+        "bbox": [
+            504,
+            290,
+            692,
+            375
+        ],
+        "page_idx": 0
+    },
+    {
+        "type": "image",
+        "img_path": "images/9186f34a1ebc2d767cc37fd7b43d816d23c9dcac11abb879b9eafbdea27d479f.jpg",
+        "image_caption": [
+            "(b) Omnimatte FG"
+        ],
+        "image_footnote": [],
+        "bbox": [
+            699,
+            290,
+            887,
+            375
+        ],
+        "page_idx": 0
+    },
+    {
+        "type": "image",
+        "img_path": "images/6a69e81103f012123eb8f68feb2d6f1c82922d0cca913141a688f57a5162b5cd.jpg",
+        "image_caption": [
+            "(c) Our BG"
+        ],
+        "image_footnote": [],
+        "bbox": [
+            504,
+            393,
+            692,
+            477
+        ],
+        "page_idx": 0
+    },
+    {
+        "type": "image",
+        "img_path": "images/61b89f433bbee1c3db80e25de7bc2afc298f5e30da9563871275ed2c52d73d8f.jpg",
+        "image_caption": [
+            "(d) Our FG",
+            "Figure 1. Video with parallax effects. Limited by their 2D image representation (a), previous works such as Omnimatte fail to handle videos with parallax effects in the background. Their foreground layer (b) has to capture (dis)occlusion effects to minimize the reconstruction loss. In contrast, our method employs a 3D background (c), enabling us to obtain clean foreground layers (d)."
+        ],
+        "image_footnote": [],
+        "bbox": [
+            699,
+            393,
+            887,
+            478
+        ],
+        "page_idx": 0
+    },
+    {
+        "type": "text",
+        "text": "",
+        "bbox": [
+            498,
+            611,
+            893,
+            657
+        ],
+        "page_idx": 0
+    },
+    {
+        "type": "text",
+        "text": "The most promising attempt to tackle this problem is Omnimatte [21]. Omnimattes are RGBA layers that capture dynamic foreground objects and their associated effects. Given a video and one or more coarse mask videos, each corresponding to a foreground object of interest, the method reconstructs an omnimatte for each object, in addition to a static background that is free from all of the objects of interest and their associated effects. While Omnimatte [21] works well for many videos, it is limited by its use of homography to model backgrounds, which requires the background be planar or the video contains only rotational motion. This is not the case as long as there exists parallax caused by camera motions and objects occlude each other. This limitation hinders its application in many real-world videos, as shown in Fig. 1.",
+        "bbox": [
+            496,
+            659,
+            893,
+            885
+        ],
+        "page_idx": 0
+    },
+    {
+        "type": "text",
+        "text": "D2NeRF [36] attempts to address this issue using two radiance fields, which model the dynamic and static part of the scene. The method works entirely in 3D and can handle complicated scenes with significant camera motion. It is also self-supervised in the sense that no mask input is necessary. However, it separates all moving objects from a static background and it is not clear how to incorporate 2D guidance defined on video such as rough masks. Further, it cannot independently model multiple foreground objects. A simple solution of modeling each foreground object with a separate radiance field could lead to excessive training time, yet it is not clear how motions could be separated meaningfully in each radiance field.",
+        "bbox": [
+            517,
+            885,
+            893,
+            900
+        ],
+        "page_idx": 0
+    },
+    {
+        "type": "header",
+        "text": "CvF",
+        "bbox": [
+            106,
+            2,
+            181,
+            41
+        ],
+        "page_idx": 0
+    },
+    {
+        "type": "header",
+        "text": "This ICCV paper is the Open Access version, provided by the Computer Vision Foundation. Except for this watermark, it is identical to the accepted version; the final published version of the proceedings is available on IEEE Xplore.",
+        "bbox": [
+            236,
+            1,
+            808,
+            46
+        ],
+        "page_idx": 0
+    },
+    {
+        "type": "page_number",
+        "text": "23471",
+        "bbox": [
+            478,
+            944,
+            517,
+            958
+        ],
+        "page_idx": 0
+    },
+    {
+        "type": "text",
+        "text": "",
+        "bbox": [
+            75,
+            92,
+            472,
+            272
+        ],
+        "page_idx": 1
+    },
+    {
+        "type": "text",
+        "text": "We propose a method that has the benefit of both by combining 2D foreground layers with a 3D background model. The lightweight 2D foreground layers can represent multiple object layers, including complicated objects, motions, and effects that may be challenging to be modeled in 3D. At the same time, modeling background in 3D enables handling background of complex geometry and non-rotational camera motions, allowing for processing a broader set of videos than 2D methods. We call this method OmnimatteRF and show in experiments that it works robustly on various videos without per-video parameter tuning. To quantitatively evaluate the background separation of a 3D scene, D²NeRF released a dataset of 5 videos rendered with Kubrics, which are simple indoor scenes with few pieces of furniture and some moving objects that cast solid shadows. We also render five videos from open-source Blender movies [6] with sophisticated motions and lighting conditions for more realistic and challenging settings. Our method outperforms prior works in both datasets, and we release the videos to facilitate future research.",
+        "bbox": [
+            75,
+            272,
+            472,
+            575
+        ],
+        "page_idx": 1
+    },
+    {
+        "type": "text",
+        "text": "In summary, our contributions include the following:",
+        "bbox": [
+            94,
+            575,
+            447,
+            592
+        ],
+        "page_idx": 1
+    },
+    {
+        "type": "text",
+        "text": "1. We propose a novel method to make Omnimatte [21] more robust by better modeling the static background in 3D using radiance fields [22].",
+        "bbox": [
+            89,
+            604,
+            470,
+            651
+        ],
+        "page_idx": 1
+    },
+    {
+        "type": "text",
+        "text": "2. Utilizing the omnimatte masks, we propose a simple yet effective re-training step to obtain a clean static 3D reconstruction from videos with moving subjects.",
+        "bbox": [
+            88,
+            656,
+            470,
+            703
+        ],
+        "page_idx": 1
+    },
+    {
+        "type": "text",
+        "text": "3. We release a new dataset of 5 challenging video sequences rendered from open-source blender movies [6] with ground truths to better facilitate the development and evaluation of the video matting with associated effects (aka omnimatting [21]) problem.",
+        "bbox": [
+            88,
+            707,
+            470,
+            785
+        ],
+        "page_idx": 1
+    },
+    {
+        "type": "text",
+        "text": "2. Related Work",
+        "text_level": 2,
+        "bbox": [
+            76,
+            797,
+            220,
+            815
+        ],
+        "page_idx": 1
+    },
+    {
+        "type": "text",
+        "text": "Video Matting. There is a long line of work exploring video matting due to its importance in video editing. Green screening and rotoscoping are critical first steps in any visual effects pipeline. The matting problem aims to extract the foreground subjects into their own RGBA layers and separate them from the background RGB layer, which is a highly under-constrained problem. Many approaches have utilized motion and depth cues in addition to integrating user interactions [7, 3, 32, 16, 9]. Background Video Matting [18] specifically addresses real-time video matting of people and preserving strand-level hair details.",
+        "bbox": [
+            75,
+            824,
+            472,
+            901
+        ],
+        "page_idx": 1
+    },
+    {
+        "type": "text",
+        "text": "",
+        "bbox": [
+            496,
+            90,
+            895,
+            184
+        ],
+        "page_idx": 1
+    },
+    {
+        "type": "text",
+        "text": "Matting with Associated Effects. Video matting is often insufficient, as foreground subjects might have associated effects like shadows or reflections that need to be extracted into the foreground RGBA layers. This problem has not been explored as extensively and, in practice, is often dealt with manually using advanced interactive rotoscoping tools [15]. Omnimatte [21] was the first to propose a generic framework capable of learning any associated effect. Previous works often specifically addressed associated effects like shadows [34, 33]. The ability to obtain matte layers with associated effects has many exciting applications, such as re-timing motions of different people [20], consistent background editing [13, 14], background subtraction, green screening, and many other video effects [21]. Recently, FactorMatte [12] has been proposed to improve the quality with data augmentation and conditional priors. These works have in common that they take predefined masks that hint at the foreground objects and decompose each video into several layers, with one object in each layer with its associated effects. Then, there is a background layer, a 2D static image, or a deformable atlas shared by all the frames. The background is warped and cropped via a homography to render each frame. While the foreground layers have shown great potential in capturing dynamics, their single image background limits the application of these methods to videos with planar environments without parallax effects caused by camera motion.",
+        "bbox": [
+            496,
+            200,
+            895,
+            611
+        ],
+        "page_idx": 1
+    },
+    {
+        "type": "text",
+        "text": "Radiance Fields. Radiance fields (RF) emerged as 3D representations capable of capturing geometric details and photorealistic appearances [22]. Radiance fields model the 3D scene as a continuous function that maps the position and the viewing direction of any point in world space to its color and opacity. Novel views can be synthesized via volume rendering along rays cast. This continuous function is learned by optimizing with a reconstruction loss on the rendered images. This view-dependent volumetric representation can model various challenging scenes that previous surface-based methods struggled to handle: e.g., shiny surfaces like metals or fuzzy surfaces like hair or fur. Since then, it has been extended along multiple axes: better appearance modeling (e.g., reflection and refraction [31, 5, 2, 1], faster optimization [8, 27, 23] and modeling dynamic scenes [38, 17, 10, 19]. Since the MLPbased implicit RF representations are slow to train, we use voxel-based explicit radiance field representations [8] [27]",
+        "bbox": [
+            496,
+            627,
+            895,
+            902
+        ],
+        "page_idx": 1
+    },
+    {
+        "type": "page_number",
+        "text": "23472",
+        "bbox": [
+            477,
+            944,
+            519,
+            958
+        ],
+        "page_idx": 1
+    },
+    {
+        "type": "text",
+        "text": "Specifically, we use the factorized voxel grid representation from [8].",
+        "bbox": [
+            75,
+            90,
+            468,
+            122
+        ],
+        "page_idx": 2
+    },
+    {
+        "type": "text",
+        "text": "Self-Supervised Video Dynamics Factoring. Another related work is video dynamics factoring without needing a predefined mask. One recent work is deformable sprites [39] that rely only on motion cues. Similar to other video matting works, it has a 2D foreground and background layers and the same limitations as Omnimatte. For modeling in 3D, $\\mathrm { D } ^ { 2 } \\mathrm { N e R F } [ $ 36] proposes to decouple the scene with two radiance fields, one for the dynamic content and the other for the statics. D2NeRF[36] handles a special case of matting with only one foreground object, and, compared to the other methods, it is not limited to planar backgrounds. However, the self-supervised method relies on the heuristics that require per-video hyper-parameter tuning and does not robustly generalize to new videos. The quality of the foreground reconstruction can also be limited for objects that have large nonrigid motions.",
+        "bbox": [
+            75,
+            145,
+            470,
+            387
+        ],
+        "page_idx": 2
+    },
+    {
+        "type": "text",
+        "text": "We, therefore, propose a method for video matting with associated effects that has the advantages of supervised 2D mattes that support multiple individual objects with great details, as well as 3D background decoupling that works with non-planar videos.",
+        "bbox": [
+            75,
+            387,
+            470,
+            464
+        ],
+        "page_idx": 2
+    },
+    {
+        "type": "text",
+        "text": "3. Method",
+        "text_level": 2,
+        "bbox": [
+            76,
+            479,
+            168,
+            496
+        ],
+        "page_idx": 2
+    },
+    {
+        "type": "text",
+        "text": "The concept of omnimattes is proposed by Lu et al. [21], extending RGBA video mattes to capture associated effects of the objects of interest like shadows and reflections. To avoid any confusion, in the following text, we refer to their work as capital Omnimatte, and the resulting RGBA layers as italic omnimatte. In the matting setup, the user prepares a video of T frames $\\{ I _ { t } \\} _ { t = 1 } ^ { T }$ , and N ordered mask layers $\\{ M _ { t } ^ { i } \\} _ { i = 1 } ^ { N }$ , each containing a coarse mask video of an object of interest. The video's camera parameters are also precomputed as $\\{ P _ { t } \\}$",
+        "bbox": [
+            75,
+            506,
+            470,
+            657
+        ],
+        "page_idx": 2
+    },
+    {
+        "type": "text",
+        "text": "The goal is to predict RGBA foreground layers $C _ { t } ^ { i }$ and $\\alpha _ { t } ^ { i }$ that contain the objects together with their associated effects, and a background layer $B _ { t }$ which is clean and free from the effects cast by the foreground objects. An input frame $I _ { t }$ should be reconstructed by alpha compositing the foreground layers above the background.",
+        "bbox": [
+            76,
+            657,
+            470,
+            750
+        ],
+        "page_idx": 2
+    },
+    {
+        "type": "text",
+        "text": "In Omnimatte, the background is represented by a static 2D image and a homography transform $P _ { t }$ . To compose a frame, part of the static background is extracted according to the estimated homography $P _ { t }$ . The key idea of our work is to represent the static background in 3D using a radiance field, while keeping the foreground in 2D to better capture the dynamics of objects. We employ an explicit factorized voxel-based radiance field [8] to model the background. In this case, $P _ { t }$ represents a camera pose, and a background frame is rendered with volume rendering. Note that the foreground layers are still 2D videos. We refer to this combination as the OmnimatteRF model.",
+        "bbox": [
+            75,
+            750,
+            470,
+            901
+        ],
+        "page_idx": 2
+    },
+    {
+        "type": "text",
+        "text": "",
+        "bbox": [
+            498,
+            90,
+            892,
+            122
+        ],
+        "page_idx": 2
+    },
+    {
+        "type": "text",
+        "text": "3.1. The OmnimatteRF Model",
+        "text_level": 2,
+        "bbox": [
+            500,
+            128,
+            738,
+            143
+        ],
+        "page_idx": 2
+    },
+    {
+        "type": "text",
+        "text": "An outline of our model is depicted in Figure 2. The model has two independent branches: foreground and background. For any given frame, the foreground branch predicts an RGBA image (omnimatte) for each object, and the background branch renders a single RGB image.",
+        "bbox": [
+            498,
+            151,
+            893,
+            228
+        ],
+        "page_idx": 2
+    },
+    {
+        "type": "text",
+        "text": "Preprocessing. Following similar works, we use an offthe-shelf model RAFT [29] to predict optical flow between neighboring frames. The flow is used as an auxiliary input and ground truth for supervision, denoted by $\\{ F _ { t } \\}$ . We also use an off-the-shelf depth estimator MiDaS [26] to predict monocular depth maps $\\{ D _ { t } \\}$ for each frame and use them as ground truth for the monocular depth loss.",
+        "bbox": [
+            498,
+            228,
+            893,
+            333
+        ],
+        "page_idx": 2
+    },
+    {
+        "type": "text",
+        "text": "Background. The background branch consists of a static neural radiance field, $f _ { \\mathrm { b g } } .$ encoding the 3D representation of the scene. To render a pixel in a frame $I _ { t } ,$ a ray is traced according to the estimated camera pose $P _ { t } ,$ and the final RGB color is produced via volumetric rendering. The result of rendering the entire frame is $( B _ { t } , \\hat { D } _ { t } ) = f _ { \\mathrm { b g } } ( P _ { t } )$ , where $B _ { t }$ is an RGB image and $\\hat { D } _ { t }$ is a depth map.",
+        "bbox": [
+            498,
+            333,
+            893,
+            440
+        ],
+        "page_idx": 2
+    },
+    {
+        "type": "text",
+        "text": "Foreground. The foreground branch is a UNet-style convolutional neural network, $f _ { \\mathrm { f g } } ,$ similar to that of Omnimatte. The input of the network is a concatenation of three maps:",
+        "bbox": [
+            498,
+            440,
+            892,
+            502
+        ],
+        "page_idx": 2
+    },
+    {
+        "type": "text",
+        "text": "1. The coarse mask $M _ { t } ^ { i }$ . The mask is provided by the user, outlining the object of interest. Mask values are ones if the pixels are inside the object.",
+        "bbox": [
+            511,
+            507,
+            892,
+            554
+        ],
+        "page_idx": 2
+    },
+    {
+        "type": "text",
+        "text": "2. The optical flow $F _ { t } .$ It provides the network with motion hints. Note that the network also predicts an optical flow as an auxiliary task (detailed in Sec. 3.2.2).",
+        "bbox": [
+            511,
+            556,
+            892,
+            603
+        ],
+        "page_idx": 2
+    },
+    {
+        "type": "text",
+        "text": "3. The feature map $E _ { t }$ Each pixel $( x , y )$ in the feature map is the positional encoding of the 3-tuple $( x , y , t )$",
+        "bbox": [
+            511,
+            606,
+            892,
+            637
+        ],
+        "page_idx": 2
+    },
+    {
+        "type": "text",
+        "text": "Multiple foreground layers are processed individually. For the i-th layer, the network predicts the omnimatte layer $( C _ { t } ^ { i } , \\alpha _ { t } ^ { i } )$ and the flow $\\hat { F } _ { t } ^ { i }$",
+        "bbox": [
+            498,
+            643,
+            892,
+            689
+        ],
+        "page_idx": 2
+    },
+    {
+        "type": "text",
+        "text": "Detail Transfer. For a tradeoff between image quality and training time, the foreground network typically produces a color layer with missing details when the alpha layers have captured sufficient associated effects. To boost the output quality, Omnimatte transfers details from input frames. We include the same process in our pipeline. Note that this is a post-processing step to produce final results, and does not apply to model optimization.",
+        "bbox": [
+            496,
+            689,
+            893,
+            810
+        ],
+        "page_idx": 2
+    },
+    {
+        "type": "text",
+        "text": "3.2. Optimizing the Model",
+        "text_level": 2,
+        "bbox": [
+            500,
+            816,
+            705,
+            833
+        ],
+        "page_idx": 2
+    },
+    {
+        "type": "text",
+        "text": "We optimize an OmnimatteRF model for every video since both branches of our model are video-specific. To supervise learning, we employ an image reconstruction loss and several regularization losses.",
+        "bbox": [
+            496,
+            839,
+            893,
+            901
+        ],
+        "page_idx": 2
+    },
+    {
+        "type": "page_number",
+        "text": "23473",
+        "bbox": [
+            478,
+            944,
+            519,
+            958
+        ],
+        "page_idx": 2
+    },
+    {
+        "type": "image",
+        "img_path": "images/9f98475165d49cb8960ba2a822eee30a3aa985f554b05353d6baef9f69bfb1fd.jpg",
+        "image_caption": [
+            "Figure 2. Method overview. We propose a video matting method, named OmnimatteRF, which combines 2D foreground layers with a 3D background layer. The foreground branch $( f _ { \\mathrm { f g } } ,$ , in green box) predicts an RGBA layer $( C _ { t } ^ { i } , \\alpha _ { t } ^ { i } )$ for each object, and an auxiliary flow output $( \\hat { F } _ { t } ^ { i } )$ . The background branch $( \\it f _ { \\mathrm { b g } } ,$ in yellow box) produces a background layer with depths $( B _ { t } , \\hat { D } _ { t } )$ . Optimization. During training, predicted colors $( \\hat { I } _ { t } )$ and flow $( \\ddot { F } _ { t } )$ are alpha-composited, whose inputs have red and green borders respectively. The right most column illustrates the data terms in the loss function, and we omit the regularization terms in this illustration."
+        ],
+        "image_footnote": [],
+        "bbox": [
+            83,
+            93,
+            892,
+            343
+        ],
+        "page_idx": 3
+    },
+    {
+        "type": "text",
+        "text": "3.2.1 Reconstruction Loss",
+        "text_level": 2,
+        "bbox": [
+            76,
+            441,
+            274,
+            457
+        ],
+        "page_idx": 3
+    },
+    {
+        "type": "text",
+        "text": "We compute the reconstruction loss with the composed image $\\hat { I } _ { t }$ by alpha composition of foreground and background layers:",
+        "bbox": [
+            75,
+            467,
+            470,
+            512
+        ],
+        "page_idx": 3
+    },
+    {
+        "type": "equation",
+        "img_path": "images/e6fd32bc7687360640fae90b46a1dc76371451e0ef9ea4ea0f44c7274e46fbab.jpg",
+        "text": "$$\n\\hat { I } _ { t } = \\sum _ { i = 1 } ^ { N } \\left( \\prod _ { j = 1 } ^ { i - 1 } ( 1 - \\alpha _ { t } ^ { j } ) \\alpha _ { t } ^ { i } C _ { t } ^ { i } \\right) + \\prod _ { i = 1 } ^ { N } ( 1 - \\alpha _ { t } ^ { i } ) B _ { t }\\tag{1}\n$$",
+        "text_format": "latex",
+        "bbox": [
+            99,
+            537,
+            426,
+            584
+        ],
+        "page_idx": 3
+    },
+    {
+        "type": "text",
+        "text": "And the reconstruction loss is the mean-squared-error between the predicted and input frame,",
+        "bbox": [
+            75,
+            598,
+            468,
+            628
+        ],
+        "page_idx": 3
+    },
+    {
+        "type": "equation",
+        "img_path": "images/155484212ffb57ae96123e5121f37f458c345e8011b4fe1d8de22df76a8b95a6.jpg",
+        "text": "$$\n\\mathcal { L } _ { \\mathrm { r e c o n s } } = | | \\hat { I } _ { t } - I _ { t } | | ^ { 2 }\\tag{2}\n$$",
+        "text_format": "latex",
+        "bbox": [
+            202,
+            655,
+            343,
+            674
+        ],
+        "page_idx": 3
+    },
+    {
+        "type": "text",
+        "text": "The reconstruction loss supervises both branches of our pipeline simultaneously. Limited by the computational cost of volumetric rendering, the background layer is rendered only at sparse random locations at each step, where $\\mathcal { L } _ { \\mathrm { r e c o n s } }$ is computed for the composed pixel values.",
+        "bbox": [
+            75,
+            686,
+            470,
+            763
+        ],
+        "page_idx": 3
+    },
+    {
+        "type": "text",
+        "text": "3.2.2 Foreground Losses",
+        "text_level": 2,
+        "bbox": [
+            76,
+            785,
+            264,
+            800
+        ],
+        "page_idx": 3
+    },
+    {
+        "type": "text",
+        "text": "We follow Omnimatte and include the alpha regularization loss $\\mathcal { L } _ { \\alpha - \\mathrm { r e g } } ,$ alpha warp loss $\\mathcal { L } _ { \\alpha - \\mathrm { w a r p } }$ , and flow reconstruction loss ${ \\mathcal { L } } _ { \\mathrm { f l o w } }$ . We also bootstrap the initial alpha prediction to match the input mask with the mask loss $\\mathcal { L } _ { \\mathrm { m a s k } }$ , which is gradually decayed and disabled once its value drops below the threshold.",
+        "bbox": [
+            75,
+            809,
+            470,
+            900
+        ],
+        "page_idx": 3
+    },
+    {
+        "type": "text",
+        "text": "While most regularization terms in Omnimatte can be applied directly to our pipeline, the flow reconstruction loss is an exception. The formulation of the loss remains identical: given the per-layer flow prediction $\\hat { F } _ { t } ^ { i }$ and a background layer flows $\\boldsymbol { F } _ { t } ^ { \\mathrm { b g } }$ , the complete flow $\\hat { F } _ { t }$ is composed via alpha composition (Eq. 1). Then, the loss is defined as:",
+        "bbox": [
+            498,
+            441,
+            893,
+            535
+        ],
+        "page_idx": 3
+    },
+    {
+        "type": "equation",
+        "img_path": "images/a92aaf459f8f33085eb5e35882e343ec911a11cde636f3425e4eb44adbd4a959.jpg",
+        "text": "$$\n\\mathcal { L } _ { \\mathrm { f l o w } } = | | ( \\hat { F } _ { t } - F _ { t } ) \\otimes M _ { t } ^ { \\mathrm { f g } } | | ^ { 2 }\\tag{3}\n$$",
+        "text_format": "latex",
+        "bbox": [
+            596,
+            561,
+            795,
+            580
+        ],
+        "page_idx": 3
+    },
+    {
+        "type": "text",
+        "text": "Here, $M _ { t } ^ { \\mathrm { f g } }$ is the union of all foreground masks $( \\{ M _ { t } ^ { i } \\} )$ for the frame $I _ { t }$ , and the loss is only evaluated at the location of input coarse masks. The authors of Omnimatte have shown the effectiveness of this loss in their case, and we also demonstrate its importance in an ablation study.",
+        "bbox": [
+            498,
+            595,
+            892,
+            672
+        ],
+        "page_idx": 3
+    },
+    {
+        "type": "text",
+        "text": "However, it remains unclear how $\\boldsymbol { F } _ { t } ^ { \\mathrm { b g } }$ can be obtained. In Omnimatte, the background flow can be derived from image homography, which serves both as an input to the network and a background for composition. On the other hand, since our 3D background has only known camera poses but not depths, we cannot obtain background flows directly. Instead, we use the ground truth flow $F _ { t }$ as network input to provide motion cues and a masked version of $F _ { t }$ as background flow for composition. The masked flow is $F _ { t } ^ { \\mathrm { m } } = \\bar { F } _ { t } \\otimes ( 1 - M _ { t } ^ { \\mathrm { f g } } )$ , which is the ground truth optical flow with the regions marked in the coarse masks set to zeros. ⊗ denotes elementwise multiplication. We find it crucial to use $F _ { t } ^ { \\mathrm { m } }$ rather than $F _ { t }$ for composition, as the latter case encourages the network to produce empty layers with $\\alpha _ { t } ^ { i }$ equal to zero everywhere.",
+        "bbox": [
+            496,
+            672,
+            893,
+            902
+        ],
+        "page_idx": 3
+    },
+    {
+        "type": "page_number",
+        "text": "23474",
+        "bbox": [
+            478,
+            944,
+            517,
+            958
+        ],
+        "page_idx": 3
+    },
+    {
+        "type": "image",
+        "img_path": "images/67c05e8e7c1ec019b54c03db83e1df24b6cc22471859e80a3ff23b871279dd0e.jpg",
+        "image_caption": [
+            "(a)"
+        ],
+        "image_footnote": [],
+        "bbox": [
+            114,
+            88,
+            209,
+            165
+        ],
+        "page_idx": 4
+    },
+    {
+        "type": "image",
+        "img_path": "images/7901ef1d74a9bf72d810b23c6238c2d31210aa05415226e735f73414756f6d37.jpg",
+        "image_caption": [
+            "(b)"
+        ],
+        "image_footnote": [],
+        "bbox": [
+            225,
+            88,
+            321,
+            166
+        ],
+        "page_idx": 4
+    },
+    {
+        "type": "image",
+        "img_path": "images/25614d7389a1752c36599f9f045d2130066ef218059219fc7d821ff835028871.jpg",
+        "image_caption": [
+            "(c)",
+            "Figure 3. Background Layer Training Signals. We illustrate how the training signal to the background layer changes over time. It explains why the background captures some of the associated effects (in this example, shadows). We use the pixel circled in red as an example. (a) At the beginning of training, the foreground alpha value (in light green) does not include the shadow. Therefore, α is small and at this pixel, $\\hat { I } _ { t } ( x , y ) \\approx B _ { t } ( x , y )$ . The reconstruction loss ${ \\mathcal { L } } _ { \\mathrm { r e c o n s } }$ encourages the background network $f _ { \\mathrm { b g } }$ to produce dark prediction at this location from this viewing angle. (b) As training progresses, α gets larger in the shadow region, and $\\hat { I } _ { t } ( x , y ) \\approx C _ { t } ^ { i } ( x , y )$ . This means that $f _ { \\mathrm { b g } }$ receives little to no supervision signals from this pixel. If it has modeled the shadow in some ways (in this case, a hole), it has little incentive to remove it, leaving the artifact in (c)."
+        ],
+        "image_footnote": [],
+        "bbox": [
+            338,
+            88,
+            434,
+            165
+        ],
+        "page_idx": 4
+    },
+    {
+        "type": "text",
+        "text": "3.2.3 Background Losses",
+        "text_level": 2,
+        "bbox": [
+            76,
+            407,
+            267,
+            422
+        ],
+        "page_idx": 4
+    },
+    {
+        "type": "text",
+        "text": "Apart from the reconstruction loss, the background network is supervised by the total variation regularization loss, ${ \\mathcal { L } } _ { \\mathrm { b g - r e g } } ,$ as in TensoRF [8]. In addition, monocular depth supervision is used to improve scene reconstruction when the camera motions consist of rotation only:",
+        "bbox": [
+            76,
+            434,
+            470,
+            510
+        ],
+        "page_idx": 4
+    },
+    {
+        "type": "equation",
+        "img_path": "images/30fd3fddc5d5b0fed8ef23778a927436a9c2df1f4d42f1d2af676bb0ca39ac5d.jpg",
+        "text": "$$\n\\mathcal { L } _ { \\mathrm { d e p t h } } = \\mathrm { m e t r i c } ( D _ { t } , \\hat { D } _ { t } ) ,\\tag{4}\n$$",
+        "text_format": "latex",
+        "bbox": [
+            187,
+            541,
+            356,
+            559
+        ],
+        "page_idx": 4
+    },
+    {
+        "type": "text",
+        "text": "where $\\hat { D } _ { t }$ is the estimated depth from volume rendering [22], and the metric function is the scale-invariant loss from MiDaS [26]. Also, we empirically find that ${ \\mathcal { L } } _ { \\mathrm { d e p t h } }$ can introduce floaters, and employ the distortion loss ${ \\mathcal { L } } _ { \\mathrm { d i s t o r t } }$ proposed in Mip-NeRF 360 [4] to reduce artifacts in the background.",
+        "bbox": [
+            75,
+            575,
+            470,
+            667
+        ],
+        "page_idx": 4
+    },
+    {
+        "type": "text",
+        "text": "3.2.4 Summary",
+        "text_level": 2,
+        "bbox": [
+            76,
+            694,
+            200,
+            710
+        ],
+        "page_idx": 4
+    },
+    {
+        "type": "text",
+        "text": "The combined loss for joint optimization is:",
+        "bbox": [
+            76,
+            720,
+            369,
+            737
+        ],
+        "page_idx": 4
+    },
+    {
+        "type": "equation",
+        "img_path": "images/cd5af708c5584166b28f28e3a0c00a662fbf9cb934b1ce6afa6d819c31dca820.jpg",
+        "text": "$$\n\\begin{array} { r l } & { \\mathcal { L } = \\mathcal { L } _ { \\mathrm { r e c o n s } } + \\underbrace { \\mathcal { L } _ { \\alpha \\mathrm { - r e g } } + \\mathcal { L } _ { \\alpha \\mathrm { - w a r p } } + \\mathcal { L } _ { \\mathrm { f l o w } } + \\mathcal { L } _ { \\mathrm { m a s k } } } _ { \\mathrm { F o r e g r o u n d } } + } \\\\ & { \\underbrace { \\mathcal { L } _ { \\mathrm { b g - r e g } } + \\mathcal { L } _ { \\mathrm { d e p t h } } + \\mathcal { L } _ { \\mathrm { d i s t o r t } } } _ { \\mathrm { B a c k g r o u n d } } } \\end{array}\\tag{5}\n$$",
+        "text_format": "latex",
+        "bbox": [
+            99,
+            765,
+            426,
+            838
+        ],
+        "page_idx": 4
+    },
+    {
+        "type": "text",
+        "text": "At every optimization step, ${ \\mathcal { L } } _ { \\mathrm { r e c o n s } }$ and background losses are evaluated at sparse random locations. Foreground losses are computed for the full image.",
+        "bbox": [
+            76,
+            856,
+            470,
+            901
+        ],
+        "page_idx": 4
+    },
+    {
+        "type": "text",
+        "text": "3.3. Clean Background via Masked Retraining",
+        "text_level": 2,
+        "bbox": [
+            500,
+            90,
+            861,
+            107
+        ],
+        "page_idx": 4
+    },
+    {
+        "type": "text",
+        "text": "When the pipeline is trained jointly as described above, it is sometimes observed that the background radiance field models some of the foreground contents like shadows (see Fig. 3(c)). Compared to 2D images, 3D radiance fields are so much more capable that they can exploit distorted geometry constructs, such as holes and floaters, to capture some temporal effects, although the models are given no time information. For example, as the camera moves over time, there may be a correlation between whether a surface is covered by shadow and the direction the surface is viewed from.",
+        "bbox": [
+            496,
+            116,
+            893,
+            282
+        ],
+        "page_idx": 4
+    },
+    {
+        "type": "text",
+        "text": "We illustrate this problem in Fig. 3 and explain the cause at an intuitive level. The foreground branch is bootstrapped to produce alpha values that match the coarse mask inputs, which include only the object without the associated effects. In other words, $\\alpha _ { t }$ values are close to one at the object, but zero in the shadows (for simplicity, we consider one foreground layer in which the object casts a shadow, like in Fig. 3). At a pixel $( x , y )$ covered by shadow, Eq. 1 simply collapses to $\\hat { I } _ { t } ( x , y ) \\approx B _ { t } ( x , y )$ . The reconstruction loss will therefore encourage $B _ { t } ( x , y )$ to match the color of the shadow for a ray shot toward this location.",
+        "bbox": [
+            496,
+            285,
+            893,
+            452
+        ],
+        "page_idx": 4
+    },
+    {
+        "type": "text",
+        "text": "As training proceeds, $f _ { \\mathrm { f g } }$ will then gradually increase the predicted alpha values at the shadowed regions. If the shadow is hard and α gets close to one, Eq. 1 evaluates to $\\hat { I } _ { t } ( x , y ) \\approx C _ { t } ^ { i } ( x , y )$ , and the reconstruction loss gives little to no constraint to the background color at the pixel. As a result, $f _ { \\mathrm { b g } }$ is unable to learn to remove the shadow color that it produces for the ray towards frame $I _ { t }$ at $( x , y )$",
+        "bbox": [
+            498,
+            454,
+            893,
+            560
+        ],
+        "page_idx": 4
+    },
+    {
+        "type": "text",
+        "text": "There are also cases where the shadow is soft and α is in between. In these cases, the problem remains ambiguous.",
+        "bbox": [
+            498,
+            561,
+            892,
+            592
+        ],
+        "page_idx": 4
+    },
+    {
+        "type": "text",
+        "text": "Therefore, we propose to obtain clean background reconstruction via an optional optimization step. In joint training, the foreground omnimatte layers can capture most associated effects, including the parts with leaked content in the background layer. The alpha layers $\\alpha _ { t }$ can then be used to train a radiance field model from scratch, with no samples from the foreground region where alpha values are high. We show in the ablation study (see Fig. 7) that this step produces cleaner background reconstruction for in-thewild videos. As only the background is optimized, the process is fast and takes less than an hour to complete.",
+        "bbox": [
+            496,
+            594,
+            893,
+            762
+        ],
+        "page_idx": 4
+    },
+    {
+        "type": "text",
+        "text": "4. Evaluation",
+        "text_level": 2,
+        "bbox": [
+            500,
+            781,
+            617,
+            799
+        ],
+        "page_idx": 4
+    },
+    {
+        "type": "text",
+        "text": "We compare our quantitative and qualitative methods with Omnimatte and D2NeRF [21, 36], which are stateof-the-art methods in 2D video matting and 3D video segmentation, respectively. In addition, we compare with Layered Neural Atlas (LNA) [13], which uses a deformable 2D background in contrast to Omnimatte's static image.",
+        "bbox": [
+            498,
+            809,
+            893,
+            901
+        ],
+        "page_idx": 4
+    },
+    {
+        "type": "page_number",
+        "text": "23475",
+        "bbox": [
+            478,
+            944,
+            519,
+            957
+        ],
+        "page_idx": 4
+    },
+    {
+        "type": "text",
+        "text": "4.1. The Movies Dataset",
+        "text_level": 2,
+        "bbox": [
+            76,
+            90,
+            266,
+            106
+        ],
+        "page_idx": 5
+    },
+    {
+        "type": "text",
+        "text": "Quantitative evaluation of background segmentation requires a dataset with both input videos and ground-truth background imagery. Prior works primarily use datasets like CDW-2014 [35], which are limited to mostly static backgrounds and are not applicable to our settings. Recently, Kubrics is proposed in $\\scriptstyle \\mathrm { D } ^ { 2 } \\mathrm { N e R F } .$ which enables the evaluation of 3D background synthesis. However, these videos have relatively simple scenes and lighting. To facilitate the evaluation of video matting and background segmentation in challenging scenarios, we select six clips from three Blender movies in Blender Studio [6]. Compared to Kubri cs, they feature more complicated scenes and lighting conditions, large nonrigid motion of the characters, and higher resolution. To ensure usability, we manually edit the camera trajectories so that there are sufficient camera motions and the actors have reasonable sizes. We render the clips with and without the actors to obtain input and ground truth for background reconstruction evaluation purposes. The camera poses are also exported.",
+        "bbox": [
+            75,
+            113,
+            472,
+            404
+        ],
+        "page_idx": 5
+    },
+    {
+        "type": "text",
+        "text": "4.2. Experiment Setup",
+        "text_level": 2,
+        "bbox": [
+            76,
+            410,
+            254,
+            426
+        ],
+        "page_idx": 5
+    },
+    {
+        "type": "text",
+        "text": "We evaluate the performance of our proposed method on four datasets.",
+        "bbox": [
+            76,
+            434,
+            468,
+            465
+        ],
+        "page_idx": 5
+    },
+    {
+        "type": "text",
+        "text": "1. Movies: our novel challenging dataset.",
+        "bbox": [
+            89,
+            478,
+            379,
+            493
+        ],
+        "page_idx": 5
+    },
+    {
+        "type": "text",
+        "text": "2. Kubrics: the dataset generated and used in $\\scriptstyle \\mathrm { D ^ { 2 } N e R F }$ which consists of five scenes of moving objects from 3D Warehouse [30] rendered with Kubric [11].",
+        "bbox": [
+            88,
+            498,
+            468,
+            545
+        ],
+        "page_idx": 5
+    },
+    {
+        "type": "text",
+        "text": "3. DAVIS [24, 25]: short clips with moving foreground subjects, like humans, cars, and animals. This dataset is widely used to evaluate 2D-background matting methods [21, 13, 39].",
+        "bbox": [
+            88,
+            549,
+            470,
+            611
+        ],
+        "page_idx": 5
+    },
+    {
+        "type": "text",
+        "text": "4. Wi 1d: in-the-wild sequences collected from the internet that are closer to casually captured videos, with natural and noisier camera motions, including translations and rotations, as well as objects at different distances from the camera. Naturally, these videos have backgrounds that are challenging for pure 2D methods.",
+        "bbox": [
+            88,
+            614,
+            470,
+            707
+        ],
+        "page_idx": 5
+    },
+    {
+        "type": "text",
+        "text": "Kubrics and Movies are synthetic datasets with clean background layer renderings available. Note that novel view synthesis is not the focus of our method, so we evaluate the background with input views. Both datasets have known camera poses and object masks which are used for training and evaluation.",
+        "bbox": [
+            75,
+            719,
+            470,
+            809
+        ],
+        "page_idx": 5
+    },
+    {
+        "type": "text",
+        "text": "DAVIS and Wild are real-world videos without clean background. Therefore, we only perform a qualitative evaluation to demonstrate the robustness of our method. For videos in Wild we recover camera poses with COLMAP. For videos that COLMAP cannot process reliably, including DAVIS videos, we use poses from RoDynRF [19].",
+        "bbox": [
+            75,
+            810,
+            470,
+            901
+        ],
+        "page_idx": 5
+    },
+    {
+        "type": "image",
+        "img_path": "images/ba013ca6fee765da31622619f9806a802ea447589eae3d934fb4a2b5c201697d.jpg",
+        "image_caption": [
+            "Figure 4. Background Reconstruction. We show examples of results presented in quantitative evaluations. For videos with parallax effects, 3D methods like D²NeRF and ours reconstruct less distorted background than Omnimatte and LNA."
+        ],
+        "image_footnote": [],
+        "bbox": [
+            511,
+            90,
+            875,
+            314
+        ],
+        "page_idx": 5
+    },
+    {
+        "type": "text",
+        "text": "To obtain coarse object masks, we attempt to extract them with pre-trained object segmentation models from Detectron 2 [37]. In case it does not work, we use the Roto Brush tool in Adobe After Effects. Detailed procedures are described in the supplementary material. It takes about 10 minutes of manual effort to produce a 200-frame mask.",
+        "bbox": [
+            498,
+            397,
+            893,
+            488
+        ],
+        "page_idx": 5
+    },
+    {
+        "type": "text",
+        "text": "For all videos, we also estimate homographies with LoFTR [28] and OpenCV to enable Omnimatte processing.",
+        "bbox": [
+            498,
+            488,
+            892,
+            517
+        ],
+        "page_idx": 5
+    },
+    {
+        "type": "text",
+        "text": "As mentioned in D2NeRF [36], the method is sensitive to hyperparameters. The authors released five sets of configurations for different videos. We experiment with every video using all provided configurations and report the bestperforming ones.",
+        "bbox": [
+            498,
+            517,
+            893,
+            594
+        ],
+        "page_idx": 5
+    },
+    {
+        "type": "text",
+        "text": "4.3. Implementation Details",
+        "text_level": 2,
+        "bbox": [
+            500,
+            603,
+            718,
+            619
+        ],
+        "page_idx": 5
+    },
+    {
+        "type": "text",
+        "text": "Our network is built upon the publicly available official implementation of Omnimatte [21], and TensoRF [8]. The videos in Kubrics have resolution $5 1 2 \\times 5 1 2$ and all methods run at the resolution 256 × 256. For videos in other datasets with a higher resolution of 1920 × 1080, we downsample them by a factor of 4.",
+        "bbox": [
+            496,
+            626,
+            893,
+            717
+        ],
+        "page_idx": 5
+    },
+    {
+        "type": "text",
+        "text": "We optimize the networks for up to 15,000 steps. The learning rate of $f _ { \\mathrm { f g } }$ is set to 0.001 and is exponentially decayed after 10,000 steps. For $f _ { \\mathrm { b g } }$ we use the learning rate scheduling scheme of TensoRF. Training takes up to 6 hours on a single RTX3090 GPU. Detailed network architecture, hyper-parameters and timing data are presented in the supplementary. Our code and datasets will also be made publicly available.",
+        "bbox": [
+            496,
+            717,
+            893,
+            838
+        ],
+        "page_idx": 5
+    },
+    {
+        "type": "text",
+        "text": "4.4. Quantitative Evaluation",
+        "text_level": 2,
+        "bbox": [
+            500,
+            847,
+            722,
+            863
+        ],
+        "page_idx": 5
+    },
+    {
+        "type": "text",
+        "text": "We quantitatively evaluate the background reconstruction quality of our method on two synthetic datasets. We report PSNR, SSIM and LPIPS for all videos in Table 1, and some visualizations in Fig. 4. For D2NeRF, we tried every provided pre-set configuration for every video in Movies, and it only gave good results for the Dog, Rooster, and Dodge videos. Omnimatte and LNA with the 2D background layers struggles in both datasets. Our method can handle these videos well.",
+        "bbox": [
+            498,
+            869,
+            893,
+            901
+        ],
+        "page_idx": 5
+    },
+    {
+        "type": "page_number",
+        "text": "23476",
+        "bbox": [
+            478,
+            944,
+            519,
+            957
+        ],
+        "page_idx": 5
+    },
+    {
+        "type": "table",
+        "img_path": "images/f8d7580efd91b69befc42465e8ae450944ee7e160de6d19caa12c3b8078b868e.jpg",
+        "table_caption": [
+            "Table 1. Quantitative evaluations. We present the background reconstruction comparison of our method and baselines on the Kubrics and Movies datasets. Best results are in bold and second place are underlined. Results marked - are the ones the method failed to give good separations (visuals in supplementary)."
+        ],
+        "table_footnote": [],
+        "table_body": "<table><tr><td rowspan=\"2\">Kubrics</td><td colspan=\"3\">Car</td><td colspan=\"3\">Cars</td><td colspan=\"3\">Bag</td><td colspan=\"3\">Chair</td><td colspan=\"3\">Pillow</td></tr><tr><td>LPIPS↓</td><td>SSIM↑</td><td>PSNR↑</td><td>LPIPS↓</td><td>SSIM↑</td><td>PSNR↑</td><td>LPIPS↓</td><td>SSIM↑</td><td>PSNR↑</td><td>LPIPS↓</td><td>SSIM↑</td><td>PSNR↑</td><td>LPIPS↓</td><td>SSIM↑</td><td>PSNR↑</td></tr><tr><td>D2NeRF</td><td>0.135</td><td>0.854</td><td>34.10</td><td>0.105</td><td>0.859</td><td>34.77</td><td>0.131</td><td>0.880</td><td>33.98</td><td>0.090</td><td>0.916</td><td>33.29</td><td>0.105</td><td>0.926</td><td>38.80</td></tr><tr><td>Omnimatte</td><td>0.162</td><td>0.819</td><td>31.14</td><td>0.157</td><td>0.834</td><td>31.20</td><td>0.271</td><td>0.796</td><td>23.64</td><td>0.175</td><td>0.865</td><td>26.91</td><td>0.270</td><td>0.841</td><td>21.17</td></tr><tr><td>LNA</td><td></td><td></td><td></td><td></td><td></td><td></td><td>0.138</td><td>0.835</td><td>27.08</td><td>0.105</td><td>0.881</td><td>21.21</td><td>0.080</td><td>0.923</td><td>31.66</td></tr><tr><td>Ours</td><td>0.033</td><td>0.958</td><td>39.09</td><td>0.032</td><td>0.961</td><td>39.78</td><td>0.029</td><td>0.972</td><td>39.58</td><td>0.023</td><td>0.977</td><td>42.46</td><td>0.022</td><td>0.982</td><td>43.62</td></tr><tr><td>Movies</td><td></td><td>Donkey</td><td></td><td></td><td>Dog</td><td></td><td></td><td>Chicken</td><td></td><td></td><td>Rooster</td><td></td><td></td><td>Dodge</td><td></td></tr><tr><td></td><td>LPIPS↓</td><td>SSIM↑</td><td>PSNR↑</td><td>LPIPS↓</td><td>SSIM↑</td><td>PSNR↑</td><td>LPIPS↓</td><td>SSIM↑</td><td>PSNR↑</td><td>LPIPS↓</td><td>SSIM↑</td><td>PSNR↑</td><td>LPIPS↓</td><td>SSIM↑</td><td>PSNR↑</td></tr><tr><td>D2NeRF</td><td></td><td></td><td></td><td>0.370</td><td>0.694</td><td>22.73</td><td></td><td></td><td></td><td>0.340</td><td>0.708</td><td>25.13</td><td>0.408</td><td>0.729</td><td>20.95</td></tr><tr><td>Omnimatte</td><td>0.315</td><td>0.653</td><td>19.11</td><td>0.279</td><td>0.706</td><td>21.74</td><td>0.312</td><td>0.704</td><td>20.95</td><td>0.220</td><td>0.741</td><td>23.14</td><td>0.067</td><td>0.879</td><td>23.88</td></tr><tr><td>LNA</td><td>0.104</td><td>0.849</td><td>18.79</td><td>0.154</td><td>0.828</td><td>26.08</td><td>0.190</td><td>0.818</td><td>19.22</td><td>0.131</td><td>0.804</td><td>26.46</td><td>0.068</td><td>0.937</td><td>24.94</td></tr><tr><td>Ours</td><td>0.005</td><td>0.990</td><td>38.24</td><td>0.030</td><td>0.976</td><td>31.44</td><td>0.021</td><td>0.978</td><td>32.86</td><td>0.024</td><td>0.969</td><td>27.65</td><td>0.006</td><td>0.991</td><td>39.11</td></tr></table>",
+        "bbox": [
+            88,
+            89,
+            879,
+            222
+        ],
+        "page_idx": 6
+    },
+    {
+        "type": "text",
+        "text": "",
+        "bbox": [
+            75,
+            290,
+            472,
+            396
+        ],
+        "page_idx": 6
+    },
+    {
+        "type": "text",
+        "text": "4.5. Qualitative Evaluation",
+        "text_level": 2,
+        "bbox": [
+            76,
+            404,
+            289,
+            420
+        ],
+        "page_idx": 6
+    },
+    {
+        "type": "text",
+        "text": "We present a qualitative comparison of the methods in Fig. 5. Due to space limitations, we present at least one video from every dataset but show a frame from every selected video in the figure. The original videos are available in supplementary and we highly recommend watching them. D²NeRF works well for the fine-tuned videos but not for new inputs without further hyper-parameter tuning. Omnimatte background has significant distortion around objects, and its foreground layer has to compensate for the limitation by capturing all residuals. Our method is versatile enough to perform well for a variety of videos with our 3D background model.",
+        "bbox": [
+            75,
+            428,
+            472,
+            609
+        ],
+        "page_idx": 6
+    },
+    {
+        "type": "text",
+        "text": "4.6. Ablation Studies",
+        "text_level": 2,
+        "bbox": [
+            76,
+            616,
+            243,
+            632
+        ],
+        "page_idx": 6
+    },
+    {
+        "type": "text",
+        "text": "4.6.1 Loss Terms",
+        "text_level": 2,
+        "bbox": [
+            76,
+            640,
+            214,
+            655
+        ],
+        "page_idx": 6
+    },
+    {
+        "type": "text",
+        "text": "We present background reconstruction results without ${ \\mathcal { L } } _ { \\mathrm { d e p t h } }$ in Fig. 6. For video sequences with rotational camera poses, the model struggles to extract 3D information from the input videos because of a lack of 3D clues. This loss is critical to extending our method to a broader range of videos. The effects of ${ \\mathcal { L } } _ { \\mathrm { f l o w } }$ are also demonstrated in Fig. 6. The auxiliary task improves foreground quality and reduces unrelated content.",
+        "bbox": [
+            75,
+            662,
+            472,
+            785
+        ],
+        "page_idx": 6
+    },
+    {
+        "type": "text",
+        "text": "4.6.2 Clean Background Retraining",
+        "text_level": 2,
+        "bbox": [
+            76,
+            801,
+            343,
+            818
+        ],
+        "page_idx": 6
+    },
+    {
+        "type": "text",
+        "text": "We employ an additional step for real-world sequences to optimize a clean background from scratch. In Fig. 7, we compare the background layer from the initial joint optimization and the final result. This is a simple yet robust way to obtain a better background.",
+        "bbox": [
+            75,
+            825,
+            472,
+            901
+        ],
+        "page_idx": 6
+    },
+    {
+        "type": "text",
+        "text": "4.7. Limitations",
+        "text_level": 2,
+        "bbox": [
+            500,
+            289,
+            627,
+            304
+        ],
+        "page_idx": 6
+    },
+    {
+        "type": "text",
+        "text": "We list some limitations that future works can explore.",
+        "bbox": [
+            517,
+            313,
+            882,
+            328
+        ],
+        "page_idx": 6
+    },
+    {
+        "type": "text",
+        "text": "1. If a background region is covered by shadows nearly all of the time, the background model cannot recover its color correctly. An example from a Movies video is shown in Fig. 8. In theory, an omnimatte layer has an alpha channel and can capture only the additive shadow that allows the background to have the original color. However, this problem is largely underconstrained in the current setting, making it ambiguous and leading the background to unsatisfying solutions.",
+        "bbox": [
+            511,
+            335,
+            893,
+            473
+        ],
+        "page_idx": 6
+    },
+    {
+        "type": "text",
+        "text": "2. The foreground layer captures irrelevant content. In real-world videos, unrelated motions often exist in the background, like swaying trees and moving cars. These effects cannot be modeled by the static radiance field and will be captured by the foreground layer regardless of their association with the object. Possible directions include i) using a dummy 2D layer to catch such content or ii) a deformable 3D background model with additional regularization to address the ambiguity as both background and foreground can model motion.",
+        "bbox": [
+            511,
+            476,
+            893,
+            627
+        ],
+        "page_idx": 6
+    },
+    {
+        "type": "text",
+        "text": "3. Foreground objects may have missing parts in the omnimatte layers if they're occluded. Since our foreground network predicts pixel values for alpha composition, it does not always hallucinate the occluded parts.",
+        "bbox": [
+            511,
+            631,
+            893,
+            693
+        ],
+        "page_idx": 6
+    },
+    {
+        "type": "text",
+        "text": "4. The video resolution is limited. This is primarily due to the U-Net architecture of the foreground model inherited from Omnimatte. Higher resolutions can potentially be supported with the use of other lightweight image encoders.",
+        "bbox": [
+            511,
+            695,
+            893,
+            771
+        ],
+        "page_idx": 6
+    },
+    {
+        "type": "text",
+        "text": "5. The foreground layer may capture different content when the weights are randomly initialized differently. We include visual results in the supplementary materials.",
+        "bbox": [
+            511,
+            775,
+            893,
+            835
+        ],
+        "page_idx": 6
+    },
+    {
+        "type": "text",
+        "text": "5. Conclusion",
+        "text_level": 2,
+        "bbox": [
+            500,
+            844,
+            620,
+            861
+        ],
+        "page_idx": 6
+    },
+    {
+        "type": "text",
+        "text": "We propose a method to obtain omnimattes, RGBA layers that include objects and their associated effects by com-",
+        "bbox": [
+            498,
+            869,
+            893,
+            901
+        ],
+        "page_idx": 6
+    },
+    {
+        "type": "page_number",
+        "text": "23477",
+        "bbox": [
+            478,
+            944,
+            519,
+            958
+        ],
+        "page_idx": 6
+    },
+    {
+        "type": "image",
+        "img_path": "images/e701989a0597603c2ef1a45ee2b8673f342566ea11a1624b9ff044f63a57ef2e.jpg",
+        "image_caption": [
+            "Figure 5. Qualitative comparison. We compare results of our and baseline methods on videos from each dataset. Readers are strongly encouraged to view videos files of more sequences available in the supplementary. The first two videos are synthetic from Kubri cs and Movies, followed by three Wi 1d videos. Omnimatte fails to handle objects in 3D and produces distorted background. $\\mathrm { D } ^ { 2 } \\mathrm { N e R F }$ works for videos with appropriate hyper-parameters, but does not generalize to new videos easily. Our method handles videos in many different settings. Due to space constraint we defer LNA results to the supplementary."
+        ],
+        "image_footnote": [],
+        "bbox": [
+            86,
+            108,
+            880,
+            469
+        ],
+        "page_idx": 7
+    },
+    {
+        "type": "image",
+        "img_path": "images/12b985f7ca8d93d3c623feeeff252b79e6fbfaf32facac96dfa63ffa7ad1dc30.jpg",
+        "image_caption": [
+            "Input",
+            "without Ldepth",
+            "with Ldepth",
+            "Figure 6. Loss Term Ablations. Background of real-world videos without ${ \\mathcal { L } } _ { \\mathrm { d e p t h } }$ and foreground without ${ \\mathcal { L } } _ { \\mathrm { f l o w } }$ can de degraded for real-world videos."
+        ],
+        "image_footnote": [],
+        "bbox": [
+            91,
+            574,
+            452,
+            803
+        ],
+        "page_idx": 7
+    },
+    {
+        "type": "text",
+        "text": "bining 2D foreground layers and a 3D background model. Extensive experiments demonstrate that our approach is ap-",
+        "bbox": [
+            75,
+            869,
+            470,
+            901
+        ],
+        "page_idx": 7
+    },
+    {
+        "type": "image",
+        "img_path": "images/24ca24d92dd4eb2afb05819ebb3d65f016dc4ccda38f7015003cedcd33d91ee0.jpg",
+        "image_caption": [
+            "(d) Learned mask",
+            "(e) Background",
+            "(f) Depths",
+            "Figure 7. Clean Background Retraining. Background layers jointly trained can capture the shadows as a hole on the ground (a-c). After the joint training, the foreground omnimatte provides a better mask that can be used to train a clean background (d-f)."
+        ],
+        "image_footnote": [],
+        "bbox": [
+            550,
+            561,
+            841,
+            727
+        ],
+        "page_idx": 7
+    },
+    {
+        "type": "text",
+        "text": "plicable to a wide variety of videos, expanding beyond the capabilities of previous methods.",
+        "bbox": [
+            496,
+            869,
+            892,
+            901
+        ],
+        "page_idx": 7
+    },
+    {
+        "type": "header",
+        "text": "Background",
+        "bbox": [
+            344,
+            90,
+            415,
+            103
+        ],
+        "page_idx": 7
+    },
+    {
+        "type": "header",
+        "text": "Foreground",
+        "bbox": [
+            679,
+            92,
+            745,
+            103
+        ],
+        "page_idx": 7
+    },
+    {
+        "type": "page_number",
+        "text": "23478",
+        "bbox": [
+            477,
+            944,
+            519,
+            957
+        ],
+        "page_idx": 7
+    },
+    {
+        "type": "image",
+        "img_path": "images/e6bfb042530a2a35995e0ce1c25a104bc94a0465a0eda0802ffdb06faa801c51.jpg",
+        "image_caption": [
+            "(a)"
+        ],
+        "image_footnote": [],
+        "bbox": [
+            94,
+            88,
+            212,
+            140
+        ],
+        "page_idx": 8
+    },
+    {
+        "type": "image",
+        "img_path": "images/9c47ed1212e1a224597678f2dce5e37730d0f2ade9568a26d51e4dab423cb51b.jpg",
+        "image_caption": [
+            "(b)"
+        ],
+        "image_footnote": [],
+        "bbox": [
+            214,
+            88,
+            330,
+            141
+        ],
+        "page_idx": 8
+    },
+    {
+        "type": "image",
+        "img_path": "images/8e2e34d6c61a1ab092f4e27296197fe031c61dd749912da5c43eac7581f93120.jpg",
+        "image_caption": [
+            "(c)",
+            "Figure 8. Limitations. (a), (b): Background can have baked-in shadows when the region is covered by shadows for most frames of the video. (c): The foreground layer captures irrelevant object motions (middle left) in the background. Best viewed in videos."
+        ],
+        "image_footnote": [],
+        "bbox": [
+            331,
+            88,
+            450,
+            141
+        ],
+        "page_idx": 8
+    },
+    {
+        "type": "text",
+        "text": "References",
+        "text_level": 2,
+        "bbox": [
+            78,
+            236,
+            174,
+            252
+        ],
+        "page_idx": 8
+    },
+    {
+        "type": "list",
+        "sub_type": "ref_text",
+        "list_items": [
+            "[1] Benjamin Attal, Jia-Bin Huang, Christian Richardt, Michael Zollhoefer, Johannes Kopf, Matthew O'Toole, and Changil Kim. Hyperreel: High-fidelity 6-dof video with rayconditioned sampling. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition, 2023.2",
+            "[2] Benjamin Attal, Jia-Bin Huang, Michael Zollhöfer, Johannes Kopf, and Changil Kim. Learning neural light fields with ray-space embedding. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition, 2022. 2",
+            "[3] Xue Bai, Jue Wang, David Simons, and Guillermo Sapiro. Video snapcut: robust video object cutout using localized classifiers. ACM Trans. Graph., 28(3):70, 2009. 2",
+            "[4] Jonathan T. Barron, Ben Mildenhall, Dor Verbin, Pratul P. Srinivasan, and Peter Hedman. Mip-nerf 360: Unbounded anti-aliased neural radiance fields. CVPR, 2022. 5",
+            "[5] Mojtaba Bemana, Karol Myszkowski, Jeppe Revall Frisvad, Hans-Peter Seidel, and Tobias Ritschel. Eikonal fields for refractive novel-view synthesis. In Munkhtsetseg Nandigjav, Niloy J. Mitra, and Aaron Hertzmann, editors, SIGGRAPH '22: Special Interest Group on Computer Graphics and Interactive Techniques Conference, Vancouver, BC, Canada, August 7 - 11, 2022, pages 39:1–39:9. ACM, 2022. 2",
+            "[6] Institute Blender, Oct 2022. 2, 6",
+            "[7] Gabriel J. Brostow and Irfan A. Essa. Motion based decompositing of video. In Proceedings of the International Conference on Computer Vision, Kerkyra, Corfu, Greece, September 20-25, 1999, pages 8–13. IEEE Computer Society, 1999. 2",
+            "[8] Anpei Chen, Zexiang Xu, Andreas Geiger, Jingyi Yu, and Hao Su. Tensorf: Tensorial radiance fields. In European Conference on Computer Vision (ECCV), 2022. 2, 3, 5, 6",
+            "[9] Yung-Yu Chuang, Aseem Agarwala, Brian Curless, David Salesin, and Richard Szeliski. Video matting of complex scenes. ACM Trans. Graph., 21(3):243–248, 2002. 2",
+            "[10] Chen Gao, Ayush Saraf, Johannes Kopf, and Jia-Bin Huang. Dynamic view synthesis from dynamic monocular video. In Proceedings of the IEEE/CVF International Conference on Computer Vision, 2021. 2",
+            "[11] Klaus Greff, Francois Belletti, Lucas Beyer, Carl Doersch, Yilun Du, Daniel Duckworth, David J Fleet, Dan Gnanapragasam, Florian Golemo, Charles Herrmann, Thomas Kipf, Abhijit Kundu, Dmitry Lagun, Issam Laradji, Hsueh-Ti (Derek) Liu, Henning Meyer, Yishu Miao, Derek",
+            "Nowrouzezahrai, Cengiz Oztireli, Etienne Pot, Noha Radwan, Daniel Rebain, Sara Sabour, Mehdi S. M. Sajjadi, Matan Sela, Vincent Sitzmann, Austin Stone, Deqing Sun, Suhani Vora, Ziyu Wang, Tianhao Wu, Kwang Moo Yi, Fangcheng Zhong, and Andrea Tagliasacchi. Kubric: a scalable dataset generator. 2022. 6",
+            "[12] Zeqi Gu, Wenqi Xian, Noah Snavely, and Abe Davis. Factormatte: Redefining video matting for re-composition tasks, 2022.2",
+            "[13] Yoni Kasten, Dolev Ofri, Oliver Wang, and Tali Dekel. Layered neural atlases for consistent video editing. ACM Transactions on Graphics (TOG), 40(6):1–12, 2021. 2, 5, 6",
+            "[14] Yao-Chih Lee, Ji-Ze Genevieve Jang, Yi-Ting Chen, Elizabeth Qiu, and Jia-Bin Huang. Shape-aware text-driven layered video editing. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition, 2023. 2",
+            "[15] Wenbin Li, Fabio Viola, Jonathan Starck, Gabriel J. Brostow, and Neill D.F. Campbell. Roto++: Accelerating professional rotoscoping using shape manifolds. ACM Transactions on Graphics (In proceeding of ACM SIGGRAPH'16), 35(4), 2016. 2",
+            "[16] Yin Li, Jian Sun, and Heung-Yeung Shum. Video object cut and paste. ACM Trans. Graph., 24(3):595–600, 2005. 2",
+            "[17] Zhengqi Li, Simon Niklaus, Noah Snavely, and Oliver Wang. Neural scene flow fields for space-time view synthesis of dynamic scenes. In IEEE Conference on Computer Vision and Pattern Recognition, CVPR 2021, virtual, June 19- 25, 2021, pages 6498–6508. Computer Vision Foundation / IEEE, 2021. 2",
+            "[18] Shanchuan Lin, Andrey Ryabtsev, Soumyadip Sengupta, Brian Curless, Steve Seitz, and Ira Kemelmacher-Shlizerman. Real-time high-resolution background matting. arXiv, pages arXiv–2012, 2020. 2",
+            "[19] Yu-Lun Liu, Chen Gao, Andreas Meuleman, Hung-Yu Tseng, Ayush Saraf, Changil Kim, Yung-Yu Chuang, Johannes Kopf, and Jia-Bin Huang. Robust dynamic radiance fields. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition, 2023. 2, 6",
+            "[20] Erika Lu, Forrester Cole, Tali Dekel, Weidi Xie, Andrew Zisserman, David Salesin, William T Freeman, and Michael Rubinstein. Layered neural rendering for retiming people in video. In SIGGRAPH Asia, 2020. 2",
+            "[21] Erika Lu, Forrester Cole, Tali Dekel, Andrew Zisserman, William T Freeman, and Michael Rubinstein. Omnimatte: Associating objects and their effects in video. In CVPR, 2021.1, 2, 3, 5, 6",
+            "[22] Ben Mildenhall, Pratul P. Srinivasan, Matthew Tancik, Jonathan T. Barron, Ravi Ramamoorthi, and Ren Ng. Nerf: Representing scenes as neural radiance fields for view synthesis. In ECCV, 2020. 2, 5",
+            "[23] Thomas Müller, Alex Evans, Christoph Schied, and Alexander Keller. Instant neural graphics primitives with a multiresolution hash encoding. ACM Trans. Graph., 41(4):102:1– 102:15,2022.2",
+            "[24] F. Perazzi, J. Pont-Tuset, B. McWilliams, L. Van Gool, M. Gross, and A. Sorkine-Hornung. A benchmark dataset and"
+        ],
+        "bbox": [
+            84,
+            262,
+            468,
+            343
+        ],
+        "page_idx": 8
+    },
+    {
+        "type": "page_number",
+        "text": "23479",
+        "bbox": [
+            478,
+            944,
+            519,
+            957
+        ],
+        "page_idx": 8
+    },
+    {
+        "type": "list",
+        "sub_type": "ref_text",
+        "list_items": [
+            "evaluation methodology for video object segmentation. In Computer Vision and Pattern Recognition, 2016. 6",
+            "[25] Jordi Pont-Tuset, Federico Perazzi, Sergi Caelles, Pablo Arbeláez, Alexander Sorkine-Hornung, and Luc Van Gool. The 2017 davis challenge on video object segmentation. arXiv:1704.00675,2017.6",
+            "[26] René Ranftl, Katrin Lasinger, David Hafner, Konrad Schindler, and Vladlen Koltun. Towards robust monocular depth estimation: Mixing datasets for zero-shot cross-dataset transfer. IEEE Transactions on Pattern Analysis and Machine Intelligence, 44(3), 2022. 3, 5",
+            "[27] Cheng Sun, Min Sun, and Hwann-Tzong Chen. Direct voxel grid optimization: Super-fast convergence for radiance fields reconstruction. In CVPR, 2022. 2",
+            "[28] Jiaming Sun, Zehong Shen, Yuang Wang, Hujun Bao, and Xiaowei Zhou. LoFTR: Detector-free local feature matching with transformers. CVPR, 2021. 6",
+            "[29] Zachary Teed and Jia Deng. RAFT: recurrent all-pairs field transforms for optical flow. In Andrea Vedaldi, Horst Bischof, Thomas Brox, and Jan-Michael Frahm, editors, Computer Vision - ECCV 2020 - 16th European Conference, Glasgow, UK, August 23-28, 2020, Proceedings, Part II, volume 12347 of Lecture Notes in Computer Science, pages 402–419. Springer, 2020. 3",
+            "[30] Inc Trimble, Oct 2022. 6",
+            "[31] Dor Verbin, Peter Hedman, Ben Mildenhall, Todd E. Zickler, Jonathan T. Barron, and Pratul P. Srinivasan. Ref-nerf: Structured view-dependent appearance for neural radiance fields. In IEEE/CVF Conference on Computer Vision and Pattern Recognition, CVPR 2022, New Orleans, LA, USA, June 18- 24, 2022, pages 5481–5490. IEEE, 2022. 2",
+            "[32] Jue Wang, Pravin Bhat, Alex Colburn, Maneesh Agrawala, and Michael F. Cohen. Interactive video cutout. ACM Trans. Graph., 24(3):585–594, 2005. 2",
+            "[33] Tianyu Wang, Xiaowei Hu, Chi-Wing Fu, and Pheng-Ann Heng. Single-stage instance shadow detection with bidirectional relation learning. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR), pages 1–11, June 2021. 2",
+            "[34] Tianyu Wang, Xiaowei Hu, Qiong Wang, Pheng-Ann Heng, and Chi-Wing Fu. Instance shadow detection. In IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR), June 2020. 2",
+            "[35] Yi Wang, Pierre-Marc Jodoin, Fatih Porikli, Janusz Konrad, Yannick Benezeth, and Prakash Ishwar. Cdnet 2014: An expanded change detection benchmark dataset. In 2014 IEEE Conference on Computer Vision and Pattern Recognition Workshops, pages 393–400, 2014. 6",
+            "[36] Tianhao Wu, Fangcheng Zhong, Andrea Tagliasacchi, Forrester Cole, and Cengiz Oztireli. D²nerf: Self-supervised decoupling of dynamic and static objects from a monocular video. In Advances in Neural Information Processing Systems, 2022. 1, 3, 5, 6",
+            "[37] Yuxin Wu, Alexander Kirillov, Francisco Massa, Wan-Yen Lo, and Ross Girshick. Detectron2. https: //github. com/facebookresearch/detectron2,2019.6",
+            "[38] Wenqi Xian, Jia-Bin Huang, Johannes Kopf, and Changil Kim. Space-time neural irradiance fields for free-viewpoint",
+            "video. In IEEE Conference on Computer Vision and Pattern Recognition, CVPR 2021, virtual, June 19-25, 2021, pages 9421–9431. Computer Vision Foundation / IEEE, 2021. 2",
+            "[39] Vickie Ye, Zhengqi Li, Richard Tucker, Angjoo Kanazawa, and Noah Snavely. Deformable sprites for unsupervised video decomposition. In IEEE Conference on Computer Vision and Pattern Recognition (CVPR), June 2022. 3, 6"
+        ],
+        "bbox": [
+            111,
+            93,
+            468,
+            119
+        ],
+        "page_idx": 9
+    },
+    {
+        "type": "page_number",
+        "text": "23480",
+        "bbox": [
+            478,
+            945,
+            519,
+            957
+        ],
+        "page_idx": 9
+    }
+]
